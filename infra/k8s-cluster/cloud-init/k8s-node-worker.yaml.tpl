@@ -1,4 +1,6 @@
 #cloud-config
+preserve_hostname: true
+hostname: ${name}
 users:
   - default
   - name: ubuntu
@@ -13,13 +15,11 @@ package_upgrade: true
 packages:
 - qemu-guest-agent
 - net-tools
-- containerd
-- kubelet
-- kubeadm
-- kubectl
 runcmd:
     - timedatectl set-timezone America/Toronto
     - systemctl enable qemu-guest-agent
+    - for i in $(seq 0 ${count-cp - 1}); do sudo bash -c "echo '192.168.0.10$i k8s-cp-$i' >> /etc/hosts"; done
+    - for i in $(seq 0 ${count-worker - 1}); do sudo bash -c "echo '192.168.0.11$i k8s-worker-$i' >> /etc/hosts"; done
     - systemctl start qemu-guest-agent
     - echo "done" > /tmp/cloud-config.done
 
