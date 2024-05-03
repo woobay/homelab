@@ -1,6 +1,7 @@
 # Cluster Installation
 
 ## Finish to setup the Control plane
+
 ```bash
 sudo kubeadm init --pod-network-cidr 192.168.0.0/16
 
@@ -18,5 +19,4 @@ kubeadm token create --print-join-command
 
 ## Step to do on Worker nodes
 
-* Paste result of the kubeadm join
-
+* Paste result of the kubeadm join with sudo

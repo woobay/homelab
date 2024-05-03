@@ -4,7 +4,7 @@ Projet to remake my homelab using proxmox/terraform/k8s
 
 ## 2024-05-03
 * Setup cluster automaticly with cloud init config and terraform
-* Automate the kubeadm join token 
+* Finished doc for Cluster Installation
 
 ## 2024-05-02
 * Tried setting up K8s cluster in the VMS
