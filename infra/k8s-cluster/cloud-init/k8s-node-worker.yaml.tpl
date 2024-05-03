@@ -1,5 +1,5 @@
 #cloud-config
-preserve_hostname: true
+preserver_hostname: true
 hostname: ${name}
 users:
   - default
