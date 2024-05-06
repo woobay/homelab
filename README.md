@@ -2,6 +2,11 @@
 
 Projet to remake my homelab using proxmox/terraform/k8s
 
+## 2024-05-06
+* Setup Flux as a GitOps solution
+* Tried creating a nfs server with TrueNas Scale running in Proxmox
+* Tried to create a PV that store the data in the nfs
+
 ## 2024-05-03
 * Setup cluster automaticly with cloud init config and terraform
 * Finished doc for Cluster Installation
