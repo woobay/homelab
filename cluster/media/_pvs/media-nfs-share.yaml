@@ -10,8 +10,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: "192.1"
-    path: /mnt/tank/share
+    server: "192.168.0.183"
+    path: /mnt/mypool/nfs
   mountOptions:
     - nfsvers=4.1
     - tcp
