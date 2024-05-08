@@ -46,7 +46,7 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
 
   content_type = "snippets"
   datastore_id = "local"
-  node_name    = "homelab"
+  node_name    = "pve1"
 
   source_raw {
     data      = data.template_file.cloud_config[each.key].rendered
@@ -59,7 +59,7 @@ resource "proxmox_virtual_environment_vm" "this" {
   for_each = local.k8s_nodes_map
 
   name      = each.value.name
-  node_name = "homelab"
+  node_name = "pve1"
 
   agent {
     enabled = true
@@ -102,7 +102,7 @@ resource "proxmox_virtual_environment_vm" "this" {
 resource "proxmox_virtual_environment_download_file" "ubuntu_cloud_image" {
   content_type = "iso"
   datastore_id = "local"
-  node_name    = "homelab"
+  node_name    = "pve1"
 
   url = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
 }

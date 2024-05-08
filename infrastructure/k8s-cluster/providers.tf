@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "proxmox" {
-  endpoint = "https://192.168.0.200:8006/"
+  endpoint = "https://192.168.0.199:8006/"
   username = var.proxmox_username
   password = var.proxmox_password
   insecure = true
