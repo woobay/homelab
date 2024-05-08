@@ -12,8 +12,8 @@ spec:
     - name: alpine
       image: alpine:latest
       command:
-        - touch
-        - /mnt/pool/share/media/test
+        - ls
+        - /mnt/pool/share/media/
       volumeMounts:
         - name: nfs-volume
           mountPath: /mnt/pool/share/media
