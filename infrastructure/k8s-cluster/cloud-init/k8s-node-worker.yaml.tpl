@@ -32,6 +32,7 @@ package_upgrade: true
 packages:
 - qemu-guest-agent
 - net-tools
+- nfs-common
 - containerd
 - kubelet
 - kubeadm
