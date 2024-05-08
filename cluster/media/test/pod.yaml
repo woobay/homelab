@@ -15,5 +15,5 @@ spec:
         - containerPort: 80
           name: "http-server"
       volumeMounts:
-        - mountPath: "/usr/share/nginx/html"
+        - mountPath: "/mnt/pool/share/media"
           name: media-nfs-share-pvc
