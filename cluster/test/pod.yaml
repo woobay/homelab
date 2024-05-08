@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: pod-nfs-test
-  namesame: test
+  namespace: test
   labels:
     app.kubernetes.io/name: alpine
     app.kubernetes.io/part-of: kubernetes-complete-reference
