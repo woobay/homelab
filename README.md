@@ -21,12 +21,6 @@ but it also serves as the Infrastructure-as-Code (IaC) for my entire home networ
 Ultimately, this will include all applications for managing home IT systems.
 
 
-
-
-# Homelab
-
-Projet to remake my homelab using proxmox/terraform/k8s
-
 ## 2024-05-06
 * Setup Flux as a GitOps solution
 * Tried creating a nfs server with TrueNas Scale running in Proxmox
