@@ -8,7 +8,7 @@ spec:
   storageClassName: nfs
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy Retain
+  persistentVolumeReclaimPolicy: Retain
   nfs:
     server: "192.168.0.200"
     path: /mnt/pool/share/media
