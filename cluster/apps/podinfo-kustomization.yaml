@@ -3,15 +3,15 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: podinfo
-  namespace: flux-system
+  namespace: infrastructure
 spec:
   interval: 30m0s
   path: ./kustomize
   prune: true
   retryInterval: 2m0s
   sourceRef:
-    kind: GitRepository
+    kind: HelmRepository
     name: podinfo
-  targetNamespace: default
+  targetNamespace: infrastructure
   timeout: 3m0s
   wait: true
