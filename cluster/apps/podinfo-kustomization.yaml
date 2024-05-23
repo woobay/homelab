@@ -1,17 +1,5 @@
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
-metadata:
-  name: podinfo
-  namespace: infrastructure
-spec:
-  interval: 30m0s
-  path: ./kustomize
-  prune: true
-  retryInterval: 2m0s
-  sourceRef:
-    kind: HelmRepository
-    name: podinfo
-  targetNamespace: infrastructure
-  timeout: 3m0s
-  wait: true
+resources:
+- podinfo-source.yaml
