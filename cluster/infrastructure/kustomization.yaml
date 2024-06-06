@@ -1,3 +1,4 @@
 
 resources:
-  - "./nginx"
+  - "namespace.yaml"
+  - "repository.yaml"
