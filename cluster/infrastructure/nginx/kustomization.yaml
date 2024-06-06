@@ -2,4 +2,4 @@
 resources:
   - "namespace.yaml"
   - "repository.yaml"
-  - "helmrelease.yaml"
+  - "chart.yaml"
