@@ -1,4 +1,4 @@
 
 resources:
-  - "reposity.yaml"
   - "namespace.yaml"
+  - "reposity.yaml"
