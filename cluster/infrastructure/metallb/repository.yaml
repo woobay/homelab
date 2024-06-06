@@ -1,8 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: nginx
-  namespace: nginx
+  name: metallb
+  namespace: infrastructure
 spec:
-  url: oci://ghcr.io/nginxinc/charts
+  url: oci://registry-1.docker.io/bitnamicharts
   type: oci
