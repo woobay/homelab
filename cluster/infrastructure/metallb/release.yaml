@@ -14,4 +14,4 @@ spec:
         name: metallb
   interval: 1h
   releaseName: metallb
-  targetNamespace: infratructure
+  targetNamespace: infrastructure
