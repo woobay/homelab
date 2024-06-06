@@ -2,4 +2,3 @@
 resources:
 - repository.yaml
 - release.yaml
-- adressPool.yaml

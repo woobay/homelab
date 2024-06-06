@@ -15,3 +15,9 @@ spec:
   interval: 1h
   releaseName: metallb
   targetNamespace: infrastructure
+  #I need to add the values from mt idressPool.yaml here which is a kind IpAddressPool 
+  valuesFrom:
+  - kind: AddressPool
+    name: first-pool
+    namespace: infrastructure
+    valuesKey: adressPool.yaml
