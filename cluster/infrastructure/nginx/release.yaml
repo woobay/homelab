@@ -8,10 +8,11 @@ spec:
     spec:
       chart: nginx-ingress
       version: 1.2.x
-    interval: 5h
-    sourceRef:
-      kind: HelmRepository
-      name: nginx
+      interval: 5h
+      sourceRef:
+        kind: HelmRepository
+        name: nginx
   interval: 1h
   releaseName: nginx
+  targetNamespace: nginx
 
