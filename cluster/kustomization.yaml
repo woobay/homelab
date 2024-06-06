@@ -1,0 +1,4 @@
+
+resources:
+  - "./flux-system/"
+  - "./infrastructure/"
