@@ -35,3 +35,4 @@ terraform.rc
 
 #Terraform lockfile
 .terraform.lock.hcl
+cluster/charts/**/charts
