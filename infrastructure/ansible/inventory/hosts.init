@@ -1,0 +1,12 @@
+[ansible]
+127.0.0.1 ansible_connection=local
+
+[servers]
+server0 ansible_host=192.168.0.80
+server1 ansible_host=192.168.0.81
+server2 ansible_host=192.168.0.82
+
+[agents]
+agent0 ansible_host=192.168.0.90
+agent1 ansible_host=192.168.0.91
+agent2 ansible_host=192.168.0.92

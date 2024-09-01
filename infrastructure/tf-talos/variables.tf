@@ -9,3 +9,14 @@ variable "proxmox_password" {
   description = "Proxmox provider password"
   default = "notgoodenough"
 }
+
+variable "node_names" {
+  description = "Name of the proxmox nodes"
+  type        = list(string)
+  default     = [
+    "aramis",
+    "athos",
+    "porthos"
+  ]
+}
+

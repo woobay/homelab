@@ -1,0 +1,11 @@
+---
+- name: Download TalosCtl for Linux
+  ansible.builtin.get_url:
+    url: https://github.com/siderolabs/talos/releases/download/v1.7.6/talosctl-linux-amd64
+    dest: /usr/local/bin/talosctl
+    mode: '0755'
+  register: download_result
+
+- name: Display download result
+  ansible.builtin.debug:
+    var: download_result
