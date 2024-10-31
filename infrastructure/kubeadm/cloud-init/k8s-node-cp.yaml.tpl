@@ -41,8 +41,7 @@ runcmd:
     - systemctl enable qemu-guest-agent
     - systemctl start qemu-guest-agent
     - for i in $(seq 0 ${count-cp - 1}); do sudo bash -c "echo '192.168.0.8$i k8s-cp-$i' >> /etc/hosts"; done
-#   - for i in $(seq 0 ${count-worker - 1}); do sudo bash -c "echo '192.168.0.11$i k8s-worker-$i' >> /etc/hosts"; done
-    - modprobe overlay
+    - for i in $(seq 0 ${count-worker - 1}); do sudo bash -c "echo '192.168.0.9$i k8s-worker-$i' >> /etc/hosts"; done
     - modprobe br_netfilter
     - apt-mark hold kubelet kubeadm kubectl
     - swapoff -a

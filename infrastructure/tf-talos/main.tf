@@ -52,7 +52,7 @@ resource "proxmox_virtual_environment_vm" "talos-worker" {
   initialization {
     ip_config {
       ipv4 {
-        address = "192.168.0.9${each.key}/24"
+        address = "192.168.0.8${each.key}/24"
         gateway = "192.168.0.1"
       }
     }
