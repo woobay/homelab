@@ -1,6 +1,0 @@
----
-- name: Configure cluster
-  hosts: ansible
-  gather_facts: true
-  roles:
-  - configure-cluster

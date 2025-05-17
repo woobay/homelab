@@ -1,8 +1,0 @@
-
-
-- name: Install TalosCtl
-  hosts: ansible
-  gather_facts: true
-  become: true
-  roles:
-  - install-talosctl

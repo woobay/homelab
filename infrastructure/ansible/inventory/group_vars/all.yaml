@@ -1,9 +1,0 @@
-os: "linux"
-arch: "amd64"
-
-talos_version: v1.7.0
-talosctl_version: v1.7.5
-control_plane_ip: 192.168.0.80
-
-config_directory: "/home/woobay/.talos"
-config_file: "/home/woobay/.talos/talosconfig"
