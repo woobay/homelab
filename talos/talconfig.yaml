@@ -1,0 +1,45 @@
+# Simple single control plane setup
+clusterName: home-cluster
+talosVersion: v1.10.1
+kubernetesVersion: v1.31.0
+endpoint: https://192.168.2.20:6443
+allowSchedulingOnControlPlanes: true  # Allow pods on control plane for small cluster
+cniConfig:
+  name: none
+clusterPodNets:
+  - 10.244.0.0/16
+clusterSvcNets:
+  - 10.96.0.0/12
+
+nodes:
+  # Single Control Plane
+  - hostname: cp1
+    controlPlane: true
+    ipAddress: 192.168.2.20
+    installDisk: /dev/sda
+    nameservers:
+      - 192.168.2.1
+    networkInterfaces:
+      - interface: eno1
+        dhcp: true
+
+  # Workers
+  - hostname: w1
+    controlPlane: false
+    ipAddress: 192.168.2.21
+    installDisk: /dev/sda
+    nameservers:
+      - 192.168.2.1
+    networkInterfaces:
+      - interface: eno1
+        dhcp: true
+
+  - hostname: w2
+    controlPlane: false
+    ipAddress: 192.168.2.22
+    installDisk: /dev/sdb
+    nameservers:
+      - 192.168.2.1
+    networkInterfaces:
+      - interface: eno1
+        dhcp: true

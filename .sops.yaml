@@ -1,0 +1,15 @@
+---
+keys:
+  - &user_woobay age13x2kx6gsqu5zwk9ryqfess4k9ytl7c06wktnulalnq76kgpem4pqqhkj4y
+
+creation_rules:
+  - path_regex: talos/.*\.sops\.ya?ml$
+    key_groups:
+      - age:
+          - *user_woobay
+
+  - path_regex: .*\.sops\.ya?ml$
+    key_groups:
+      - age:
+          - *user_woobay
+
