@@ -2,3 +2,9 @@ home-cluster-cp1.yaml
 home-cluster-w1.yaml
 home-cluster-w2.yaml
 talosconfig
+home-cluster-delta.yaml
+home-cluster-alpha.yaml
+home-cluster-omega.yaml
+home-cluster-delta.home.lan.yaml
+home-cluster-alpha.home.lan.yaml
+home-cluster-omega.home.lan.yaml

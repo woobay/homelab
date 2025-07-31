@@ -2,8 +2,8 @@
 clusterName: home-cluster
 talosVersion: v1.10.1
 kubernetesVersion: v1.31.0
-endpoint: https://192.168.2.20:6443
-allowSchedulingOnControlPlanes: true  # Allow pods on control plane for small cluster
+endpoint: https://192.168.0.20:6443
+allowSchedulingOnControlPlanes: true
 cniConfig:
   name: none
 clusterPodNets:
@@ -12,34 +12,33 @@ clusterSvcNets:
   - 10.96.0.0/12
 
 nodes:
-  # Single Control Plane
-  - hostname: cp1
+  - hostname: delta
     controlPlane: true
-    ipAddress: 192.168.2.20
+    ipAddress: 192.168.0.20
     installDisk: /dev/sda
     nameservers:
-      - 192.168.2.1
+      - 192.168.0.1
     networkInterfaces:
       - interface: eno1
         dhcp: true
 
   # Workers
-  - hostname: w1
+  - hostname: alpha
     controlPlane: false
-    ipAddress: 192.168.2.21
+    ipAddress: 192.168.0.21
     installDisk: /dev/sda
     nameservers:
-      - 192.168.2.1
+      - 192.168.0.1
     networkInterfaces:
       - interface: eno1
         dhcp: true
 
-  - hostname: w2
+  - hostname: omega
     controlPlane: false
-    ipAddress: 192.168.2.22
+    ipAddress: 192.168.0.22
     installDisk: /dev/sdb
     nameservers:
-      - 192.168.2.1
+      - 192.168.0.1
     networkInterfaces:
       - interface: eno1
         dhcp: true
