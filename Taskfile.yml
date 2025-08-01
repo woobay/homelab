@@ -1,146 +1,27 @@
-# https://taskfile.dev
 version: '3'
+
+includes:
+  sops: .taskfiles/sops/Taskfile.yaml
+  talos: .taskfiles/talos/Taskfile.yaml
+  bootstrap: .taskfiles/bootstrap/Taskfile.yaml
+
 vars:
   TALOSCONFIG: "talos/clusterconfig/talosconfig"
+
 env:
   TALOSCONFIG: "{{.TALOSCONFIG}}"
+
 tasks:
   default:
-    cmds:
-      - task help
+    desc: Show available task categories
     silent: true
-
-
-  generate-secrets:
-    desc: Generate new cluster secrets and encrypt with SOPS
-    preconditions:
-      - which talhelper
-      - which sops
     cmds:
-      - talhelper gensecret > talos/talsecret.sops.yaml
-      - sops -e -i talos/talsecret.sops.yaml
-      - echo "✅ New cluster secrets generated and encrypted"
+      - echo "Available task categories:"
+      - echo "  task sops:<tab>     - SOPS encryption tasks"
+      - echo "  task talos:<tab>    - Talos cluster management"
+      - echo "  task k8s:<tab>      - Kubernetes bootstrap tasks"
 
-  re-encrypt:
-    desc: Encrypt secrets with SOPS
-    vars:
-      SECRET_FILES:
-        sh: find . -type f -name '*.sops.yaml' ! -name ".sops.yaml"
+  help:
+    desc: Show this help
     cmds:
-      - for:
-          var: SECRET_FILES
-        cmd: |
-          sops --decrypt --in-place "{{ .ITEM }}"
-          sops --encrypt --in-place "{{ .ITEM }}"
-
-  generate-clusterconfig:
-    desc: Generate clusterconfig for Talos
-    preconditions:
-      - test -f talos/talsecret.sops.yaml
-      - test -f talos/talconfig.yaml
-    cmds:
-      - >
-        talhelper genconfig --secret-file talos/talsecret.yaml
-        --config-file talos/talconfig.yaml
-        --out-dir talos/clusterconfig
-  
-  apply-clusterconfig:
-    desc: Apply clusterconfig for a Talos cluster
-    vars:
-      CLUSTERCONFIG_FILES:
-        sh: ls talos/clusterconfig/*.yaml
-    preconditions:
-      - which ls
-      - test -f "${TALOSCONFIG}"
-    cmds:
-      - for:
-          var: CLUSTERCONFIG_FILES
-        task: _apply-machineconfig
-        vars:
-          FILENAME: "{{.ITEM}}"
-          HOSTNAME: |-
-            {{ trimPrefix (printf "home-cluster-") (base .ITEM) | trimSuffix ".yaml" }}
-          DRY_RUN: "{{ .DRY_RUN }}"
-          INSECURE: "{{ .INSECURE }}"
-
-
-  reboot-node:
-    desc: Reboot a specific Talos node
-    preconditions:
-      - which talosctl
-      - test -f "${TALOSCONFIG}"
-    requires:
-      vars:
-        - NODE
-    cmds:
-      - >
-        talosctl reboot
-        --nodes "{{.NODE}}"
-        {{ if eq "true" .INSECURE }}--insecure{{ end }}
-
-  reboot-all-nodes:
-    desc: Reboot all cluster nodes
-    vars:
-      CLUSTERCONFIG_FILES:
-        sh: ls talos/clusterconfig/*.yaml
-    preconditions:
-      - which talosctl
-      - test -f "${TALOSCONFIG}"
-    cmds:
-      - for:
-          var: CLUSTERCONFIG_FILES
-        task: _reboot-single-node
-        vars:
-          HOSTNAME: |-
-            {{ trimPrefix (printf "home-cluster-") (base .ITEM) | trimSuffix ".yaml" }}
-          INSECURE: "{{ .INSECURE }}"
-
-  shutdown-node:
-    desc: Shutdown a specific Talos node
-    preconditions:
-      - which talosctl  
-      - test -f "${TALOSCONFIG}"
-    requires:
-      vars:
-        - NODE
-    cmds:
-      - >
-        talosctl shutdown
-        --nodes "{{.NODE}}"
-        {{ if eq "true" .INSECURE }}--insecure{{ end }}
-
-  _apply-machineconfig:
-    internal: true
-    desc: Apply a single Talos machineConfig to a Talos node
-    preconditions:
-      - which talosctl
-      - test -f "{{.FILENAME}}"
-    requires:
-      vars:
-        - HOSTNAME
-        - FILENAME
-    vars:
-      MODE: >-
-        {{.MODE | default "auto"}}
-    cmds:
-      - >
-        talosctl apply-config
-        --nodes "{{.HOSTNAME}}"
-        --file "{{.FILENAME}}"
-        --mode="{{.MODE}}"
-        {{ if eq "true" .INSECURE }}--insecure{{ end }}
-        {{ if eq "true" .DRY_RUN }}--dry-run{{ end }}
-
-  _reboot-single-node:
-    internal: true
-    desc: Reboot a single node as part of reboot-all
-    requires:
-      vars:
-        - HOSTNAME
-    cmds:
-      - >
-        talosctl reboot
-        --nodes "{{.HOSTNAME}}"
-        {{ if eq "true" .INSECURE }}--insecure{{ end }}
-      - echo "Reboot initiated for node {{.HOSTNAME}}"
-
+      - task: default

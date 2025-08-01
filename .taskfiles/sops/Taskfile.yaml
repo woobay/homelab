@@ -1,0 +1,15 @@
+version: '3'
+
+tasks:
+  re-encrypt:
+    desc: Encrypt secrets with SOPS
+    vars:
+      SECRET_FILES:
+        sh: find . -type f -name '*.sops.yaml' ! -name ".sops.yaml"
+    cmds:
+      - for:
+          var: SECRET_FILES
+        cmd: |
+          sops --decrypt --in-place "{{ .ITEM }}"
+          sops --encrypt --in-place "{{ .ITEM }}"
+
