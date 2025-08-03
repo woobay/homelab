@@ -36,3 +36,6 @@ spec:
         managedNamespaceMetadata:
           labels:
             istio-injection: enabled
+            pod-security.kubernetes.io/enforce: '{{if eq .path.basename "argocd-self"}}privileged{{else}}baseline{{end}}'
+            pod-security.kubernetes.io/audit: '{{if eq .path.basename "argocd-self"}}privileged{{else}}baseline{{end}}'
+            pod-security.kubernetes.io/warn: '{{if eq .path.basename "argocd-self"}}privileged{{else}}baseline{{end}}'

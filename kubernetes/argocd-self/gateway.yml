@@ -1,0 +1,24 @@
+# Create this Gateway resource
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: istio-ingressgateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"  # Allow all hosts, or specify: argocd.home.lan
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "*"  # Allow all hosts, or specify: argocd.home.lan
+    tls:
+      mode: PASSTHROUGH  # or SIMPLE if you want Istio to terminate TLS
