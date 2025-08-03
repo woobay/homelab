@@ -115,7 +115,16 @@ common:
         - path: /cache
           readOnly: true
     
-virtualservice:
+virtualService:
   enabled: true
+  name: "jellyfin-virtualservice"
   host: "jellyfin.home.lan"
   gateway: "istio-system/istio-ingressgateway"
+  prefix: "/"
+  service:
+    host: "jellyfin.jellyfin.svc.cluster.local"
+    port: 80
+  timeout: "300s"
+  retries:
+    attempts: 2
+    perTryTimeout: "2s"

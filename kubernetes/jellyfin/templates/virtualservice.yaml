@@ -1,29 +1,37 @@
-{{- if .Values.virtualservice.enabled }}
+{{- if .Values.virtualService.enabled }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: {{ include "jellyfin.fullname" . }}
+  name: {{ .Values.virtualService.name }}
   namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "jellyfin.labels" . | nindent 4 }}
 spec:
   hosts:
-  - {{ .Values.virtualservice.host }}
+  - {{ .Values.virtualService.host | quote }}
   gateways:
-  - {{ .Values.virtualservice.gateway }}
+  - {{ .Values.virtualService.gateway }}
   http:
   - match:
     - uri:
-        prefix: /
+        prefix: {{ .Values.virtualService.prefix | quote }}
+      headers:
+        connection:
+          exact: "upgrade"
+        upgrade:
+          exact: "websocket"
     route:
     - destination:
-        host: {{ include "jellyfin.fullname" . }}
+        host: {{ .Values.virtualService.service.host }}
         port:
-          number: 8096
-    timeout: 300s
-    headers:
-      request:
-        set:
-          X-Forwarded-Proto: "https"
-          X-Forwarded-For: "%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%"
+          number: {{ .Values.virtualService.service.port }}
+    timeout: {{ .Values.virtualService.timeout }}
+
+  - route:  # Regular HTTP traffic
+    - destination:
+        host: {{ .Values.virtualService.service.host }}
+        port:
+          number: {{ .Values.virtualService.service.port }}
+    retries:
+      attempts: {{ .Values.virtualService.retries.attempts }}
+      perTryTimeout: {{ .Values.virtualService.retries.perTryTimeout }}
+    timeout: {{ .Values.virtualService.timeout }}
 {{- end }}
