@@ -1,0 +1,11 @@
+apiVersion: v2
+name: jellyfin
+description: Jellyfin Media Server deployment
+type: application
+version: 0.1.0
+appVersion: "latest"
+
+dependencies:
+  - name: common
+    version: 4.2.0
+    repository: https://bjw-s-labs.github.io/helm-charts/
