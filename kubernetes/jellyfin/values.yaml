@@ -123,7 +123,7 @@ virtualService:
   prefix: "/"
   service:
     host: "jellyfin.jellyfin.svc.cluster.local"
-    port: 80
+    port: 8086
   timeout: "300s"
   retries:
     attempts: 2
