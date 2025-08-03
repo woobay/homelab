@@ -1,0 +1,168 @@
+---
+# Source: jellyfin/charts/app-template/templates/common.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name
+  labels:
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/service: release-name
+    helm.sh/chart: app-template-4.2.0
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8096
+      targetPort: 8096
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/controller: main
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/name: release-name
+---
+# Source: jellyfin/charts/app-template/templates/common.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name
+  labels:
+    app.kubernetes.io/controller: main
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: release-name
+    helm.sh/chart: app-template-4.2.0
+  namespace: default
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/controller: main
+      app.kubernetes.io/name: release-name
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels: 
+        app.kubernetes.io/controller: main
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/name: release-name
+    spec: 
+      enableServiceLinks: false
+      serviceAccountName: default
+      automountServiceAccountToken: true
+      securityContext: 
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      dnsPolicy: ClusterFirst
+      containers: 
+        - env:
+          - name: JELLYFIN_PublishedServerUrl
+            value: jellyfin.home.lan
+          - name: TZ
+            value: America/New_York
+          image: jellyfin/jellyfin:latest
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: null
+              port: 8096
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          name: main
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: null
+              port: 8096
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+          resources:
+            limits:
+              cpu: 4000m
+              memory: 8Gi
+            requests:
+              cpu: 200m
+              memory: 1Gi
+          startupProbe:
+            failureThreshold: 30
+            httpGet:
+              path: null
+              port: 8096
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+          volumeMounts:
+          - mountPath: /cache
+            name: cache
+            readOnly: true
+          - mountPath: /config
+            name: config
+          - mountPath: /media
+            name: media
+            readOnly: true
+      volumes: 
+        - name: cache
+          nfs:
+            path: /mnt/storage/cache/jellyfin
+            server: 192.168.0.5
+        - name: config
+          nfs:
+            path: /mnt/storage/config/jellyfin
+            server: 192.168.0.5
+        - name: media
+          nfs:
+            path: /mnt/storage/media
+            server: 192.168.0.5
+---
+# Source: jellyfin/templates/virtualservice.yaml
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: jellyfin-virtualservice
+  namespace: default
+spec:
+  hosts:
+  - "jellyfin.home.lan"
+  gateways:
+  - istio-system/istio-ingressgateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+      headers:
+        connection:
+          exact: "upgrade"
+        upgrade:
+          exact: "websocket"
+    route:
+    - destination:
+        host: jellyfin.jellyfin.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+
+  - route:  # Regular HTTP traffic
+    - destination:
+        host: jellyfin.jellyfin.svc.cluster.local
+        port:
+          number: 80
+    retries:
+      attempts: 2
+      perTryTimeout: 2s
+    timeout: 300s
