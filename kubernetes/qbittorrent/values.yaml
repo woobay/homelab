@@ -1,0 +1,176 @@
+app-template:
+  defaultPodOptions:
+    automountServiceAccountToken: false
+  controllers:
+    main:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      pod:
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
+          fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        main:
+          image:
+            repository: ghcr.io/onedr0p/qbittorrent
+            tag: latest
+            pullPolicy: IfNotPresent
+          env:
+            TZ: "America/New_York"
+            QBITTORRENT__PORT: 8080
+            QBITTORRENT__BT_PORT: 6881
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          probes:
+            liveness:
+              enabled: true
+              type: HTTP
+              spec:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 3
+            readiness:
+              enabled: true
+              type: HTTP
+              spec:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 10
+                periodSeconds: 5
+                timeoutSeconds: 3
+                failureThreshold: 3
+            startup:
+              enabled: true
+              type: HTTP
+              spec:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 10
+                periodSeconds: 5
+                timeoutSeconds: 3
+                failureThreshold: 60
+        gluetun:
+          dependsOn: main
+          image:
+            repository: ghcr.io/qdm12/gluetun
+            tag: latest
+            pullPolicy: IfNotPresent
+          env:
+            TZ: "America/New_York"
+            VPN_SERVICE_PROVIDER: nordvpn
+            VPN_TYPE: openvpn
+            OPENVPN_USER:
+              valueFrom:
+                secretKeyRef:
+                  name: nordvpn-credentials
+                  key: username
+            OPENVPN_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: nordvpn-credentials
+                  key: password
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+        port-forward:
+          dependsOn: gluetun
+          image:
+            repository: docker.io/snoringdragon/gluetun-qbittorrent-port-manager
+            tag: "1.0"
+            pullPolicy: IfNotPresent
+          env:
+            QBITTORRENT_SERVER: localhost
+            QBITTORRENT_PORT: "8080"
+            PORT_FORWARDED: "/tmp/gluetun/forwarded_port"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+  service:
+    main:
+      enabled: true
+      primary: true
+      type: ClusterIP
+      controller: main
+      ports:
+        http:
+          enabled: true
+          primary: true
+          port: 8080
+          protocol: HTTP
+          targetPort: 8080
+  ingress:
+    main:
+      enabled: false
+  persistence:
+    config:
+      enabled: true
+      type: nfs
+      server: "192.168.0.5"
+      path: "/mnt/storage/config/qbittorrent"
+      advancedMounts:
+        main:
+          main:
+            - path: /config
+              readOnly: false
+    downloads:
+      enabled: true
+      type: nfs
+      server: "192.168.0.5"
+      path: "/mnt/storage/downloads"
+      advancedMounts:
+        main:
+          main:
+            - path: /downloads
+              readOnly: false
+    gluetun-data:
+      enabled: true
+      type: emptyDir
+      advancedMounts:
+        main:
+          gluetun:
+            - path: /tmp/gluetun
+              readOnly: false
+          port-forward:
+            - path: /tmp/gluetun
+              readOnly: true
+virtualService:
+  enabled: true
+  name: "qbittorrent-virtualservice"
+  host: "qbittorrent.home.lan"
+  gateway: "istio-system/istio-ingressgateway"
+  prefix: "/"
+  service:
+    host: "qbittorrent.qbittorrent.svc.cluster.local"
+    port: 8080
+  timeout: "300s"
+  retries:
+    attempts: 2
+    perTryTimeout: "2s"
