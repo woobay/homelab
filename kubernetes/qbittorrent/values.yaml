@@ -39,8 +39,8 @@ app-template:
               cpu: 2000m
               memory: 2Gi
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: 0
+            runAsGroup: 0
           probes:
             liveness:
               enabled: true
