@@ -14,8 +14,8 @@ app-template:
       containers:
         main:
           image:
-            repository: ghcr.io/onedr0p/qbittorrent
-            tag: latest
+            repository: ghcr.io/11notes/qbittorrent
+            tag: 5.1.2
             pullPolicy: IfNotPresent
           env:
             TZ: "America/New_York"
