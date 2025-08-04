@@ -49,7 +49,7 @@ app-template:
           env:
             DOT: "off"
             DNS_KEEP_NAMESERVER: "on"
-            DNS_ADDRESS: "103.86.96.100,103.86.99.100"
+            DNS_ADDRESS: "103.86.96.100 103.86.99.100"
             TZ: "America/New_York"
             VPN_SERVICE_PROVIDER: nordvpn
             VPN_TYPE: openvpn
