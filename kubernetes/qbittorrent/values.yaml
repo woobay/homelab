@@ -2,16 +2,17 @@ app-template:
   defaultPodOptions:
     automountServiceAccountToken: false
     hostNetwork: false
+    annotations:
+      sidecar.istio.io/inject: "false"
     securityContext:
       sysctls:
         - name: net.ipv4.conf.all.src_valid_mark
           value: "1"
         - name: net.ipv6.conf.all.disable_ipv6
           value: "0"
+
   controllers:
     main:
-      labels:
-        istio-injection: disabled
       pod:
         securityContext:
           runAsUser: 0
