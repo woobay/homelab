@@ -10,8 +10,8 @@ app-template:
           value: "0"
   controllers:
     main:
-      annotations:
-        reloader.stakater.com/auto: "true"
+      labels:
+        istio-injection: disabled
       pod:
         securityContext:
           runAsUser: 0
@@ -29,8 +29,8 @@ app-template:
             QBT_LEGAL_NOTICE: "confirm"
             QBT_TORRENTING_PORT: "6881"
             QBT_WEBUI_PORT: "8080"
-            PUID: "1000"
-            PGID: "1000"
+            # PUID: "1000"
+            # PGID: "1000"
           resources:
             requests:
               cpu: 100m
@@ -67,7 +67,6 @@ app-template:
             capabilities:
               add:
                 - NET_ADMIN
-                - SYS_MODULE
           resources:
             requests:
               cpu: 50m
