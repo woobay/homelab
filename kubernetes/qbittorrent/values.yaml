@@ -14,8 +14,8 @@ app-template:
         reloader.stakater.com/auto: "true"
       pod:
         securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
+          runAsUser: 0
+          runAsGroup: 0
           fsGroup: 1000
           fsGroupChangePolicy: "OnRootMismatch"
       containers:
