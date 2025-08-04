@@ -96,6 +96,8 @@ app-template:
                   name: nordvpn-credentials
                   key: password
           securityContext:
+            runAsGroup: 0
+            runAsUser: 0
             capabilities:
               add:
                 - NET_ADMIN
