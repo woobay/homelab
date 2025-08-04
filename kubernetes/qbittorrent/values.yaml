@@ -41,40 +41,6 @@ app-template:
           securityContext:
             runAsUser: 0
             runAsGroup: 0
-          probes:
-            liveness:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /
-                  port: 8080
-                initialDelaySeconds: 30
-                periodSeconds: 10
-                timeoutSeconds: 5
-                failureThreshold: 3
-            readiness:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /
-                  port: 8080
-                initialDelaySeconds: 10
-                periodSeconds: 5
-                timeoutSeconds: 3
-                failureThreshold: 3
-            startup:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /
-                  port: 8080
-                initialDelaySeconds: 10
-                periodSeconds: 5
-                timeoutSeconds: 3
-                failureThreshold: 60
         gluetun:
           dependsOn: main
           image:
