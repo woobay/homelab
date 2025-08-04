@@ -30,8 +30,6 @@ app-template:
             QBT_LEGAL_NOTICE: "confirm"
             QBT_TORRENTING_PORT: "6881"
             QBT_WEBUI_PORT: "8080"
-            # PUID: "1000"
-            # PGID: "1000"
           resources:
             requests:
               cpu: 100m
@@ -49,6 +47,9 @@ app-template:
             tag: latest
             pullPolicy: IfNotPresent
           env:
+            DOT: "off"
+            DNS_KEEP_NAMESERVER: "on"
+            DNS_ADDRESS: "103.86.96.100,103.86.99.100"
             TZ: "America/New_York"
             VPN_SERVICE_PROVIDER: nordvpn
             VPN_TYPE: openvpn
