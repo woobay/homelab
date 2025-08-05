@@ -10,7 +10,6 @@ app-template:
           value: "1"
         - name: net.ipv6.conf.all.disable_ipv6
           value: "0"
-
   controllers:
     main:
       pod:
@@ -78,24 +77,88 @@ app-template:
             limits:
               cpu: 500m
               memory: 256Mi
+        sonarr:
+          image:
+            repository: linuxserver/sonarr
+            tag: latest
+            pullPolicy: IfNotPresent
+          env:
+            TZ: "America/New_York"
+            PUID: 1000
+            PGID: 1000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          probes:
+            liveness:
+              enabled: true
+              type: HTTP
+              spec:
+                httpGet:
+                  path: /ping
+                  port: 8989
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 3
+            readiness:
+              enabled: true
+              type: HTTP
+              spec:
+                httpGet:
+                  path: /ping
+                  port: 8989
+                initialDelaySeconds: 10
+                periodSeconds: 5
+                timeoutSeconds: 3
+                failureThreshold: 3
+            startup:
+              enabled: true
+              type: HTTP
+              spec:
+                httpGet:
+                  path: /ping
+                  port: 8989
+                initialDelaySeconds: 10
+                periodSeconds: 5
+                timeoutSeconds: 3
+                failureThreshold: 30
   service:
     main:
       enabled: true
       primary: true
-      type: ClusterIP
+      type: LoadBalancer
       controller: main
       ports:
-        http:
-          enabled: true
-          primary: true
-          port: 8080
-          protocol: HTTP
+        - port: 8080
           targetPort: 8080
+          protocol: TCP
+        selector:
+          app.kubernetes.io/name: qbittorrent
+    sonarrService:
+      enabled: true
+      type: LoadBalancer
+      controller: sonarr
+      ports:
+        - port: 8989
+          targetPort: 8989
+          protocol: TCP
+      selector:
+        app.kubernetes.io/name: qbittorrent
+
   ingress:
     main:
       enabled: false
+
   persistence:
-    config:
+    qbittorrent-config:
       enabled: true
       type: nfs
       server: "192.168.0.5"
@@ -104,6 +167,26 @@ app-template:
         main:
           main:
             - path: /config
+              readOnly: false
+    sonarr-config:
+      enabled: true
+      type: nfs
+      server: "192.168.0.5"
+      path: "/mnt/storage/config/sonarr"
+      advancedMounts:
+        main:
+          sonarr:
+            - path: /config
+              readOnly: false
+    media:
+      enabled: true
+      type: nfs
+      server: "192.168.0.5"
+      path: "/mnt/storage/media"
+      advancedMounts:
+        main:
+          sonarr:
+            - path: /media
               readOnly: false
     downloads:
       enabled: true
@@ -115,16 +198,6 @@ app-template:
           main:
             - path: /downloads
               readOnly: false
-virtualService:
-  enabled: true
-  name: "qbittorrent-virtualservice"
-  host: "qbittorrent.home.lan"
-  gateway: "istio-system/istio-ingressgateway"
-  prefix: "/"
-  service:
-    host: "qbittorrent.qbittorrent.svc.cluster.local"
-    port: 8080
-  timeout: "300s"
-  retries:
-    attempts: 2
-    perTryTimeout: "2s"
+          sonarr:
+            - path: /downloads
+              readOnly: false
