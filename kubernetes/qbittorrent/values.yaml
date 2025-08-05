@@ -30,6 +30,8 @@ app-template:
             QBT_LEGAL_NOTICE: "confirm"
             QBT_TORRENTING_PORT: "6881"
             QBT_WEBUI_PORT: "8080"
+            WEBUI_PORT: "8080" 
+            QBT_PROFILE: "/config"
           resources:
             requests:
               cpu: 100m
