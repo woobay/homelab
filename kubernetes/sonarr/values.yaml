@@ -1,4 +1,7 @@
 app-template:
+  defaultPodOptions:
+    annotations:
+      sidecar.istio.io/inject: "false"
   controllers:
     main:
       enabled: true
