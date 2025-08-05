@@ -140,8 +140,7 @@ app-template:
         - port: 8080
           targetPort: 8080
           protocol: TCP
-        selector:
-          app.kubernetes.io/name: qbittorrent
+
     sonarrService:
       enabled: true
       type: LoadBalancer
@@ -150,8 +149,6 @@ app-template:
         - port: 8989
           targetPort: 8989
           protocol: TCP
-      selector:
-        app.kubernetes.io/name: qbittorrent
 
   ingress:
     main:
