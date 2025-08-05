@@ -1,6 +1,6 @@
 apiVersion: v2
-name: qbittorrent
-description: A Helm chart for qBittorrent with Gluetun VPN
+name: media
+description: A Helm chart for Arr-Stack with Gluetun VPN
 type: application
 version: 0.1.0
 
