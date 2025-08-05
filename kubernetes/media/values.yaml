@@ -131,24 +131,33 @@ app-template:
                 timeoutSeconds: 3
                 failureThreshold: 30
   service:
-    main:
+    qbittorrent:
       enabled: true
+      controller: main
       primary: true
       type: LoadBalancer
-      controller: main
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: ""  # MetalLB will assign from pool
       ports:
-        - port: 8080
+        http:
+          enabled: true
+          primary: true
+          port: 8080
+          protocol: HTTP
           targetPort: 8080
-          protocol: TCP
-
-    sonarrService:
+    sonarr:
       enabled: true
+      controller: main
       type: LoadBalancer
-      controller: sonarr
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: ""  # MetalLB will assign from pool
       ports:
-        - port: 8989
+        http:
+          enabled: true
+          primary: true
+          port: 8989
+          protocol: HTTP
           targetPort: 8989
-          protocol: TCP
 
   ingress:
     main:
