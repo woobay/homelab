@@ -96,40 +96,6 @@ app-template:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
-          probes:
-            liveness:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /ping
-                  port: 8989
-                initialDelaySeconds: 30
-                periodSeconds: 10
-                timeoutSeconds: 5
-                failureThreshold: 3
-            readiness:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /ping
-                  port: 8989
-                initialDelaySeconds: 10
-                periodSeconds: 5
-                timeoutSeconds: 3
-                failureThreshold: 3
-            startup:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /ping
-                  port: 8989
-                initialDelaySeconds: 10
-                periodSeconds: 5
-                timeoutSeconds: 3
-                failureThreshold: 30
         prowlarr:
           image:
             repository: linuxserver/prowlarr
