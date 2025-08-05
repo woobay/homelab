@@ -21,40 +21,6 @@ app-template:
             limits:
               cpu: 1000m
               memory: 1Gi
-          probes:
-            liveness:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /ping
-                  port: 9696
-                initialDelaySeconds: 30
-                periodSeconds: 10
-                timeoutSeconds: 5
-                failureThreshold: 3
-            readiness:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /ping
-                  port: 9696
-                initialDelaySeconds: 10
-                periodSeconds: 5
-                timeoutSeconds: 3
-                failureThreshold: 3
-            startup:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /ping
-                  port: 9696
-                initialDelaySeconds: 10
-                periodSeconds: 5
-                timeoutSeconds: 3
-                failureThreshold: 30
       # Pod-level security context
       pod:
         securityContext:
