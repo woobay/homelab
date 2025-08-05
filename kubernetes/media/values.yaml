@@ -130,6 +130,25 @@ app-template:
                 periodSeconds: 5
                 timeoutSeconds: 3
                 failureThreshold: 30
+        prowlarr:
+          image:
+            repository: linuxserver/prowlarr
+            tag: latest
+            pullPolicy: IfNotPresent
+          env:
+            TZ: "America/New_York"
+            PUID: 1000
+            PGID: 1000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
   service:
     qbittorrent:
       enabled: true
@@ -145,6 +164,11 @@ app-template:
           port: 8080
           protocol: HTTP
           targetPort: 8080
+        torrenting:
+          enabled: true
+          port: 6881
+          protocol: TCP
+          targetPort: 6881
     sonarr:
       enabled: true
       controller: main
@@ -158,11 +182,22 @@ app-template:
           port: 8989
           protocol: HTTP
           targetPort: 8989
-
+    prowlarr:
+      enabled: true
+      controller: main
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: ""  # MetalLB will assign from pool
+      ports:
+        http:
+          enabled: true
+          primary: true
+          port: 9696
+          protocol: HTTP
+          targetPort: 9696
   ingress:
     main:
       enabled: false
-
   persistence:
     qbittorrent-config:
       enabled: true
@@ -182,6 +217,16 @@ app-template:
       advancedMounts:
         main:
           sonarr:
+            - path: /config
+              readOnly: false
+    prowlarr-config:
+      enabled: true
+      type: nfs
+      server: "192.168.0.5"
+      path: "/mnt/storage/config/prowlarr"
+      advancedMounts:
+        main:
+          prowlarr:
             - path: /config
               readOnly: false
     media:
@@ -207,3 +252,4 @@ app-template:
           sonarr:
             - path: /downloads
               readOnly: false
+
