@@ -96,6 +96,25 @@ app-template:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
+        radarr:
+          image:
+            repository: linuxserver/radarr
+            tag: latest
+            pullPolicy: IfNotPresent
+          env:
+            TZ: "America/New_York"
+            PUID: 1000
+            PGID: 1000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
         prowlarr:
           image:
             repository: linuxserver/prowlarr
@@ -148,6 +167,19 @@ app-template:
           port: 8989
           protocol: HTTP
           targetPort: 8989
+    radarr:
+      enabled: true
+      controller: main
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: ""  # MetalLB will assign from pool
+      ports:
+        http:
+          enabled: true
+          primary: true
+          port: 7878
+          protocol: HTTP
+          targetPort: 7878
     prowlarr:
       enabled: true
       controller: main
@@ -185,6 +217,16 @@ app-template:
           sonarr:
             - path: /config
               readOnly: false
+    radarr-config:
+      enabled: true
+      type: nfs
+      server: "192.168.0.5"
+      path: "/mnt/storage/config/radarr"
+      advancedMounts:
+        main:
+          radarr:
+            - path: /config
+              readOnly: false
     prowlarr-config:
       enabled: true
       type: nfs
@@ -205,6 +247,9 @@ app-template:
           sonarr:
             - path: /media
               readOnly: false
+          radarr:
+            - path: /media
+              readOnly: false
     downloads:
       enabled: true
       type: nfs
@@ -218,4 +263,6 @@ app-template:
           sonarr:
             - path: /downloads
               readOnly: false
-
+          radarr:
+            - path: /downloads
+              readOnly: false
