@@ -3,93 +3,32 @@ ingress-nginx:
     service:
       type: LoadBalancer
       annotations:
-        metallb.universe.tf/loadBalancerIPs: ""  # Let MetalLB assign from pool
+        metallb.universe.tf/loadBalancerIPs: ""
       externalTrafficPolicy: Local
-      
-      ports:
-        http: 80
-        https: 443
-      
-      # Target ports
-      targetPorts:
-        http: http
-        https: https
-
-    # Ingress class configuration
+    
+    # Disable Istio sidecar injection
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
+    
     ingressClassResource:
       name: nginx
       enabled: true
-      default: true  # Make this the default ingress class
-      controllerValue: "k8s.io/ingress-nginx"
-
-    # Controller configuration
+      default: true
+    
     config:
-      # Increase body size for media uploads
       proxy-body-size: "100m"
-      
-      # Better handling for websockets (useful for some apps)
-      proxy-read-timeout: "3600"
-      proxy-send-timeout: "3600"
-      
-      # Security headers
       use-forwarded-headers: "true"
       compute-full-forwarded-for: "true"
-      
-      # Performance tuning
-      worker-processes: "auto"
-      worker-connections: "16384"
-      
-      # SSL configuration
-      ssl-protocols: "TLSv1.2 TLSv1.3"
-      ssl-ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384"
-      
-      # Enable real IP forwarding (important for VPN setups)
-      enable-real-ip: "true"
-
-    # Resource limits
+    
     resources:
-      limits:
-        cpu: 1000m
-        memory: 1Gi
       requests:
         cpu: 100m
         memory: 256Mi
-
-    # Replica count for HA
-    replicaCount: 1  # Increase to 2+ for HA
-
-    # Node selection (optional)
-    nodeSelector: {}
-    
-    # Tolerations for scheduling (optional)
-    tolerations: []
-    
-    # Affinity rules (optional)
-    affinity: {}
-
-    # Metrics and monitoring
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: false  # Set to true if using Prometheus Operator
-
-    # Admission webhooks
-    admissionWebhooks:
-      enabled: true
-      patch:
-        enabled: true
-
-  # Default backend (optional but recommended)
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+  
   defaultBackend:
     enabled: true
-    image:
-      repository: registry.k8s.io/defaultbackend-amd64
-      tag: "1.5"
-    replicaCount: 1
-    resources:
-      limits:
-        cpu: 10m
-        memory: 20Mi
-      requests:
-        cpu: 10m
-        memory: 20Mi
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
