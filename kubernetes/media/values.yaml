@@ -154,7 +154,7 @@ app-template:
       ports:
         http:
           enabled: true
-          primary: flase
+          primary: false
           port: 8989
           protocol: HTTP
           targetPort: 8989
