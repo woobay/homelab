@@ -190,7 +190,7 @@ app-template:
       enabled: true
       className: "nginx"
       annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: /$2
+        nginx.ingress.kubernetes.io/rewrite-target: /
       hosts:
         - host: media.lan
           paths:
