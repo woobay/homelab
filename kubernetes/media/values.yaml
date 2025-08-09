@@ -134,6 +134,24 @@ app-template:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
+        jellyseer:
+          image:
+            repository: fallenbagel/jellyseerr
+            tag: latest
+            pullPolicy: IfNotPresent
+          env:
+            TZ: "America/New_York"
+            PORT: "5055"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
   service:
     qbittorrent:
       enabled: true
@@ -180,6 +198,17 @@ app-template:
           port: 9696
           protocol: HTTP
           targetPort: 9696
+    jellyseer:
+      enabled: true
+      controller: main
+      type: LoadBalancer
+      ports:
+        http:
+          enabled: true
+          primary: false
+          port: 5055
+          protocol: HTTP
+          targetPort: 5055
   ingress:
     main:
       enabled: false
@@ -223,6 +252,16 @@ app-template:
         main:
           prowlarr:
             - path: /config
+              readOnly: false
+    jellyseer-config:
+      enabled: true
+      type: nfs
+      server: "192.168.0.5"
+      path: "/mnt/storage/config/jellyseer"
+      advancedMounts:
+        main:
+          jellyseer:
+            - path: /app/config
               readOnly: false
     media:
       enabled: true
