@@ -73,7 +73,7 @@ app-template:
       enabled: true
       controller: main
       primary: true
-      type: 
+      type: ClusterIP
       ports:
         http:
           enabled: true
