@@ -139,7 +139,7 @@ app-template:
       enabled: true
       controller: main
       primary: true
-      type: ClusterIP
+      type: LoadBalancer
       ports:
         http:
           enabled: true
@@ -147,73 +147,42 @@ app-template:
           port: 8080
           protocol: HTTP
           targetPort: 8080
-        torrenting:
-          enabled: true
-          port: 6881
-          protocol: TCP
-          targetPort: 6881
     sonarr:
       enabled: true
       controller: main
-      type: ClusterIP
+      type: LoadBalancer
       ports:
         http:
           enabled: true
-          primary: true
+          primary: flase
           port: 8989
           protocol: HTTP
           targetPort: 8989
     radarr:
       enabled: true
       controller: main
-      type: ClusterIP
+      type: LoadBalancer
       ports:
         http:
           enabled: true
-          primary: true
+          primary: false
           port: 7878
           protocol: HTTP
           targetPort: 7878
     prowlarr:
       enabled: true
       controller: main
-      type: ClusterIP
+      type: LoadBalancer
       ports:
         http:
           enabled: true
-          primary: true
+          primary: false
           port: 9696
           protocol: HTTP
           targetPort: 9696
   ingress:
     main:
-      enabled: true
-      className: "nginx"
-      annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: /
-      hosts:
-        - host: media.lan
-          paths:
-            - path: /qbittorrent
-              pathType: Prefix
-              service:
-                identifier: qbittorrent
-                port: 8080
-            - path: /sonarr
-              pathType: Prefix
-              service:
-                identifier: sonarr
-                port: 8989
-            - path: /radarr
-              pathType: Prefix
-              service:
-                identifier: radarr
-                port: 7878
-            - path: /prowlarr
-              pathType: Prefix
-              service:
-                identifier: prowlarr
-                port: 9696
+      enabled: false
   persistence:
     qbittorrent-config:
       enabled: true
