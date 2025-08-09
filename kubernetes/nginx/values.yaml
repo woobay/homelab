@@ -32,3 +32,9 @@ ingress-nginx:
     enabled: true
     podAnnotations:
       sidecar.istio.io/inject: "false"
+  
+  # Disable Istio for admission webhook jobs
+  admissionWebhooks:
+    patch:
+      podAnnotations:
+        sidecar.istio.io/inject: "false"
