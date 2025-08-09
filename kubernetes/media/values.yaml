@@ -192,24 +192,24 @@ app-template:
       annotations:
         nginx.ingress.kubernetes.io/rewrite-target: /$2
       hosts:
-        - host: media.home.lan
+        - host: media.lan
           paths:
-            - path: /qbittorrent(/|$)(.*)
+            - path: /qbittorrent
               pathType: Prefix
               service:
                 identifier: qbittorrent
                 port: 8080
-            - path: /sonarr(/|$)(.*)
+            - path: /sonarr
               pathType: Prefix
               service:
                 identifier: sonarr
                 port: 8989
-            - path: /radarr(/|$)(.*)
+            - path: /radarr
               pathType: Prefix
               service:
                 identifier: radarr
                 port: 7878
-            - path: /prowlarr(/|$)(.*)
+            - path: /prowlarr
               pathType: Prefix
               service:
                 identifier: prowlarr
