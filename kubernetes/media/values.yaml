@@ -139,9 +139,7 @@ app-template:
       enabled: true
       controller: main
       primary: true
-      type: LoadBalancer
-      annotations:
-        metallb.universe.tf/loadBalancerIPs: ""  # MetalLB will assign from pool
+      type: ClusterIP
       ports:
         http:
           enabled: true
@@ -157,9 +155,7 @@ app-template:
     sonarr:
       enabled: true
       controller: main
-      type: LoadBalancer
-      annotations:
-        metallb.universe.tf/loadBalancerIPs: ""  # MetalLB will assign from pool
+      type: ClusterIP
       ports:
         http:
           enabled: true
@@ -170,9 +166,7 @@ app-template:
     radarr:
       enabled: true
       controller: main
-      type: LoadBalancer
-      annotations:
-        metallb.universe.tf/loadBalancerIPs: ""  # MetalLB will assign from pool
+      type: ClusterIP
       ports:
         http:
           enabled: true
@@ -183,9 +177,7 @@ app-template:
     prowlarr:
       enabled: true
       controller: main
-      type: LoadBalancer
-      annotations:
-        metallb.universe.tf/loadBalancerIPs: ""  # MetalLB will assign from pool
+      type: ClusterIP
       ports:
         http:
           enabled: true
@@ -195,7 +187,33 @@ app-template:
           targetPort: 9696
   ingress:
     main:
-      enabled: false
+      enabled: true
+      className: "nginx"
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /$2
+      hosts:
+        - host: media.home.lan
+          paths:
+            - path: /qbittorrent(/|$)(.*)
+              pathType: Prefix
+              service:
+                identifier: qbittorrent
+                port: 8080
+            - path: /sonarr(/|$)(.*)
+              pathType: Prefix
+              service:
+                identifier: sonarr
+                port: 8989
+            - path: /radarr(/|$)(.*)
+              pathType: Prefix
+              service:
+                identifier: radarr
+                port: 7878
+            - path: /prowlarr(/|$)(.*)
+              pathType: Prefix
+              service:
+                identifier: prowlarr
+                port: 9696
   persistence:
     qbittorrent-config:
       enabled: true
