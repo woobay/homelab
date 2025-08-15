@@ -1,0 +1,43 @@
+global:
+  domain: argocd.homelab
+
+server:
+  service:
+    type: LoadBalancer
+  
+  extraArgs:
+    - --insecure
+
+dex:
+  enabled: false
+
+configs:
+  params:
+    server.insecure: true
+    
+controller:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+server:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+repoServer:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
