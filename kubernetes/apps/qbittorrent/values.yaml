@@ -91,7 +91,7 @@ service:
 ingress:
   main:
     enabled: true
-    clasName: "cilium"
+    className: "cilium"
 persistence:
   config:
     enabled: true
