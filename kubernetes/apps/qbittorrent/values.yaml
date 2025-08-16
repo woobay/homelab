@@ -90,8 +90,7 @@ service:
         targetPort: 8080
 ingress:
   main:
-    enabled: true
-    className: "cilium"
+    enabled: false
 persistence:
   config:
     enabled: true
