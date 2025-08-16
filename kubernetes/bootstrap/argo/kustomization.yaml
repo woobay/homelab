@@ -12,5 +12,4 @@ helmCharts:
 
 resources:
   - namespace.yaml
-  - github-secret.sops.yaml
   - httproute.yaml
