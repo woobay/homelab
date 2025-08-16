@@ -1,0 +1,114 @@
+defaultPodOptions:
+  automountServiceAccountToken: false
+  hostNetwork: false
+  securityContext:
+    sysctls:
+      - name: net.ipv4.conf.all.src_valid_mark
+        value: "1"
+      - name: net.ipv6.conf.all.disable_ipv6
+        value: "0"
+
+controllers:
+  main:
+    pod:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+    containers:
+      main:
+        image:
+          repository: qbittorrentofficial/qbittorrent-nox
+          tag: latest
+          pullPolicy: IfNotPresent
+        env:
+          TZ: "America/New_York"
+          QBT_LEGAL_NOTICE: "confirm"
+          QBT_TORRENTING_PORT: "6881"
+          QBT_WEBUI_PORT: "8080"
+          WEBUI_PORT: "8080" 
+          QBT_PROFILE: "/config"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+      gluetun:
+        dependsOn: main
+        image:
+          repository: ghcr.io/qdm12/gluetun
+          tag: latest
+          pullPolicy: IfNotPresent
+        env:
+          DOT: "off"
+          DNS_KEEP_NAMESERVER: "on"
+          DNS_ADDRESS: "103.86.96.100"
+          TZ: "America/New_York"
+          VPN_SERVICE_PROVIDER: nordvpn
+          VPN_TYPE: openvpn
+          OPENVPN_USER:
+            valueFrom:
+              secretKeyRef:
+                name: nordvpn-credentials
+                key: username
+          OPENVPN_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: nordvpn-credentials
+                key: password
+        securityContext:
+          runAsGroup: 0
+          runAsUser: 0
+          capabilities:
+            add:
+              - NET_ADMIN
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+service:
+  main:
+    enabled: true
+    primary: true
+    type: ClusterIP
+    controller: main
+    ports:
+      http:
+        enabled: true
+        primary: true
+        port: 80
+        protocol: HTTP
+        targetPort: 8080
+ingress:
+  main:
+    enabled: false
+persistence:
+  config:
+    enabled: true
+    type: nfs
+    server: "192.168.0.5"
+    path: "/mnt/storage/config/qbittorrent"
+    advancedMounts:
+      main:
+        main:
+          - path: /config
+            readOnly: false
+  downloads:
+    enabled: true
+    type: nfs
+    server: "192.168.0.5"
+    path: "/mnt/storage/downloads"
+    advancedMounts:
+      main:
+        main:
+          - path: /downloads
+            readOnly: false

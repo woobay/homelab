@@ -2,8 +2,6 @@ version: '3'
 
 vars:
   CONTROL_PLANE_IP: "192.168.0.20"
-  CILIUM_VERSION: "1.18.0"
-  METALLB_VERSION: "v0.14.8"
 
 tasks:
   install-cilium:
@@ -14,39 +12,7 @@ tasks:
       - sh: kubectl cluster-info
         msg: "Kubernetes cluster must be accessible"
     cmds:
-      - echo "🔧 Adding Cilium Helm repository..."
-      - helm repo add cilium https://helm.cilium.io/
-      - helm repo update
-      - echo "🚀 Installing Cilium {{.CILIUM_VERSION}} with Istio compatibility..."
-      - >
-        helm install cilium cilium/cilium
-        --version {{.CILIUM_VERSION}}
-        --namespace kube-system
-        --set ipam.mode=kubernetes
-        --set kubeProxyReplacement=false
-        --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}"
-        --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}"
-        --set cgroup.autoMount.enabled=false
-        --set cgroup.hostRoot=/sys/fs/cgroup
-        --set k8sServiceHost={{.CONTROL_PLANE_IP}}
-        --set k8sServicePort=6443
-        --set bpf.masquerade=false
-        --set enableIPv4Masquerade=false
-      - echo "✅ Cilium installation completed"
-      - task: verify-cilium
-
-  verify-cilium:
-    desc: Verify Cilium installation
-    preconditions:
-      - which kubectl
-    cmds:
-      - echo "🔍 Checking Cilium pods status..."
-      - kubectl get pods -n kube-system -l k8s-app=cilium
-      - echo "🔍 Waiting for Cilium pods to be ready..."
-      - kubectl wait --for=condition=ready pod -l k8s-app=cilium -n kube-system --timeout=300s
-      - echo "🔍 Running Cilium status check..."
-      - kubectl exec -n kube-system ds/cilium -- cilium status --brief
-      - echo "✅ Cilium verification completed"
+      - k kustomize kubernetes/bootstrap/cilium --enable-helm | k apply -f -
 
   uninstall-cilium:
     desc: Uninstall Cilium CNI
@@ -54,102 +20,9 @@ tasks:
       - which helm
     cmds:
       - echo "⚠️  Uninstalling Cilium..."
-      - helm uninstall cilium -n kube-system
+      - k kustomize kubernetes/bootstrap/cilium --enable-helm | k delete -f -
       - echo "✅ Cilium uninstalled"
 
-  cilium-connectivity-test:
-    desc: Run Cilium connectivity test
-    preconditions:
-      - which kubectl
-    cmds:
-      - echo "🧪 Running Cilium connectivity test..."
-      - kubectl exec -n kube-system ds/cilium -- cilium connectivity test
-      - echo "✅ Connectivity test completed"
-
-  install-metallb:
-    desc: Install MetalLB load balancer
-    preconditions:
-      - which kubectl
-    cmds:
-      - echo "🔧 Installing MetalLB {{.METALLB_VERSION}}..."
-      - kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/{{.METALLB_VERSION}}/config/manifests/metallb-native.yaml
-      - echo "⏳ Waiting for MetalLB pods to be ready..."
-      - kubectl wait --namespace metallb-system --for=condition=ready pod --selector=app=metallb --timeout=90s
-      - echo "🔧 Applying MetalLB configuration..."
-      - |
-        cat <<EOF | kubectl apply -f -
-        apiVersion: metallb.io/v1beta1
-        kind: IPAddressPool
-        metadata:
-          name: first-pool
-          namespace: metallb-system
-        spec:
-          addresses:
-          - 192.168.0.100-192.168.0.200
-        ---
-        apiVersion: metallb.io/v1beta1
-        kind: L2Advertisement
-        metadata:
-          name: example
-          namespace: metallb-system
-        spec:
-          ipAddressPools:
-          - first-pool
-        EOF
-      - echo "✅ MetalLB installation completed"
-
-  uninstall-metallb:
-    desc: Uninstall MetalLB load balancer
-    preconditions:
-      - which kubectl
-    cmds:
-      - echo "⚠️  Uninstalling MetalLB..."
-      - kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/{{.METALLB_VERSION}}/config/manifests/metallb-native.yaml
-      - echo "✅ MetalLB uninstalled"
-
-  install-istio:
-    desc: Install Istio service mesh
-    preconditions:
-      - which kubectl
-    vars:
-      ISTIO_VERSION:
-        sh: curl -s https://api.github.com/repos/istio/istio/releases/latest | grep tag_name | cut -d '"' -f 4
-      TEMP_DIR:
-        sh: mktemp -d
-    cmds:
-      - echo "📥 Downloading Istio {{.ISTIO_VERSION}} to temporary directory..."
-      - |
-        cd {{.TEMP_DIR}}
-        curl -L https://istio.io/downloadIstio | ISTIO_VERSION={{.ISTIO_VERSION}} sh -
-      - echo "🔧 Installing Istio..."
-      - "{{.TEMP_DIR}}/istio-{{.ISTIO_VERSION}}/bin/istioctl install --set values.defaultRevision=default -y"
-      - echo "🏷️ Labeling default namespace for Istio injection..."
-      - kubectl label namespace default istio-injection=enabled --overwrite  
-      - echo "🧹 Cleaning up temporary files..."
-      - rm -rf "{{.TEMP_DIR}}"
-      - echo "✅ Istio installation completed"
-      - echo "🌐 Istio Gateway should get a LoadBalancer IP from MetalLB" 
-
-  uninstall-istio:
-    desc: Uninstall Istio service mesh
-    preconditions:
-      - which kubectl
-    vars:
-      ISTIO_VERSION:
-        sh: curl -s https://api.github.com/repos/istio/istio/releases/latest | grep tag_name | cut -d '"' -f 4
-      TEMP_DIR:
-        sh: mktemp -d
-    cmds:
-      - echo "📥 Downloading istioctl for uninstall..."
-      - |
-        cd {{.TEMP_DIR}}
-        curl -L https://istio.io/downloadIstio | ISTIO_VERSION={{.ISTIO_VERSION}} sh -
-      - echo "⚠️  Uninstalling Istio..."
-      - "{{.TEMP_DIR}}/istio-{{.ISTIO_VERSION}}/bin/istioctl uninstall --purge -y"
-      - kubectl delete namespace istio-system --ignore-not-found=true
-      - echo "🧹 Cleaning up temporary files..."
-      - rm -rf "{{.TEMP_DIR}}"
-      - echo "✅ Istio uninstalled"
 
   bootstrap-cluster:
     desc: Bootstrap entire cluster infrastructure
@@ -157,9 +30,3 @@ tasks:
       - echo "🚀 Starting cluster bootstrap..."
       - task: install-cilium
       - echo "⏳ Waiting 30 seconds for Cilium to stabilize..."
-      - sleep 30
-      - task: install-metallb
-      - echo "⏳ Waiting 30 seconds for MetalLB to stabilize..."
-      - sleep 30
-      - task: install-istio
-      - echo "⏳ Waiting 30 seconds for Istio to stabilize..."
