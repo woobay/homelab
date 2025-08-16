@@ -11,5 +11,4 @@ helmCharts:
 
 resources:
   - namespace.yaml
-  - nordvpn.sops.yaml
   - httproute.yaml
