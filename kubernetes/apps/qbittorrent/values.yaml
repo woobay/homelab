@@ -75,7 +75,7 @@ service:
       http:
         enabled: true
         primary: true
-        port: 8080
+        port: 80
         protocol: HTTP
         targetPort: 8080
 ingress:
