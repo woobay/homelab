@@ -32,6 +32,9 @@ controllers:
           tag: latest
           pullPolicy: IfNotPresent
         env:
+          DOT: "off"
+          DNS_KEEP_NAMESERVER: "on"
+          DNS_ADDRESS: "103.86.96.100"
           TZ: "America/New_York"
           FIREWALL_INPUT_PORTS: "8080"
           VPN_SERVICE_PROVIDER: nordvpn
