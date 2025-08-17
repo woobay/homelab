@@ -25,42 +25,40 @@ controllers:
         securityContext:
           runAsUser: 0
           runAsGroup: 0
-      # gluetun:
-      #   dependsOn: main
-      #   image:
-      #     repository: ghcr.io/qdm12/gluetun
-      #     tag: latest
-      #     pullPolicy: IfNotPresent
-      #   env:
-      #     DOT: "off"
-      #     DNS_KEEP_NAMESERVER: "on"
-      #     DNS_ADDRESS: "103.86.96.100"
-      #     TZ: "America/New_York"
-      #     VPN_SERVICE_PROVIDER: nordvpn
-      #     VPN_TYPE: openvpn
-      #     OPENVPN_USER:
-      #       valueFrom:
-      #         secretKeyRef:
-      #           name: nordvpn-credentials
-      #           key: username
-      #     OPENVPN_PASSWORD:
-      #       valueFrom:
-      #         secretKeyRef:
-      #           name: nordvpn-credentials
-      #           key: password
-      #   securityContext:
-      #     runAsGroup: 0
-      #     runAsUser: 0
-      #     capabilities:
-      #       add:
-      #         - NET_ADMIN
-      #   resources:
-      #     requests:
-      #       cpu: 50m
-      #       memory: 64Mi
-      #     limits:
-      #       cpu: 500m
-      #       memory: 256Mi
+      gluetun:
+        dependsOn: main
+        image:
+          repository: ghcr.io/qdm12/gluetun
+          tag: latest
+          pullPolicy: IfNotPresent
+        env:
+          TZ: "America/New_York"
+          FIREWALL_INPUT_PORTS: "8080"
+          VPN_SERVICE_PROVIDER: nordvpn
+          VPN_TYPE: openvpn
+          OPENVPN_USER:
+            valueFrom:
+              secretKeyRef:
+                name: nordvpn-credentials
+                key: username
+          OPENVPN_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: nordvpn-credentials
+                key: password
+        securityContext:
+          runAsGroup: 0
+          runAsUser: 0
+          capabilities:
+            add:
+              - NET_ADMIN
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
 service:
   main:
     enabled: true
