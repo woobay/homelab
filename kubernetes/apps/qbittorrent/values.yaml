@@ -9,17 +9,11 @@ controllers:
     containers:
       main:
         image:
-          repository: qbittorrentofficial/qbittorrent-nox
-          tag: latest
+          repository: ghcr.io/home-operations/qbittorrent
+          tag: "5.1.2"
           pullPolicy: IfNotPresent
         env:
           TZ: "America/New_York"
-          QBT_LEGAL_NOTICE: "confirm"
-          QBT_TORRENTING_PORT: "6881"
-          QBT_WEBUI_PORT: "8080"
-          WEBUI_PORT: "8080" 
-          QBT_PROFILE: "/config"
-          QBT_WEBUI_HOST: "0.0.0.0"  
         resources:
           requests:
             cpu: 100m
