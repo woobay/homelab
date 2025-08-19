@@ -3,6 +3,8 @@ kind: Gateway
 metadata:
   name: main-gateway
   namespace: kube-system
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   gatewayClassName: cilium
   listeners:
@@ -12,15 +14,14 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    # HTTPS listener
-    # - name: https
-    #   port: 443
-    #   protocol: HTTPS
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
-    #   tls:
-    #     mode: Terminate
-    #     certificateRefs:
-    #       - kind: Secret
-    #         name: tls-certificate  # You'll need to create this
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: "*.homelab"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: wildcart-tls-secret
