@@ -13,3 +13,4 @@ helmCharts:
 resources:
   - namespace.yaml
   - cluster-issuer.yaml
+  - cluster-issuer-selfsigned.yaml
