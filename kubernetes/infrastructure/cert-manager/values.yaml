@@ -1,0 +1,16 @@
+# Enable Gateway API support using controller config
+config:
+  apiVersion: controller.config.cert-manager.io/v1alpha1
+  kind: ControllerConfiguration
+  enableGatewayAPI: true
+
+# Enable Prometheus metrics for future monitoring
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: false
+
+# Global configuration
+global:
+  leaderElection:
+    namespace: "cert-manager"
