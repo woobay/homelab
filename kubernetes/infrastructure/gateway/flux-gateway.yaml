@@ -4,7 +4,7 @@ metadata:
   name: flux-gateway
   namespace: kube-system
 spec:
-  gatewayClassName: flux-cilium
+  gatewayClassName: cilium-flux
   listeners:
     - name: http
       port: 80
