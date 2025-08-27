@@ -8,4 +8,4 @@ resources:
   # - ./radarr
   # - ./sonarr
 components:
-  - ../../components/namespace
+  - ../components/namespace
