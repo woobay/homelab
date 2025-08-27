@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyseer
+  name: radarr
 spec:
   interval: 30m
   chart:
@@ -20,19 +20,20 @@ spec:
         containers:
           app:
             image:
-              repository: fallenbagel/jellyseerr
+              repository: linuxserver/radarr
               tag: latest
               pullPolicy: IfNotPresent
             env:
               TZ: "America/New_York"
-              PORT: "5055"
+              PUID: 1000
+              PGID: 1000
             resources:
               requests:
                 cpu: 100m
-                memory: 256Mi
+                memory: 512Mi
               limits:
-                cpu: 1000m
-                memory: 1Gi
+                cpu: 2000m
+                memory: 2Gi
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
@@ -48,7 +49,7 @@ spec:
             primary: true
             port: 80
             protocol: HTTP
-            targetPort: 5055
+            targetPort: 7878
     ingress:
       app:
         enabled: false
@@ -57,9 +58,9 @@ spec:
         enabled: true
         type: nfs
         server: "192.168.0.5"
-        path: "/mnt/storage/config/jellyseer"
+        path: "/mnt/storage/config/radarr"
         globalMounts:
-          - path: /app/config
+          - path: /config
             readOnly: false
       media:
         enabled: true
@@ -77,4 +78,3 @@ spec:
         globalMounts:
           - path: /downloads
             readOnly: false
----

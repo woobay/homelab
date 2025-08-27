@@ -3,9 +3,9 @@ kind: Kustomization
 namespace: downloads
 resources:
   - ./jellyseer/ks.yaml
-  # - ./prowlarr
-  # - ./qbittorrent
-  # - ./radarr
-  # - ./sonarr
+  - ./prowlarr/ks.yaml
+  - ./qbittorrent/ks.yaml
+  - ./radarr/ks.yaml
+  - ./sonarr/ks.yaml
 components:
   - ../../components/namespace

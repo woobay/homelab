@@ -4,7 +4,7 @@ metadata:
   name: jellyseer-route
 spec:
   parentRefs:
-    - name: flux-gateway
+    - name: main-gateway
       namespace: kube-system
   hostnames:
     - "jellyseer.homelab"
