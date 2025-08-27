@@ -16,23 +16,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-infrastructure
-  namespace: flux-system
-spec:
-  targetNamespace: flux-system
-  interval: 30m
-  path: ./kubernetes/infrastructure
-  prune: true
-  wait: false
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  dependsOn:
-    - name: cluster-repositories
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
