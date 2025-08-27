@@ -36,11 +36,9 @@ metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
-  targetNamespace: flux-system
   interval: 30m
   path: ./kubernetes/apps
   prune: true
-  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
