@@ -5,7 +5,7 @@ metadata:
 spec:
   parentRefs:
     - name: main-gateway
-      namespace: kube-system
+      namespace: system
   hostnames:
     - "sonarr.homelab"
   rules:
