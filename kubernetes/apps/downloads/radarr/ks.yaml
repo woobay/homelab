@@ -14,9 +14,6 @@ spec:
       namespace: *namespace
   interval: 1h
   path: "./kubernetes/apps/downloads/radarr/app"
-  postBuild:
-    substitute:
-      APP: *appname
   prune: true
   wait: false
   sourceRef:
