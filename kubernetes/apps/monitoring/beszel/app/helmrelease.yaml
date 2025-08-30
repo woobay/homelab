@@ -29,6 +29,7 @@ spec:
               TZ: "America/New_York"
               PORT: "8090"
               HUB_PORT: "45877"
+              TOKEN: "bb99442f-cc62-49d8-835d-6543c0805020"
             resources:
               requests:
                 cpu: 100m
