@@ -86,16 +86,7 @@ spec:
             protocol: TCP
             targetPort: 45877
       agent:
-        enabled: true
-        type: ClusterIP
-        controller: agent
-        ports:
-          agent:
-            enabled: true
-            port: 45876
-            protocol: TCP
-            targetPort: 45876
-            hostPort: 45876
+        enabled: false
     ingress:
       hub:
         enabled: false
