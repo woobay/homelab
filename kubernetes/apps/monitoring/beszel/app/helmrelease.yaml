@@ -72,7 +72,7 @@ spec:
           web:
             enabled: true
             primary: true
-            port: 8090
+            port: 80
             protocol: HTTP
             targetPort: 8090
           agent-hub:

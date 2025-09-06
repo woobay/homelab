@@ -11,4 +11,4 @@ spec:
   rules:
     - backendRefs:
         - name: beszel
-          port: 8090
+          port: 80
