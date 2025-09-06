@@ -15,12 +15,12 @@ spec:
         namespace: flux-system
   values:
     controllers:
-      app:
+      hub:
         enabled: true
         type: deployment
         replicas: 1
         containers:
-          app:
+          hub:
             image:
               repository: henrygd/beszel
               tag: latest
@@ -40,12 +40,39 @@ spec:
             securityContext:
               runAsUser: 0
               runAsGroup: 0
+      agent:
+        enabled: true
+        type: daemonset
+        containers:
+          agent:
+            image:
+              repository: henrygd/beszel-agent
+              tag: latest
+              pullPolicy: Always
+            env:
+              PORT: "45876"
+              KEY: "aeacca81-02be-448a-b3bf-6cfb343f2b69"
+        pod:
+          hostNetwork: true
+          restartPolicy: Always
+          tolerations:
+            - effect: NoSchedule
+              key: node-role.kubernetes.io/master
+              operator: Exists
+            - effect: NoSchedule
+              key: node-role.kubernetes.io/control-plane
+              operator: Exists
+        strategy:
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 0
+            maxUnavailable: 100%
     service:
-      app:
+      hub:
         enabled: true
         primary: true
         type: ClusterIP
-        controller: app
+        controller: hub
         ports:
           web:
             enabled: true
@@ -53,13 +80,24 @@ spec:
             port: 8090
             protocol: HTTP
             targetPort: 8090
-          agent:
+          agent-hub:
             enabled: true
             port: 45877
             protocol: TCP
             targetPort: 45877
+      agent:
+        enabled: true
+        type: ClusterIP
+        controller: agent
+        ports:
+          agent:
+            enabled: true
+            port: 45876
+            protocol: TCP
+            targetPort: 45876
+            hostPort: 45876
     ingress:
-      app:
+      hub:
         enabled: false
     persistence:
       data:
@@ -67,6 +105,8 @@ spec:
         type: nfs
         server: "192.168.0.5"
         path: "/mnt/storage/config/beszel"
-        globalMounts:
-          - path: /app/data
-            readOnly: false
+        advancedMounts:
+          hub:
+            hub:
+              - path: /app/data
+                readOnly: false
