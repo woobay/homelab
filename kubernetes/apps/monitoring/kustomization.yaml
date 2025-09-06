@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - ./beszel/ks.yaml
+  - ./kuma/ks.yaml
 commonLabels:
   pod-security.kubernetes.io/enforce: privileged
   pod-security.kubernetes.io/audit: privileged
