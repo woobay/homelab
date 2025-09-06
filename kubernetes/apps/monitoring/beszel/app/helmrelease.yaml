@@ -23,7 +23,7 @@ spec:
           hub:
             image:
               repository: henrygd/beszel
-              tag: v0.12.7
+              tag: 0.12.7
               pullPolicy: IfNotPresent
             env:
               TZ: "America/New_York"
@@ -47,7 +47,7 @@ spec:
           agent:
             image:
               repository: henrygd/beszel-agent
-              tag: v0.12.7
+              tag: 0.12.7
               pullPolicy: Always
             env:
               PORT: "45876"

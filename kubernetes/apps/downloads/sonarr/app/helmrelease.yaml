@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: linuxserver/sonarr
-              tag: 4.0.15.2921-ls291
+              tag: 4.0.15.2941-ls291
               pullPolicy: IfNotPresent
             env:
               TZ: "America/New_York"
