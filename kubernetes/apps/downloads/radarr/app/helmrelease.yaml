@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: linuxserver/radarr
-              tag: latest
+              tag: 5.27.5.10198-ls282
               pullPolicy: IfNotPresent
             env:
               TZ: "America/New_York"

@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: linuxserver/prowlarr
-              tag: latest
+              tag: 2.0.5.5160-ls125
               pullPolicy: IfNotPresent
             env:
               TZ: "America/New_York"
