@@ -51,7 +51,7 @@ spec:
               pullPolicy: Always
             env:
               PORT: "45876"
-              KEY: "aeacca81-02be-448a-b3bf-6cfb343f2b69"
+              KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKh+aRPchFrHEE6qnlxNM0D/w/Sp2tX/EuVW4cvLrWYk"
         pod:
           hostNetwork: true
           restartPolicy: Always
