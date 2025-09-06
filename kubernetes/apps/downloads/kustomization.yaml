@@ -9,5 +9,3 @@ resources:
 components:
   - ../../components/namespace
   - ../../components/sops
-
-
