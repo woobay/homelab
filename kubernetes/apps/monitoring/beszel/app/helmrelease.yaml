@@ -62,11 +62,6 @@ spec:
             - effect: NoSchedule
               key: node-role.kubernetes.io/control-plane
               operator: Exists
-        strategy:
-          type: RollingUpdate
-          rollingUpdate:
-            maxSurge: 0
-            maxUnavailable: 100%
     service:
       hub:
         enabled: true
