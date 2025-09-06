@@ -8,3 +8,6 @@ resources:
   - ./sonarr/ks.yaml
 components:
   - ../../components/namespace
+  - ../../components/sops
+
+
