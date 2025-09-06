@@ -22,6 +22,10 @@ spec:
     namespace: flux-system
   timeout: 5m
   targetNamespace: *namespace
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   postBuild:
     substitute:
       APP: *appname
