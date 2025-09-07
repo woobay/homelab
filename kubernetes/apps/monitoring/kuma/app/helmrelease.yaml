@@ -57,6 +57,11 @@ spec:
                   periodSeconds: 5
                   timeoutSeconds: 3
                   failureThreshold: 3
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
     service:
       main:
         enabled: true
