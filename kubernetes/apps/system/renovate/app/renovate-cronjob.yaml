@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: renovate
-  namespace: system
 spec:
   schedule: "* * * * *"
   timeZone: "America/Toronto"
