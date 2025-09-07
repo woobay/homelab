@@ -79,15 +79,24 @@ spec:
       main:
         enabled: false
     persistence:
-      data:
+      config:
         enabled: true
-        type: persistentVolumeClaim
-        storageClass: openebs-hostpath
-        accessMode: ReadWriteOnce
-        size: 10Gi
-        retain: true
-        advancedMounts:
-          main:
-            main:
-              - path: /app/data
-                readOnly: false
+        type: nfs
+        server: "192.168.0.5"
+        path: "/mnt/storage/config/kuma"
+        globalMounts:
+          - path: /config
+            readOnly: false
+    # persistence:
+    #   data:
+    #     enabled: true
+    #     type: persistentVolumeClaim
+    #     storageClass: openebs-hostpath
+    #     accessMode: ReadWriteOnce
+    #     size: 10Gi
+    #     retain: true
+    #     advancedMounts:
+    #       main:
+    #         main:
+    #           - path: /app/data
+    #             readOnly: false
