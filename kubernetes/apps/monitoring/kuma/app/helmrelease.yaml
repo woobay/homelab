@@ -14,15 +14,15 @@ spec:
         namespace: flux-system
   values:
     controllers:
-      app:
+      main:
         enabled: true
         type: deployment
         replicas: 1
         containers:
-          app:
+          main:
             image:
               repository: louislam/uptime-kuma
-              tag: 1.23.13
+              tag: 1
               pullPolicy: IfNotPresent
             env:
               TZ: "America/New_York"
@@ -30,19 +30,39 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 256Mi
+                memory: 128Mi
               limits:
                 cpu: 500m
                 memory: 512Mi
-            securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3001
+                  initialDelaySeconds: 60
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3001
+                  initialDelaySeconds: 30
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 3
     service:
-      app:
+      main:
         enabled: true
         primary: true
         type: ClusterIP
-        controller: app
+        controller: main
         ports:
           http:
             enabled: true
@@ -51,14 +71,18 @@ spec:
             protocol: HTTP
             targetPort: 3001
     ingress:
-      app:
+      main:
         enabled: false
     persistence:
       data:
         enabled: true
         type: persistentVolumeClaim
-        size: 1Gi
+        storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
-        globalMounts:
-          - path: /app/data
-            readOnly: false
+        size: 10Gi
+        retain: true
+        advancedMounts:
+          main:
+            main:
+              - path: /app/data
+                readOnly: false
