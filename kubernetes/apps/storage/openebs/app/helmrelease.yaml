@@ -2,19 +2,26 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: openebs
+  namespace: openebs
 spec:
   interval: 30m
-  chartRef:
-    kind: OCIRepository
-    name: openebs
+  chart:
+    spec:
+      chart: openebs
+      version: 4.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: openebs
+        namespace: flux-system
   values:
     localpv-provisioner:
+      enabled: true
       rbac:
         create: true
       localpv:
         image:
-          registry: quay.io/
-        basePath: &hostPath /var/mnt/local-hostpath
+          registry: openebs/
+        basePath: /var/openebs/local
         tolerations:
           - effect: NoSchedule
             key: node-role.kubernetes.io/control-plane
@@ -26,21 +33,8 @@ spec:
         enabled: true
         name: openebs-hostpath
         isDefaultClass: true
-        basePath: *hostPath
+        basePath: /var/openebs/local
         reclaimPolicy: Delete
-      helperPod:
-        image:
-          registry: quay.io/
-    openebs-crds:
-      csi:
-        volumeSnapshots:
-          enabled: false
-          keep: false
-    # Disable everything we don't need
-    zfs-localpv:
-      enabled: false
-    lvm-localpv:
-      enabled: false
     mayastor:
       enabled: false
     engines:
@@ -52,9 +46,9 @@ spec:
       replicated:
         mayastor:
           enabled: false
-    loki:
+    lvm-localpv:
       enabled: false
-    alloy:
+    zfs-localpv:
       enabled: false
-    minio:
+    openebs-ndm:
       enabled: false
