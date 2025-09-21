@@ -20,7 +20,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: renovate
-              image: renovate/renovate:41.91.2
+              image: renovate/renovate:41.122.3
               imagePullPolicy: IfNotPresent
               envFrom:
                 - secretRef:
