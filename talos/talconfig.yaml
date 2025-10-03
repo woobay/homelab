@@ -1,9 +1,10 @@
-# Simple single control plane setup
+---
 clusterName: home-cluster
-talosVersion: v1.10.1
-kubernetesVersion: v1.31.0
+talosVersion: v1.11.2
+kubernetesVersion: v1.34.1
 endpoint: https://192.168.0.20:6443
-allowSchedulingOnControlPlanes: true
+
+# Basic cluster config
 cniConfig:
   name: none
 clusterPodNets:
@@ -11,6 +12,7 @@ clusterPodNets:
 clusterSvcNets:
   - 10.96.0.0/12
 
+# Nodes - All as control planes
 nodes:
   - hostname: delta
     controlPlane: true
@@ -21,10 +23,11 @@ nodes:
     networkInterfaces:
       - interface: eno1
         dhcp: true
+    nodeLabels:
+      topology.kubernetes.io/zone: control-1
 
-  # Workers
   - hostname: alpha
-    controlPlane: false
+    controlPlane: true
     ipAddress: 192.168.0.21
     installDisk: /dev/sda
     nameservers:
@@ -32,9 +35,11 @@ nodes:
     networkInterfaces:
       - interface: eno1
         dhcp: true
+    nodeLabels:
+      topology.kubernetes.io/zone: control-2
 
   - hostname: omega
-    controlPlane: false
+    controlPlane: true
     ipAddress: 192.168.0.22
     installDisk: /dev/sdb
     nameservers:
@@ -42,3 +47,105 @@ nodes:
     networkInterfaces:
       - interface: eno1
         dhcp: true
+    nodeLabels:
+      topology.kubernetes.io/zone: control-3
+
+patches:
+  - |-
+    cluster:
+      coreDNS:
+        disabled: true
+      proxy:
+        disabled: true
+      allowSchedulingOnControlPlanes: true
+
+  # Machine features (v1.10 compatible)
+  - |-
+    machine:
+      features:
+        rbac: true
+        stableHostname: true
+        apidCheckExtKeyUsage: true
+
+  # Performance sysctls
+  - |-
+    machine:
+      sysctls:
+        fs.inotify.max_user_watches: "1048576"
+        fs.inotify.max_user_instances: "8192"
+        net.core.default_qdisc: "fq"
+        net.ipv4.tcp_congestion_control: "bbr"
+        net.ipv4.tcp_fastopen: "3"
+        net.ipv4.tcp_window_scaling: "1"
+
+  # Kubelet config
+  - |-
+    machine:
+      kubelet:
+        extraConfig:
+          serializeImagePulls: false
+        defaultRuntimeSeccompProfileEnabled: true
+        nodeIP:
+          validSubnets:
+            - 192.168.0.0/24
+
+  # Time sync
+  - |-
+    machine:
+      time:
+        disabled: false
+        servers:
+          - time.cloudflare.com
+
+  # Container runtime optimization
+  - |-
+    machine:
+      files:
+        - op: create
+          path: /etc/cri/conf.d/20-customization.part
+          permissions: 0o644
+          content: |
+            [plugins."io.containerd.cri.v1.images"]
+              discard_unpacked_layers = false
+
+# Control plane specific patches
+controlPlane:
+  patches:
+    - |-
+      cluster:
+        apiServer:
+          certSANs:
+            - 192.168.0.20
+            - 192.168.0.21
+            - 192.168.0.22
+
+    - |-
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: "http://0.0.0.0:2381"
+
+    - |-
+      cluster:
+        controllerManager:
+          extraArgs:
+            bind-address: "0.0.0.0"
+
+    - |-
+      cluster:
+        scheduler:
+          extraArgs:
+            bind-address: "0.0.0.0"
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
