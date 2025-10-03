@@ -86,6 +86,17 @@ spec:
             port: 80
             protocol: HTTP
             targetPort: 8080
+    route:
+      app:
+        annotations:
+            url: https://{{ .Release.Name }}.woo-ops.dev/
+        hostnames:
+          - "{{ .Release.Name }}.woo-ops.dev"
+          - qbittorrent.woo-ops.dev
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
     ingress:
       app:
         enabled: false

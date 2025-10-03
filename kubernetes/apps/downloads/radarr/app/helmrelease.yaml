@@ -47,6 +47,17 @@ spec:
             port: 80
             protocol: HTTP
             targetPort: 7878
+    route:
+      app:
+        annotations:
+            url: https://{{ .Release.Name }}.woo-ops.dev/
+        hostnames:
+          - "{{ .Release.Name }}.woo-ops.dev"
+          - radarr.woo-ops.dev
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
     ingress:
       app:
         enabled: false
