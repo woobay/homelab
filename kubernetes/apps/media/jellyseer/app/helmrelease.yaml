@@ -46,6 +46,17 @@ spec:
             port: 80
             protocol: HTTP
             targetPort: 5055
+    route:
+      app:
+        annotations:
+            url: https://{{ .Release.Name }}.woo-ops.dev/
+        hostnames:
+          - "{{ .Release.Name }}.woo-ops.dev"
+          - jellyseer.woo-ops.dev
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
     ingress:
       app:
         enabled: false
