@@ -56,7 +56,7 @@ spec:
         annotations:
         hostnames:
           - "{{ .Release.Name }}.woo-ops.dev"
-          - echo.woo-ops.dev
+          - echo-server.woo-ops.dev
         parentRefs:
           - name: envoy-internal
             namespace: networking
