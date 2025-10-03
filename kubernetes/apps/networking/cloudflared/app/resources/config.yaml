@@ -1,0 +1,7 @@
+---
+ingress:
+  - hostname: "*.woo-ops.dev"
+    service: https://envoy-external.networking.svc.cluster.local
+    originRequest:
+      originServerName: external.woo-ops.dev
+  - service: http_status:404

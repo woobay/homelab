@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cloudflared-secret
+type: Opaque
+stringData:
+    TUNNEL_TOKEN: ENC[AES256_GCM,data:MCzZAzroyMzIAJQpbRT9exFp0UnOh//RgSGmIJXm7F2LPiUocDJ/mkgM+Be6j4fCiD6zhoOzQwQa8XQHAbwqQszvVjaRxqB6cJCKd4cBKkpOEHNp8gclpkRM1ANcITtnFfXuxvYg/lpl2IwP1njGvg2/fSQ219KbvBVv8oHCGPLlf48w+xye+pmnmturjBMD3Bj2ySSCqL9X/SDkwyIuS2oEPUL6kwuu0pUdkpHAvur/+8/SBqvDbA==,iv:axicFARMNGSVFgsQY4iYLdoKh2GHv0E4xwEEzhJ2mo8=,tag:OU16oxmy7LQjqOAeUmTqEQ==,type:str]
+sops:
+    age:
+        - recipient: age13x2kx6gsqu5zwk9ryqfess4k9ytl7c06wktnulalnq76kgpem4pqqhkj4y
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBSaTFTSTNyK1JYdjNVemF5
+            czh4dWhNOE9zc2xIUnhnUlF6NGd1TmJrckQ0ClZzQm12ZWhJQ1BETzVucjBaajNy
+            QjBZNHZoWTRPSk9ZdEMyZGFZK0lmUE0KLS0tIHJYMTM3Nk1rQ0F5b2FuVTlZRUZw
+            QjZBcFdBbU5FVUxrR2xPOFJQUkhmaTQKdxAS77UbBtRoGK9DK4szZSPT2zZmKoea
+            GWs44R3uQaCnV/EFzLxnt65WMXkQbOefsQsMFrEnlaQ9tAoboDF7SA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-10-03T20:51:09Z"
+    mac: ENC[AES256_GCM,data:nXzdK16+pie85qNKrCkJmiwlaapQC9xnr0e8Wp77y5QlEK5flgLJg7629JqZb5CcN/GQPa+dTNVy5hlsIWVZ1j7owupYbK5d7zKWxajmE9inStpaJ2hC+jt1i8sXzrz1lt8k88loEHQa+DKxOIqxrSYTP5wbJOENpzsngELNI38=,iv:+NNcSF2oT9rIKE9/8Ct/gK1dGmswTIo5uep/oAvUjsw=,tag:Tbx9btQEgJKF6PdhKIwe5Q==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2

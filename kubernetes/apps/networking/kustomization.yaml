@@ -5,5 +5,7 @@ namespace: networking
 resources:
   - ./envoy-gateway/ks.yaml
   - ./echo-server/ks.yaml
+  - ./cloudflared/ks.yaml
 components:
   - ../../components/namespace
+  - ../../components/sops
