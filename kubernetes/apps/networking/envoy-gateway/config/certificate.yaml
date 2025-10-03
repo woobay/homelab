@@ -1,0 +1,12 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: woo-ops-dev
+spec:
+  secretName: woo-ops-dev-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: woo-ops.dev
+  dnsNames: ["woo-ops.dev", "*.woo-ops.dev"]
