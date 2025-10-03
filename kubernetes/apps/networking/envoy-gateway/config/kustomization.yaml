@@ -9,3 +9,4 @@ resources:
   - ./gateway-class.yaml
   - ./http-redirect.yaml
   - ./internal-gateway.yaml
+  - ./external-gateway.yaml
