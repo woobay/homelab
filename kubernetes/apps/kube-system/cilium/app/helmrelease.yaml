@@ -1,0 +1,153 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: cilium
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.18.2
+  url: oci://ghcr.io/home-operations/charts-mirror/cilium
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cilium
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: cilium
+  values:
+    cluster:
+      name: home-cluster
+      id: 1
+
+    kubeProxyReplacement: true
+    k8sServiceHost: 192.168.0.20
+    k8sServicePort: 6443
+
+    routingMode: native
+    autoDirectNodeRoutes: true
+    ipv4NativeRoutingCIDR: "10.244.0.0/16"
+
+    ipam:
+      mode: kubernetes
+      multiPoolPreAllocation: ""
+
+    # Cilium L2 and LoadBalancer IP support
+    l2announcements:
+      enabled: true
+
+    externalIPs:
+      enabled: true
+
+    loadBalancer:
+      algorithm: maglev
+
+    gatewayAPI:
+      enabled: true
+
+    envoy:
+      securityContext:
+        capabilities:
+          keepCapNetBindService: true
+          envoy:
+            - NET_ADMIN
+            - PERFMON
+            - BPF
+
+    enableIPv4BIGTCP: true
+    bandwidthManager:
+      enabled: true
+      bbr: true
+
+    pmtuDiscovery:
+      enabled: true
+
+    bpf:
+      masquerade: true
+      tproxy: true
+      hostLegacyRouting: false
+
+    enableIPv4Masquerade: true
+
+    # Pod rollout and operator
+    rollOutCiliumPods: true
+    operator:
+      rollOutPods: true
+      replicas: 2
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi
+      prometheus:
+        enabled: false
+        serviceMonitor:
+          enabled: true
+      dashboards:
+        enabled: true
+
+    hubble:
+      enabled: true
+      relay:
+        enabled: true
+        rollOutPods: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      ui:
+        enabled: true
+        rollOutPods: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+
+    prometheus:
+      enabled: false
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
+
+    # Security & cgroups (Talos safe)
+    securityContext:
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUID
+          - PERFMON
+          - BPF
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE
+
+    cgroup:
+      autoMount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
+
