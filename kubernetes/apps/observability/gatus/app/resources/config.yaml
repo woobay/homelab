@@ -9,7 +9,7 @@ metrics: true
 ui:
   title: Status | Gatus
   header: Status
-  logo: https://avatars.githubusercontent.com/u/36205263
+  logo: https://avatars.githubusercontent.com/u/66379520?v=4
   link: https://github.com/woobay
   buttons:
     - name: Github
