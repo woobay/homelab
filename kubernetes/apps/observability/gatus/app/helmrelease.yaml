@@ -78,11 +78,8 @@ spec:
     route:
       app:
         annotations:
-          gatus.home-operations.com/endpoint: |-
-            url: https://{{ .Release.Name }}.woo-ops.dev/health
         hostnames:
           - "{{ .Release.Name }}.woo-ops.dev"
-          - status.woo-ops.dev
         parentRefs:
           - name: envoy-internal
             namespace: networking
