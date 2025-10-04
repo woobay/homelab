@@ -73,7 +73,7 @@ spec:
         enabled: true
         type: nfs
         server: "192.168.0.5"
-        path: "/mnt/storage/media"
+        path: "/mnt/main/media"
         globalMounts:
           - path: /media
             readOnly: false
@@ -81,7 +81,7 @@ spec:
         enabled: true
         type: nfs
         server: "192.168.0.5"
-        path: "/mnt/storage/downloads"
+        path: "/mnt/main/downloads"
         globalMounts:
           - path: /downloads
             readOnly: false
