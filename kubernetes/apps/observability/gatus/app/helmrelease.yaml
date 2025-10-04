@@ -60,7 +60,7 @@ spec:
         serviceAccount:
           name: *app
     defaultPodOptions:
-      hostUsers: false
+      # hostUsers: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 568
