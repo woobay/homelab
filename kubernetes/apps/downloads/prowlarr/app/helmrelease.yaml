@@ -53,7 +53,8 @@ spec:
     route:
       app:
         annotations:
-            url: https://{{ .Release.Name }}.woo-ops.dev/
+          gatus:home-operators.com/endpoint: |-
+            url: http://prowlarr.woo-ops.dev:7878
         hostnames:
           - "{{ .Release.Name }}.woo-ops.dev"
           - prowlarr.woo-ops.dev
