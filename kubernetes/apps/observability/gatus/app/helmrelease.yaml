@@ -15,8 +15,8 @@ spec:
         initContainers:
           init-config:
             image:
-              repository: ghcr.io/buroa/gatus-sidecar
-              tag: test@sha256:8fc078bd415723741d2faffef20b796e3e4304664eab027acacc5f833282be7e
+              repository: ghcr.io/home-operations/gatus-sidecar
+              tag: 0.0.8@sha256:79c4622f9b379d6bb4e81d775dc4290ddab65eb2d1e4fa4d37a3e7aeef1975d5
             args:
               - --auto-httproute
             resources:
