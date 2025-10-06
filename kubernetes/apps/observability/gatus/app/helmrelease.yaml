@@ -79,7 +79,7 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            url: "http://gatus.observability.svc.cluster.local:80"
+            url: "https://gatus.woo-ops.dev"
         hostnames:
           - "{{ .Release.Name }}.woo-ops.dev"
         parentRefs:
