@@ -19,11 +19,12 @@ spec:
               tag: 0.0.8@sha256:79c4622f9b379d6bb4e81d775dc4290ddab65eb2d1e4fa4d37a3e7aeef1975d5
             args:
               - --auto-httproute
+              - --enable-httproute
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 64Mi
+                memory: 32Mi
             restartPolicy: Always
         containers:
           app:
@@ -79,11 +80,11 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
-            url: "https://gatus.woo-ops.dev"
+            url: "https://{{ .Release.Name }}.woo-ops.dev/health"
         hostnames:
           - "{{ .Release.Name }}.woo-ops.dev"
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-external
             namespace: networking
             sectionName: https
     service:

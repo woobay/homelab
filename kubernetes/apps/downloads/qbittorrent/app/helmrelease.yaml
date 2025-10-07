@@ -88,8 +88,6 @@ spec:
             targetPort: 8080
     route:
       app:
-        annotations:
-            url: https://{{ .Release.Name }}.woo-ops.dev/
         hostnames:
           - "{{ .Release.Name }}.woo-ops.dev"
           - qbittorrent.woo-ops.dev
