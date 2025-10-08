@@ -54,7 +54,7 @@ spec:
           - "{{ .Release.Name }}.woo-ops.dev"
           - jellyseer.woo-ops.dev
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: networking
             sectionName: https
     ingress:
