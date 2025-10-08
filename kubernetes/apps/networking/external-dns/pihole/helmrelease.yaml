@@ -28,8 +28,7 @@ spec:
               - --provider=pihole
               - --registry=noop
               - --source=gateway-httproute
-              - --txt-owner-id=k8s
-              - --txt-prefix=k8s.
+              - --pihole-api-version=6
               - --pihole-server=$(PIHOLE_SERVER)
             envFrom:
               - secretRef:
