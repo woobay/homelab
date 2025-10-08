@@ -32,6 +32,7 @@ spec:
               - --source=gateway-httproute
               - --txt-owner-id=k8s
               - --txt-prefix=k8s.
+              - --target=53ac664d-67f9-411b-9192-8814caced040.cfargotunnel.com 
               - --zone-id-filter=$(CF_ZONE_ID)
             envFrom:
               - secretRef:
