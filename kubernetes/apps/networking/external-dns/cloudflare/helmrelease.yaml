@@ -28,7 +28,7 @@ spec:
               - --log-level=info
               - --policy=sync
               - --provider=cloudflare
-              - --registry=cname
+              - --registry=txt
               - --source=gateway-httproute
               - --txt-owner-id=k8s
               - --txt-prefix=k8s.
