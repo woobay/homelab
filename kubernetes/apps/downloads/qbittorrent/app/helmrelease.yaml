@@ -102,7 +102,7 @@ spec:
                 memory: 32Mi
               limits:
                 cpu: 100m
-                memory: 128Mi
+                memory: 256Mi
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
