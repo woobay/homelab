@@ -38,5 +38,20 @@
       minimumReleaseAge: "1 minute",
       ignoreTests: true,
     },
+    {
+      description: "Auto-merge minor and patch updates",
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      ignoreTests: false,
+    },
+    {
+      description: "Auto-merge major updates with caution",
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["major"],
+      minimumReleaseAge: "7 days",
+      ignoreTests: false,
+   }
   ],
 }
