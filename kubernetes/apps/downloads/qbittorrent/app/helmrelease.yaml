@@ -26,6 +26,7 @@ spec:
             env:
               TZ: "America/New_York"
               QBT_PROFILE: "/config"
+              QBT_WEBUI_PORT: &port 8080
             resources:
               requests:
                 cpu: 100m
@@ -36,6 +37,24 @@ spec:
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  periodSeconds: 10
+                  failureThreshold: 30
           gluetun:
             dependsOn: app
             image:
@@ -119,3 +138,19 @@ spec:
             app:
               - path: /downloads
                 readOnly: false
+      qbrr:
+        enabled: true
+        type: image
+        image: ghcr.io/buroa/qbrr:0.1.1@sha256:fe4a1d100ba896999253a5122d9c77cc4920779d618c23f765458cb6ec7383ca
+        globalMounts:
+          - readOnly: true
+      tmpfs:
+        enabled: true
+        type: emptyDir
+        advancedMounts:
+          app:
+            app:
+              - path: /config/qBittorrent/logs
+                subPath: logs
+              - path: /tmp
+                subPath: tmp
