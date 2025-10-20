@@ -86,8 +86,16 @@ spec:
             env:
               TZ: "America/New_York"
               QBITTORRENT_HOST: "http://localhost:8080"
-              QBITTORRENT_USERNAME: "admin"
-              QBITTORRENT_PASSWORD: "adminadmin"
+              QBITTORRENT_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: qbittorrent-credentials
+                    key: username
+              QBITTORRENT_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: qbittorrent-credentials
+                    key: password
             resources:
               requests:
                 cpu: 10m
