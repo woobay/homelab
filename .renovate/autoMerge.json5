@@ -9,6 +9,7 @@
       matchUpdateTypes: ["digest"],
       matchPackageNames: ["/home-operations/"],
       ignoreTests: false,
+      "platformAutomerge": false
     },
     {
       description: "Auto-merge OCI Charts",
@@ -18,6 +19,7 @@
       matchUpdateTypes: ["minor", "patch"],
       matchPackageNames: ["/kube-prometheus-stack/", "/grafana/"],
       ignoreTests: false,
+      "platformAutomerge": false
     },
     {
       description: "Auto-merge GitHub Actions",
@@ -27,6 +29,7 @@
       matchUpdateTypes: ["minor", "patch", "digest"],
       minimumReleaseAge: "3 days",
       ignoreTests: true,
+      "platformAutomerge": false
     },
     {
       description: "Auto-merge trusted GitHub Actions",
@@ -37,6 +40,7 @@
       matchUpdateTypes: ["minor", "patch", "digest"],
       minimumReleaseAge: "1 minute",
       ignoreTests: true,
+      "platformAutomerge": false
     },
     {
       description: "Auto-merge minor and patch updates",
@@ -44,6 +48,7 @@
       automergeType: "pr",
       matchUpdateTypes: ["minor", "patch", "digest"],
       ignoreTests: false,
+      "platformAutomerge": false
     },
     {
       description: "Auto-merge major updates with caution",
@@ -52,6 +57,7 @@
       matchUpdateTypes: ["major"],
       minimumReleaseAge: "7 days",
       ignoreTests: false,
+      "platformAutomerge": false
    }
   ],
 }
