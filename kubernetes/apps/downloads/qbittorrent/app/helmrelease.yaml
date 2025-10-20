@@ -89,12 +89,12 @@ spec:
               QBITTORRENT_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: qbittorrent-credentials
+                    name: qbit-credentials
                     key: username
               QBITTORRENT_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: qbittorrent-credentials
+                    name: qbit-credentials
                     key: password
             resources:
               requests:
