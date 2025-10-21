@@ -7,5 +7,6 @@ resources:
   - ./coredns/ks.yaml
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
+  - ./nfs-subdir-external-provisioner/ks.yaml
 components:
   - ../../components/namespace
