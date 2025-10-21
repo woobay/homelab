@@ -25,7 +25,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: nfs-subdir-external-provisioner-charts
-        namespace: flux-system
+        namespace: kube-system
       interval: 5m
   values:
     replicaCount: 1
