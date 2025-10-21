@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: homelab-runner-secret
+type: Opaque
+stringData:
+    github_app_id: ENC[AES256_GCM,data:bnX3hA71Ow==,iv:MIPDxIMQ9HvvGTClEIcnRme7dfefueMB1cXTHlJ+NJk=,tag:pjDdrwHeII6SjGM5yD25xw==,type:int]
+    github_app_installation_id: ENC[AES256_GCM,data:rK1zYrX/E3M=,iv:fK7O/U3hHfm+Kq4BkHPN17YQ0gvaAVjHTjJ7r+V8r5U=,tag:QqqxtqtUrwn2MPwgd0B49w==,type:int]
+    github_app_private_key: ENC[AES256_GCM,data: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,iv:InCDX4RgTvP1P/567q+jL26dbDjk9a7wwsxlt60yDHk=,tag:XldYd4GMJ0whU4HQ5ecWpQ==,type:str]
+sops:
+    age:
+        - recipient: age13x2kx6gsqu5zwk9ryqfess4k9ytl7c06wktnulalnq76kgpem4pqqhkj4y
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBaMnVOU1dXZGdkMEJjaE1z
+            aDBDNWw3ek5CcDlMRGNjS21YOUxjNnRHaVRJCnEwS1hwd0ptSGM2dVlzRWtvTkM5
+            UlNrQWlhQUpreC9tNFZ0RFcvQWd2aEkKLS0tIEhjcTZ2RmlyT0xPNm00Y0s3bTZ6
+            Y3JGYUJhM09ocXhNMHFMeFQybnFuclkKXYEswaQLRUN70wZkL26vRZTewDWwWjF1
+            WUKi2n6Ej6GJ/wJ0IQIam0cKmdrP5fXLJtDFkCMya4jNKS/7eldKUw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-10-21T23:49:15Z"
+    mac: ENC[AES256_GCM,data:Kr9S/L+p8N+NU9aZ3tZfbPV18J37h5dksYH0Dn4Gz95d3RUvfak3FbFGXgkbpEj8lWv687ygwU3hqB5ZyAK1eudc+weXGZmbjSrAUqiRa93W9Ls3c/sBY+yzoZImDa8E+ej5nAmrShEgkK5as1ONP0U3bIDW8TFSqHDpQWDAMm0=,iv:+HEAqoB0iPoMahbwWnvgyZUozv7Dwieauuz6KqgLagQ=,tag:SjlsAeXncOIFo8qmgCixAg==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2
