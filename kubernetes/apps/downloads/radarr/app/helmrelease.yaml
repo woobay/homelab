@@ -11,6 +11,8 @@ spec:
   values:
     controllers:
       app:
+        annotations:
+          reloader.stakater.com/auto: "true"
         enabled: true
         type: deployment
         replicas: 1
