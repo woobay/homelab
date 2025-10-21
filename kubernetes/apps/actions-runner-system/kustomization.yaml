@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: actions-runner-system
 components:
   - ../../components/namespace
+  - ../../components/sops
 resources:
   - ./actions-runner-controller/ks.yaml
