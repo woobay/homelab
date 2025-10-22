@@ -51,12 +51,3 @@ spec:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
-            volumeMounts:
-              - mountPath: /var/run/secrets/talos.dev
-                name: talos
-                readOnly: true
-        serviceAccountName: *app
-        volumes:
-          - name: talos
-            secret:
-              secretName: *app
