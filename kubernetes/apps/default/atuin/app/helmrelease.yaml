@@ -61,7 +61,11 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     persistence:
       config:
-        existingClaim: "{{ .Release.Name }}"
+        type: persistentVolumeClaim
+        storageClass: nfs-client
+        accessMode: ReadWriteOnce
+        size: 2Gi
+        retain: true
     route:
       app:
         hostnames:
