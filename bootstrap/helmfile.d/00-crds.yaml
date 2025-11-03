@@ -18,4 +18,4 @@ releases:
   - name: flux-crds
     namespace: flux-system
     chart: oci://ghcr.io/fluxcd-community/charts/flux2
-    version: 2.17.0
+    version: 2.17.1
