@@ -119,4 +119,4 @@ spec:
         path: "/mnt/storage/cache/jellyfin"
         globalMounts:
           - path: /cache
-            readOnly: true
+            readOnly: false
