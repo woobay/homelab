@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: media
 resources:
   - ./jellyseer/ks.yaml
+  - ./jellyfin/ks.yaml
 components:
   - ../../components/namespace
