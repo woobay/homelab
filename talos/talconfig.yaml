@@ -26,6 +26,7 @@ nodes:
         dhcp: true
     nodeLabels:
       topology.kubernetes.io/zone: control-1
+      intel.feature.node.kubernetes.io/gpu: "true"
     kernelModules:
       - name: i915
 
@@ -41,6 +42,7 @@ nodes:
         dhcp: true
     nodeLabels:
       topology.kubernetes.io/zone: control-2
+      intel.feature.node.kubernetes.io/gpu: "true"
     kernelModules:
       - name: i915
 
@@ -56,6 +58,7 @@ nodes:
         dhcp: true
     nodeLabels:
       topology.kubernetes.io/zone: control-3
+      intel.feature.node.kubernetes.io/gpu: "true"
     kernelModules:
       - name: i915
 
