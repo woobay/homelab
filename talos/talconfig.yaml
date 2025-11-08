@@ -1,6 +1,6 @@
 ---
 clusterName: home-cluster
-talosVersion: v1.11.2
+talosVersion: v1.11.5
 kubernetesVersion: v1.34.1
 endpoint: https://192.168.0.20:6443
 
@@ -18,6 +18,7 @@ nodes:
     controlPlane: true
     ipAddress: 192.168.0.20
     installDisk: /dev/sda
+    installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
     nameservers:
       - 192.168.0.1
     networkInterfaces:
@@ -25,11 +26,14 @@ nodes:
         dhcp: true
     nodeLabels:
       topology.kubernetes.io/zone: control-1
+    kernelModules:
+      - name: i915
 
   - hostname: alpha
     controlPlane: true
     ipAddress: 192.168.0.21
     installDisk: /dev/sda
+    installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
     nameservers:
       - 192.168.0.1
     networkInterfaces:
@@ -37,11 +41,14 @@ nodes:
         dhcp: true
     nodeLabels:
       topology.kubernetes.io/zone: control-2
+    kernelModules:
+      - name: i915
 
   - hostname: omega
     controlPlane: true
     ipAddress: 192.168.0.22
     installDisk: /dev/sdb
+    installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
     nameservers:
       - 192.168.0.1
     networkInterfaces:
@@ -49,6 +56,8 @@ nodes:
         dhcp: true
     nodeLabels:
       topology.kubernetes.io/zone: control-3
+    kernelModules:
+      - name: i915
 
 patches:
   - |-
@@ -59,13 +68,18 @@ patches:
         disabled: true
       allowSchedulingOnControlPlanes: true
 
-  # Machine features (v1.10 compatible)
   - |-
     machine:
       features:
         rbac: true
         stableHostname: true
         apidCheckExtKeyUsage: true
+        kubernetesTalosAPIAccess:  # Add this
+          allowedKubernetesNamespaces:
+            - system-upgrade
+          allowedRoles:
+            - os:admin
+          enabled: true
 
   # Performance sysctls
   - |-
