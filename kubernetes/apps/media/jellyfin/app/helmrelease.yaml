@@ -10,113 +10,113 @@ spec:
     namespace: flux-system
   values:
     controllers:
-    main:
-      enabled: true
-      type: deployment
-      replicas: 1
-      containers:
-        main:
-          image:
-            repository: jellyfin/jellyfin
-            tag: latest
-            pullPolicy: IfNotPresent
-          env:
-            TZ: "America/New_York"
-            JELLYFIN_PublishedServerUrl: "jellyfin.woo-ops.dev"
-          resources:
-            requests:
-              cpu: 200m
-              memory: 1Gi
-            limits:
-              cpu: 4000m
-              memory: 8Gi
-          probes:
-            liveness:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /health
-                  port: 8096
-                initialDelaySeconds: 30
-                periodSeconds: 10
-                timeoutSeconds: 5
-                failureThreshold: 3
-            readiness:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /health
-                  port: 8096
-                initialDelaySeconds: 10
-                periodSeconds: 5
-                timeoutSeconds: 3
-                failureThreshold: 3
-            startup:
-              enabled: true
-              type: HTTP
-              spec:
-                httpGet:
-                  path: /health
-                  port: 8096
-                initialDelaySeconds: 10
-                timeoutSeconds: 3
-                failureThreshold: 30
-      pod:
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          fsGroup: 1000
-  service:
-    main:
-      enabled: true
-      primary: true
-      type: ClusterIP
-      controller: main
-      ports:
-        http:
-          enabled: true
-          primary: true
-          port: 80
-          protocol: HTTP
-          targetPort: 8096
-  route:
-      app:
-        annotations:
-            url: https://{{ .Release.Name }}.woo-ops.dev/
-        hostnames:
-          - "{{ .Release.Name }}.woo-ops.dev"
-          - jellyfin.woo-ops.dev
-        parentRefs:
-          - name: envoy-external
-            namespace: networking
-            sectionName: https
-  ingress:
-    main:
-      enabled: false
-  persistence:
-    config:
-      enabled: true
-      type: nfs
-      server: "192.168.0.5"
-      path: "/mnt/storage/config/jellyfin"
-      globalMounts:
-        - path: /config
-          readOnly: false
-    media:
-      enabled: true
-      type: nfs
-      server: "192.168.0.5"
-      path: "/mnt/storage/media"
-      globalMounts:
-        - path: /media
-          readOnly: true
-    cache:
-      enabled: true
-      type: nfs
-      server: "192.168.0.5"
-      path: "/mnt/storage/cache/jellyfin"
-      globalMounts:
-        - path: /cache
-          readOnly: true
+      main:
+        enabled: true
+        type: deployment
+        replicas: 1
+        containers:
+          main:
+            image:
+              repository: jellyfin/jellyfin
+              tag: latest
+              pullPolicy: IfNotPresent
+            env:
+              TZ: "America/New_York"
+              JELLYFIN_PublishedServerUrl: "jellyfin.woo-ops.dev"
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                cpu: 4000m
+                memory: 8Gi
+            probes:
+              liveness:
+                enabled: true
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8096
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8096
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8096
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 30
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+    service:
+      main:
+        enabled: true
+        primary: true
+        type: ClusterIP
+        controller: main
+        ports:
+          http:
+            enabled: true
+            primary: true
+            port: 80
+            protocol: HTTP
+            targetPort: 8096
+    route:
+        app:
+          annotations:
+              url: https://{{ .Release.Name }}.woo-ops.dev/
+          hostnames:
+            - "{{ .Release.Name }}.woo-ops.dev"
+            - jellyfin.woo-ops.dev
+          parentRefs:
+            - name: envoy-external
+              namespace: networking
+              sectionName: https
+    ingress:
+      main:
+        enabled: false
+    persistence:
+      config:
+        enabled: true
+        type: nfs
+        server: "192.168.0.5"
+        path: "/mnt/storage/config/jellyfin"
+        globalMounts:
+          - path: /config
+            readOnly: false
+      media:
+        enabled: true
+        type: nfs
+        server: "192.168.0.5"
+        path: "/mnt/storage/media"
+        globalMounts:
+          - path: /media
+            readOnly: true
+      cache:
+        enabled: true
+        type: nfs
+        server: "192.168.0.5"
+        path: "/mnt/storage/cache/jellyfin"
+        globalMounts:
+          - path: /cache
+            readOnly: true
