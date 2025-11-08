@@ -1,9 +1,0 @@
----
-apiVersion: deviceplugin.intel.com/v1
-kind: GpuDevicePlugin
-metadata:
-  name: gpudeviceplugin
-spec:
-  sharedDevNum: 10
-  nodeSelector:
-    intel.feature.node.kubernetes.io/gpu: "true"
