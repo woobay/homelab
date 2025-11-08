@@ -8,6 +8,6 @@ resources:
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
   - ./nfs-subdir-external-provisioner/ks.yaml
-  - ./intel-resources-drivers/ks.yaml
+  - ./intel-resource-driver/ks.yaml
 components:
   - ../../components/namespace
