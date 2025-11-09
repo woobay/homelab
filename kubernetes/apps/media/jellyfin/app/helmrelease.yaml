@@ -12,7 +12,7 @@ spec:
     controllers:
       main:
         enabled: true
-        type: statefullset
+        type: deployment
         replicas: 1
         containers:
           main:
