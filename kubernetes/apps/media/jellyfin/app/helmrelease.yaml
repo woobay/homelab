@@ -12,7 +12,7 @@ spec:
     controllers:
       main:
         enabled: true
-        type: deployment
+        type: statefulset
         replicas: 1
         containers:
           main:
@@ -113,7 +113,7 @@ spec:
         enabled: true
         type: nfs
         server: "192.168.0.5"
-        path: "/mnt/storage/media"
+        path: "/mnt/main/media"
         globalMounts:
           - path: /media
             readOnly: true
