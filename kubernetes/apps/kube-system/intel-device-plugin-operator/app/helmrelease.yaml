@@ -39,6 +39,7 @@ spec:
       version: 0.34.0
   values:
     sharedDevNum: 15
+    resourceManager: false
     nodeSelector:
       intel.feature.node.kubernetes.io/gpu: "true"
     nodeFeatureRule: true
