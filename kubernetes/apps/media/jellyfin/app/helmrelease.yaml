@@ -12,7 +12,7 @@ spec:
     controllers:
       main:
         enabled: true
-        type: deployment
+        type: statefullset
         replicas: 1
         containers:
           main:
@@ -73,6 +73,7 @@ spec:
             runAsUser: 1000
             runAsGroup: 1000
             fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
               - 44 # video
               - 109 # render
