@@ -1,42 +1,44 @@
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
+kind: HelmRepository
 metadata:
-  name: intel-device-plugins
+  name: intel
+  namespace: kube-system
 spec:
   interval: 1h
-  url: oci://ghcr.io/intel/helm-charts
-  ref:
-    tag: 0.32.0  # Latest Nov 2025
-
+  url: https://intel.github.io/helm-charts
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: intel-gpu-operator
+  name: intel-device-plugins-operator
+  namespace: kube-system
 spec:
   interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: intel-device-plugins
-  values:
-    operator:
-      enabled: true
-
+  chart:
+    spec:
+      chart: intel-device-plugins-operator
+      sourceRef:
+        kind: HelmRepository
+        name: intel
+      version: 0.34.0
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: intel-gpu-plugin
+  namespace: kube-system
 spec:
   interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: intel-device-plugins
+  chart:
+    spec:
+      chart: intel-device-plugins-gpu
+      sourceRef:
+        kind: HelmRepository
+        name: intel
+      version: 0.34.0
   values:
-    gpu:
-      name: igpu
-      sharedDevNum: 15  # 5 shares × 3 iGPUs
-      nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: "true"
-      nodeFeatureRule: true
+    sharedDevNum: 15
+    nodeSelector:
+      intel.feature.node.kubernetes.io/gpu: "true"
+    nodeFeatureRule: true
