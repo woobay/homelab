@@ -27,11 +27,11 @@ spec:
               requests:
                 cpu: 200m
                 memory: 1Gi
-                gpu.intel.com/i915: "1"
               limits:
                 cpu: 4000m
                 memory: 8Gi
-                gpu.intel.com/i915: "1"
+              claims:
+                - name: gpu
             probes:
               liveness:
                 enabled: true
@@ -66,6 +66,9 @@ spec:
                   timeoutSeconds: 3
                   failureThreshold: 30
         pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: jellyfin
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -83,6 +86,19 @@ spec:
             port: 80
             protocol: HTTP
             targetPort: 8096
+
+    rawResources:
+      gpu:
+        apiVersion: resource.k8s.io/v1
+        kind: ResourceClaimTemplate
+        spec:
+          spec:
+            spec:
+              devices:
+                requests:
+                  - name: gpu
+                    exactly:
+                      deviceClassName: gpu.intel.com
     route:
         app:
           annotations:
