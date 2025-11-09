@@ -9,5 +9,6 @@ resources:
   - ./reloader/ks.yaml
   - ./nfs-subdir-external-provisioner/ks.yaml
   - ./intel-device-plugin-operator/ks.yaml
+  - ./node-feature-discovery/ks.yaml
 components:
   - ../../components/namespace
