@@ -1,29 +1,42 @@
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
-  name: intel
-  namespace: kube-system
+  name: intel-device-plugins
 spec:
   interval: 1h
-  url: https://intel.github.io/helm-charts
+  url: oci://ghcr.io/intel/helm-charts
+  ref:
+    tag: 0.32.0  # Latest Nov 2025
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: intel-gpu-operator
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: intel-device-plugins
+  values:
+    operator:
+      enabled: true
+
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: intel-gpu-plugin
-  namespace: kube-system
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: intel-gpu-plugin  # <--- OLD chart name, still available
-      sourceRef:
-        kind: HelmRepository
-        name: intel
-      version: 0.29.0  # <--- Last version before NFD/operator mess
+  chartRef:
+    kind: OCIRepository
+    name: intel-device-plugins
   values:
-    sharedDevNum: 1          # 1 GPU per pod (dedicated for Jellyfin)
-    resourceManager: false   # Disable xpum/Level Zero (avoids your original zeInit errors)
-    initContainer: false     # No need on Talos
-    nodeSelector: {}
+    gpu:
+      name: igpu
+      sharedDevNum: 15  # 5 shares × 3 iGPUs
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
+      nodeFeatureRule: true

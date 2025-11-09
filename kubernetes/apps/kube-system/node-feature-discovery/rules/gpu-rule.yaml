@@ -1,0 +1,15 @@
+apiVersion: nfd.node.k8s.io/v1alpha1
+kind: NodeFeatureRule
+metadata:
+  name: intel-gpu-rule
+spec:
+  rules:
+    - name: "intel-gpu-detection"
+      labels:
+        intel.feature.node.kubernetes.io/gpu: "true"
+      matchFeatures:
+        - feature: kernel.enabledmodule
+          matchExpressions:
+            i915:
+              op: In
+              value: ["true"]
