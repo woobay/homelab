@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: jellyfin-1
 spec:
   interval: 30m
   chartRef:
