@@ -60,8 +60,8 @@ spec:
         type: configMap
         name: "{{ .Release.Name }}-configmap"
         globalMounts:
-          - path: /config/recyclarr.yml
-            subPath: recyclarr.yml
+          - path: /config/recyclarr.yaml
+            subPath: recyclarr.yaml
             readOnly: true
       tmpfs:
         type: emptyDir
