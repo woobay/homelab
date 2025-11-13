@@ -10,6 +10,7 @@ resources:
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
+  - ./recyclarr/ks.yaml
 components:
   - ../../components/namespace
   - ../../components/sops
