@@ -78,7 +78,7 @@ spec:
             dependsOn: app
             image:
               repository: ghcr.io/buroa/qbrr
-              tag: 0.1.1
+              tag: 0.1.2
               pullPolicy: IfNotPresent
             args:
               - --log-level
