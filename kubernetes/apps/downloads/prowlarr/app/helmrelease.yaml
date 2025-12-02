@@ -71,7 +71,7 @@ spec:
       config:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/storage/config/prowlarr"
         globalMounts:
           - path: /config

@@ -135,7 +135,7 @@ spec:
       config:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/storage/config/qbittorrent"
         advancedMounts:
           app:
@@ -145,7 +145,7 @@ spec:
       downloads:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/main/downloads"
         advancedMounts:
           app:

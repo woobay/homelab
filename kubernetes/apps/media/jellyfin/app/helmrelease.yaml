@@ -104,7 +104,7 @@ spec:
       config:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/storage/config/jellyfin"
         globalMounts:
           - path: /config
@@ -112,7 +112,7 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/main/media"
         globalMounts:
           - path: /media
@@ -120,7 +120,7 @@ spec:
       cache:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/storage/cache/jellyfin"
         globalMounts:
           - path: /cache

@@ -2,7 +2,7 @@
 clusterName: home-cluster
 talosVersion: v1.11.5
 kubernetesVersion: v1.34.1
-endpoint: https://192.168.0.20:6443
+endpoint: https://192.168.20.20:6443
 
 # Basic cluster config
 cniConfig:
@@ -16,11 +16,11 @@ clusterSvcNets:
 nodes:
   - hostname: delta
     controlPlane: true
-    ipAddress: 192.168.0.20
+    ipAddress: 192.168.20.20
     installDisk: /dev/sda
     installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
     nameservers:
-      - 192.168.0.1
+      - 192.168.20.1
     networkInterfaces:
       - interface: eno1
         dhcp: true
@@ -32,11 +32,11 @@ nodes:
 
   - hostname: alpha
     controlPlane: true
-    ipAddress: 192.168.0.21
+    ipAddress: 192.168.20.21
     installDisk: /dev/sda
     installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
     nameservers:
-      - 192.168.0.1
+      - 192.168.20.1
     networkInterfaces:
       - interface: eno1
         dhcp: true
@@ -48,11 +48,11 @@ nodes:
 
   - hostname: omega
     controlPlane: true
-    ipAddress: 192.168.0.22
+    ipAddress: 192.168.20.22
     installDisk: /dev/sdb
     installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
     nameservers:
-      - 192.168.0.1
+      - 192.168.20.1
     networkInterfaces:
       - interface: eno1
         dhcp: true
@@ -104,7 +104,7 @@ patches:
         defaultRuntimeSeccompProfileEnabled: true
         nodeIP:
           validSubnets:
-            - 192.168.0.0/24
+            - 192.168.20.0/24
 
   # Time sync
   - |-
@@ -134,9 +134,9 @@ controlPlane:
       cluster:
         apiServer:
           certSANs:
-            - 192.168.0.20
-            - 192.168.0.21
-            - 192.168.0.22
+            - 192.168.20.20
+            - 192.168.20.21
+            - 192.168.20.22
 
     - |-
       cluster:

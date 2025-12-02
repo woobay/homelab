@@ -30,7 +30,7 @@ spec:
   values:
     replicaCount: 1
     nfs:
-      server: "192.168.0.5"
+      server: "192.168.20.5"
       path: "/mnt/storage/nfs-subdir"
       mountOptions:
         - noatime

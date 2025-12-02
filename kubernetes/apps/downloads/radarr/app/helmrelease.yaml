@@ -67,7 +67,7 @@ spec:
       config:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/storage/config/radarr"
         globalMounts:
           - path: /config
@@ -75,7 +75,7 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/main/media"
         globalMounts:
           - path: /media
@@ -83,7 +83,7 @@ spec:
       downloads:
         enabled: true
         type: nfs
-        server: "192.168.0.5"
+        server: "192.168.20.5"
         path: "/mnt/main/downloads"
         globalMounts:
           - path: /downloads
