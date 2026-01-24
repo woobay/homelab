@@ -82,7 +82,7 @@ spec:
               pullPolicy: IfNotPresent
             args:
               - --log-level
-              - info
+              - debug
             env:
               TZ: "America/New_York"
               QBITTORRENT_HOST: "http://localhost:8080"
