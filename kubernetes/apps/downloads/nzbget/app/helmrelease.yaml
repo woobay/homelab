@@ -1,0 +1,112 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nzbget
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        enabled: true
+        type: deployment
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/nzbget
+              tag: 25.4.0@sha256:cec63a94495ed4354597fe30ae82fcb202a19f9a3a7bd989d397e95ee50038da
+              pullPolicy: IfNotPresent
+            env:
+              TZ: "America/New_York"
+              PUID: 1000
+              PGID: 1000
+              NZBGET__PORT: 80
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /jsonrpc/status
+                    port: 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                cpu: 2000m
+                memory: 32Gi
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+    service:
+      app:
+        enabled: true
+        primary: true
+        type: ClusterIP
+        controller: app
+        ports:
+          http:
+            enabled: true
+            primary: true
+            port: 80
+            protocol: HTTP
+            targetPort: 80
+    route:
+      app:
+        annotations:
+            url: https://{{ .Release.Name }}.woo-ops.dev/
+        hostnames:
+          - "{{ .Release.Name }}.woo-ops.dev"
+          - nzb.woo-ops.dev
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+    ingress:
+      app:
+        enabled: false
+    persistence:
+      config:
+        enabled: true
+        type: nfs
+        server: "192.168.20.5"
+        path: "/mnt/storage/config/nzbget"
+        globalMounts:
+          - path: /config
+            readOnly: false
+      incomplete:
+        enabled: true
+        type: nfs
+        server: "192.168.20.5"
+        path: "/mnt/main/downloads/incomplete"
+        globalMounts:
+          - path: /incomplete
+            readOnly: false
+      media:
+        enabled: true
+        type: nfs
+        server: "192.168.20.5"
+        path: "/mnt/main/media"
+        globalMounts:
+          - path: /media
+            readOnly: false
+      downloads:
+        enabled: true
+        type: nfs
+        server: "192.168.20.5"
+        path: "/mnt/main/downloads"
+        globalMounts:
+          - path: /downloads
+            readOnly: false
