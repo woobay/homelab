@@ -19,9 +19,6 @@ spec:
               cpu: 100m
             limits:
               memory: 2Gi
-      envoyService:
-        type: LoadBalancer
-        externalTrafficPolicy: Cluster
   shutdown:
     drainTimeout: 180s
   telemetry:
