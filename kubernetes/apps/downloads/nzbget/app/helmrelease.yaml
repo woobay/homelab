@@ -16,6 +16,8 @@ spec:
         enabled: true
         type: deployment
         replicas: 1
+        pod:
+          restartPolicy: Always
         containers:
           app:
             image:
@@ -38,7 +40,7 @@ spec:
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
-                  failureThreshold: 3
+                  failureThreshold: 100
               readiness: *probes
             resources:
               requests:
