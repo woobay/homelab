@@ -11,6 +11,12 @@ spec:
     namespace: flux-system
   maxHistory: 2
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 1000
     controllers:
       app:
         annotations:
