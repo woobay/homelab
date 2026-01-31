@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app huntarr
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  maxHistory: 2
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/plexguide/huntarr
+              tag: 9.1.3@sha256:24d3f4a7c5af6191164f73816fc05aa01346c1cfa76e5a7843b708984ac93928
+            env:
+              TZ: "America/New_York"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+    service:
+      app:
+        enabled: true
+        primary: true
+        type: ClusterIP
+        controller: app
+        ports:
+          http:
+            enabled: true
+            primary: true
+            port: 80
+            protocol: HTTP
+            targetPort: 9705
+    route:
+      app:
+        annotations:
+            url: https://{{ .Release.Name }}.woo-ops.dev/
+        hostnames:
+          - "{{ .Release.Name }}.woo-ops.dev"
+          - huntarr.woo-ops.dev
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+    persistence:
+      config:
+        enabled: true
+        type: nfs
+        server: "192.168.20.5"
+        path: "/mnt/storage/config/huntarr"
+        globalMounts:
+          - path: /app/config
+            readOnly: false

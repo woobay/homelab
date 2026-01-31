@@ -12,6 +12,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./nzbget/ks.yaml
+  - ./huntarr/ks.yaml
 components:
   - ../../components/namespace
   - ../../components/sops
