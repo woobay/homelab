@@ -6,6 +6,7 @@ commonLabels:
   pod-security.kubernetes.io/audit: privileged
   pod-security.kubernetes.io/warn: privileged
 resources:
+  - ./cleanuparr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml

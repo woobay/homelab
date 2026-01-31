@@ -1,0 +1,91 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app cleanuparr
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  maxHistory: 2
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+    controllers:
+      app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/cleanuparr/cleanuparr
+              tag: 2.5.1@sha256:47bb76b03676d5b9bb3c7a01f1a9005066d60db63b3f8379057d77f89daa6c37
+            env:
+              TZ: "America/New_York"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+            probes:
+              liveness:
+                enabled: true
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 11011
+                  initialDelaySeconds: 30
+                  periodSeconds: 60
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                type: HTTP
+                spec:
+                  httpGet:
+                    path: /health/ready
+                    port: 11011
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+    service:
+      app:
+        enabled: true
+        primary: true
+        type: ClusterIP
+        controller: app
+        ports:
+          http:
+            enabled: true
+            primary: true
+            port: 80
+            protocol: HTTP
+            targetPort: 11011
+    route:
+      app:
+        annotations:
+          url: https://{{ .Release.Name }}.woo-ops.dev/
+        hostnames:
+          - "{{ .Release.Name }}.woo-ops.dev"
+          - cleanuparr.woo-ops.dev
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+    persistence:
+      config:
+        enabled: true
+        type: nfs
+        server: "192.168.20.5"
+        path: "/mnt/storage/config/cleanuparr"
+        globalMounts:
+          - path: /config
+            readOnly: false
