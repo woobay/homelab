@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: observability
 resources:
   - ./gatus/ks.yaml
+  - ./otel/ks.yaml
   # - ./grafana/ks.yaml
 components:
   - ../../components/namespace
