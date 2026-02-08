@@ -11,3 +11,4 @@ resources:
   - ./otel/ks.yaml
 components:
   - ../../components/namespace
+  - ../../components/sops
