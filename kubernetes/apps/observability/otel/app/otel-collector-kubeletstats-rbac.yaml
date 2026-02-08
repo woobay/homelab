@@ -31,5 +31,5 @@ roleRef:
   name: otel-collector-kubeletstats
 subjects:
   - kind: ServiceAccount
-    name: otel-daemonset-collector-collector  # Auto-created by operator
+    name: otel-daemonset-collector
     namespace: observability
