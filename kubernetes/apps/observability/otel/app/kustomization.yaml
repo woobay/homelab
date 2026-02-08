@@ -5,3 +5,4 @@ resources:
   - ./helmrelease.yaml
   - ./otel-ds-collector.yaml
   - ./otel-collector-kubeletstats-rbac.yaml
+  - ./newrelic-key.sops.yaml

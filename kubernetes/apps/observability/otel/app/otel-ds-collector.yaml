@@ -31,6 +31,11 @@ spec:
       valueFrom:
         fieldRef:
           fieldPath: metadata.name
+    - name: NEW_RELIC_LICENSE_KEY
+      valueFrom:
+        secretKeyRef:
+          name: newrelic-license
+          key: license-key
   config:
     receivers:
       hostmetrics:
@@ -97,6 +102,12 @@ spec:
               from: pod
 
     exporters:
+      otlp/newrelic:
+        endpoint: otlp.nr-data.net:4317
+        headers:
+          api-key: ${env:NEW_RELIC_LICENSE_KEY}
+        tls:
+          insecure: false
       debug:
         verbosity: detailed
 
