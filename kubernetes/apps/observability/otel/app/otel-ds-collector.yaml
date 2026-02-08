@@ -40,7 +40,7 @@ spec:
     receivers:
       hostmetrics:
         root_path: /hostfs
-        collection_interval: 30s
+        collection_interval: 60s
         scrapers:
           cpu:
           memory:
@@ -49,7 +49,7 @@ spec:
           network:
           load:
       kubeletstats:
-        collection_interval: 20s
+        collection_interval: 60s
         auth_type: "serviceAccount"
         endpoint: "https://${env:NODE_IP}:10250"
         insecure_skip_verify: true
