@@ -68,7 +68,7 @@ spec:
         limit_percentage: 75
         spike_limit_percentage: 15
       resourcedetection:
-        detectors: [env, system, docker, kubernetes]
+        detectors: [env, system, docker]
         timeout: 5s
         override: false
       k8sattributes:
