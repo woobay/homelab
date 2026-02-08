@@ -105,7 +105,7 @@ spec:
       otlphttp/newrelic:
         endpoint: https://otlp.nr-data.net
         headers:
-          api-key: ${env:NEW_RELIC_LICENSE_KEY}
+          X-License-Key: ${env:NEW_RELIC_LICENSE_KEY}
       debug:
         verbosity: detailed
 
