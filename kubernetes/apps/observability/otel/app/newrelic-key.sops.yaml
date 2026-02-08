@@ -3,19 +3,19 @@ kind: Secret
 metadata:
     name: newrelic-license
 stringData:
-    license-key: ENC[AES256_GCM,data:3nEC8ZNJFt26KciR6/+W/mUlcqtZXqibYnnnj2Vgc7XVODUwvpT3M249IwNnUuU3xTUUwUI9hwtDGpzGjgTXbw==,iv:yaAdWnis4xqAME0DEZUS6J8YwrJlQMRY1I8hz9SKl/g=,tag:+GAzQ/ozbaqo0p2zZeGFyg==,type:str]
+    license-key: ENC[AES256_GCM,data:SgB+gXWrRHfg3ywjz0AikQxM3HqY9cBpKcosR/EYzzH+kl42PF0PEOFY3kv0VGzNEAbKQc2KaCim1/lEZBAT9g==,iv:ruPRr8p5YdqNKM0jj0IHFzfpljcZywfuGiz9VeWYcOQ=,tag:gT5uEEKd6011Ie9SB9UgTA==,type:str]
 sops:
     age:
         - recipient: age13x2kx6gsqu5zwk9ryqfess4k9ytl7c06wktnulalnq76kgpem4pqqhkj4y
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBmWnY4dUUxWk4zbG15MWFE
-            SWVUY0ZvMmFGRkIyYmdCNHloR3hQMzdnNWs4CmJXMnVmZFM4Ym9naEt1b1dYZG9J
-            R2MyaFh6Mzd5SHZZNjdCdlpFZC95VEUKLS0tIGFmUFZPNEdxSW1QMmVxTEYrekFF
-            aGlTQnFDNElDdkMwUXpzZ05UV3ZxeEEKxcKQ0CZW8Y6RPfecDIUWPKu5B81HdiuH
-            GGmbxRNJ/x3sDwSF0GOkr/ry6SvQ2Jr3jeMr/wmLOZAe9YTwEzowIg==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBMeVM0ZDZnNnoyTWJHeFI3
+            QUtzbm9teHBUUkxBRFUwVkxDTnRVcUpWZVFnCkhNc3JxVCtqTWNGU2xLUFZQU3lz
+            TWlnc2xKeUFqYXBYNUR1ODVvanFkOVkKLS0tIGh4U1FqL3BGcWFTK1VtTFgyWWxF
+            Z3lhM09Zc3lHS0d1SFNTSDIvRFJtNjQK4lyb9YRfYnZ6myLKhIIg5/FRpctVdzhz
+            TA1nu52SYTJjVuuBwiCEWRWT5RqULgL5tO8H+m3gmPYneQnSaOq7Uw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-02-08T19:36:58Z"
-    mac: ENC[AES256_GCM,data:nocp/qat1GvEDd77TEqGiiT80FrGN8Pl7uyCDApVNjEPpptiL9S+h4cGfL9v3Zivgucvnrhp4uQd5R+UE/hdzlYcwnRik1AEx9xmNH3CFZ3O27UlrYCaK2gIsrryy6ulfe/KE/WbUibZeXt3kd+ihNJ7LgXw2aWH7ZznRq2KbEo=,iv:iWcfFAGomOZdOK/z2NpkjuxBsAkc7TmwFK9nduoa6c0=,tag:0gHknoLeALXyYpXmc4ObKQ==,type:str]
+    lastmodified: "2026-02-08T19:39:47Z"
+    mac: ENC[AES256_GCM,data:wmScPifPWLGE9hWc8nBrBBASX4Dixt6CQBABkTFgq7UPnH7Z6M1ATMcrB7agX3AS4gTrlL7Smk/Vb4VPxkI/uYs3GKEQMca3yLIEnO2n/6s3dtbtv4Jcvvrw/jYGRLU4m698ZPSMMAaeNyf9b55Tu833/IidHmPN2emCRh+9qhI=,iv:E7Cwurc2f3IcQezLsv1yu6CcHyMqACFhseiCnvsN9m4=,tag:SSg30QR0fkIHeaug0u2r+Q==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.11.0
