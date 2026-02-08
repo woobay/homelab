@@ -2,7 +2,6 @@ apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
   name: otel-daemonset
-  namespace: kube-system
 spec:
   mode: daemonset
   volumeMounts:
