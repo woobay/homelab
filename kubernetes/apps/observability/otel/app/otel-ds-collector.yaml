@@ -4,6 +4,8 @@ metadata:
   name: otel-daemonset
 spec:
   mode: daemonset
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
   volumeMounts:
     - name: hostfs
       mountPath: /hostfs
@@ -45,7 +47,7 @@ spec:
       kubeletstats:
         collection_interval: 20s
         auth_type: "serviceAccount"
-        endpoint: "https://${env:NODE_IP}:10250"
+        endpoint: "https://127.0.0.1:10250"
         insecure_skip_verify: true
         metric_groups:
           - node
