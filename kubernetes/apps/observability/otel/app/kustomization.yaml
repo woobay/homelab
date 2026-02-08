@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./otel-ds-collector.yaml
+  - ./otel-collector-kubeletstats-rbac.yaml
