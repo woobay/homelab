@@ -9,7 +9,6 @@ kind: ClusterRole
 metadata:
   name: otel-collector-kubeletstats
 rules:
-  # For kubeletstats receiver
   - apiGroups: [""]
     resources:
       - nodes/stats
