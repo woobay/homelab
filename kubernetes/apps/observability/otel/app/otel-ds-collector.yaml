@@ -114,4 +114,4 @@ spec:
         metrics:
           receivers: [hostmetrics, kubeletstats]
           processors: [memory_limiter, resourcedetection, k8sattributes, batch]
-          exporters: [debug, otlp/newrelic]
+          exporters: [debug, otlphttp/newrelic]
