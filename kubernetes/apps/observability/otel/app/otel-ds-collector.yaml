@@ -66,6 +66,6 @@ spec:
     service:
       pipelines:
         metrics:
-          receivers: [hostmetrics]
+          receivers: [hostmetrics, kubeletstats]
           processors: [memory_limiter]
           exporters: [debug]
