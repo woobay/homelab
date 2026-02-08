@@ -103,7 +103,7 @@ spec:
 
     exporters:
       otlp/newrelic:
-        endpoint: https://otlp.nr-data.net
+        endpoint: https://otlp.nr-data.net:4317
         headers:
           api-key: ${env:NEW_RELIC_LICENSE_KEY}
         tls:
