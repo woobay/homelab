@@ -4,12 +4,7 @@ metadata:
   name: otel-daemonset
 spec:
   mode: daemonset
-  securityContext:
-    runAsUser: 0
-    runAsGroup: 0
-    fsGroup: 0
-  podSecurityContext:
-    runAsNonRoot: false
+  serviceAccount: otel-daemonset-collector
   volumeMounts:
     - name: hostfs
       mountPath: /hostfs
@@ -51,7 +46,7 @@ spec:
       kubeletstats:
         collection_interval: 20s
         auth_type: "serviceAccount"
-        endpoint: "https://localhost:10250"
+        endpoint: "https://${env:K8S_NODE_NAME}:10250"
         insecure_skip_verify: true
         metric_groups:
           - node
