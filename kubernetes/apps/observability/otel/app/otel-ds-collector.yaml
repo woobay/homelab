@@ -4,6 +4,27 @@ metadata:
   name: otel-daemonset
 spec:
   mode: daemonset
+  volumeMounts:
+    - name: hostfs
+      mountPath: /hostfs
+      readOnly: true
+  volumes:
+    - name: hostfs
+      hostPath:
+        path: /
+  env:
+    - name: K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    - name: K8S_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: K8S_POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
   config:
     receivers:
       hostmetrics:
