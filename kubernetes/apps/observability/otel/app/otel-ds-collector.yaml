@@ -28,10 +28,15 @@ spec:
   config:
     receivers:
       hostmetrics:
+        root_path: /hostfs
         collection_interval: 30s
         scrapers:
           cpu:
           memory:
+          disk:
+          filesystem:
+          network:
+          load:
 
     processors:
       memory_limiter:
