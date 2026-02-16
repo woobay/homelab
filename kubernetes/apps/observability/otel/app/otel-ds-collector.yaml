@@ -84,6 +84,7 @@ spec:
               system.disk.weighted_io_time:
                 enabled: false
           processes:
+          process:
             metrics:
               process.cpu.utilization:
                 enabled: true
