@@ -354,4 +354,4 @@ spec:
             - batch
           exporters:
             - otlphttp/newrelic
-            - debug
+            # - debug
