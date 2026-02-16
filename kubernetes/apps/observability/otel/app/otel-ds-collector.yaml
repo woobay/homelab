@@ -150,7 +150,7 @@ spec:
 
       kubeletstats:
         collection_interval: 1m
-        endpoint: "${env:KUBE_NODE_NAME}:10250"
+        endpoint: "${env:NODE_IP}:10250"
         auth_type: "serviceAccount"
         insecure_skip_verify: true
         metrics:
