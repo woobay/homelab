@@ -626,7 +626,7 @@ spec:
           # We set the cluster name to what the customer specified in the helm chart
           - key: k8s.cluster.name
             action: upsert
-            value: <cluser_name>
+            value: $CLUSTER_NAME
           - key: "newrelic.chart.version"
             action: upsert
             value: 0.10.6
