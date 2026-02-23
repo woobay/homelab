@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/cleanuparr/cleanuparr
-              tag: 2.7.1@sha256:db4182c094433a129d5f4f04767ab4d8a037445538d35e3a9b93f7c16f2a3d3e
+              tag: 2.7.2@sha256:b4a37b4ea00111c6f375759a4b3fd1bd3f1ca871346f524cd10b9d08c9110810
             env:
               TZ: "America/New_York"
               PUID: 1000
