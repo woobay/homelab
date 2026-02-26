@@ -1,0 +1,347 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-gateway
+  labels:
+    sidecar.istio.io/inject: 'false'
+spec:
+  mode: deployment
+  replicas: 2
+  serviceAccount: otel-collectors-sa
+
+  # ---------------------------------------------------------------------------
+  # SCALING NOTE:
+  # This gateway has no stateful processors - cumulativetodelta runs on the
+  # upstream collectors (daemonset + cluster collector) before data reaches
+  # here. Safe to scale replicas freely for metrics and logs.
+  #
+  # When tracing is added (Epic 3): if using tail-based sampling, a two-tier
+  # gateway pattern will be needed. Head-based sampling scales freely with
+  # no changes. That decision is deferred until Epic 3.
+  # ---------------------------------------------------------------------------
+
+  env:
+    # --- New Relic account license keys ---
+    # Platform team account: receives ALL metrics + unmatched logs
+    - name: NR_LICENSE_KEY_PLATFORM
+      valueFrom:
+        secretKeyRef:
+          name: nr-license-keys
+          key: platform
+    # Team A account: receives logs from team-a namespaces
+    - name: NR_LICENSE_KEY_TEAM_A
+      valueFrom:
+        secretKeyRef:
+          name: nr-license-keys
+          key: team-a
+    # Team B account: receives logs from team-b namespaces
+    - name: NR_LICENSE_KEY_TEAM_B
+      valueFrom:
+        secretKeyRef:
+          name: nr-license-keys
+          key: team-b
+    # Add more NR_LICENSE_KEY_* entries here as you onboard new teams
+
+  config:
+
+    # ---------------------------------------------------------------------------
+    # RECEIVERS
+    # The gateway receives OTLP from both upstream collectors (daemonset + deployment).
+    # Both push to this single endpoint.
+    # ---------------------------------------------------------------------------
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+    # ---------------------------------------------------------------------------
+    # PROCESSORS
+    # Gateway processing is intentionally minimal. Heavy lifting (enrichment,
+    # filtering, attribute normalization, cumulativetodelta) already happened
+    # upstream. Gateway just routes and batches.
+    # ---------------------------------------------------------------------------
+    processors:
+
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+
+      # -----------------------------------------------------------------------
+      # UNMATCHED LOG HANDLING
+      #
+      # Step 1: stamp every incoming log with gateway.routed = "false"
+      # Step 2: routing connector sets gateway.routed = "true" on matched logs
+      #         (done via transform/mark_routed in each matched egress pipeline)
+      # Step 3: logs/platform uses filter/drop_unmatched to either:
+      #         - pass all through (current mode, comment out the filter)
+      #         - drop unmatched  (flip mode, uncomment the filter)
+      #
+      # TO SWITCH TO DROP MODE:
+      #   In the logs/platform pipeline processors list, uncomment filter/drop_unmatched
+      # -----------------------------------------------------------------------
+
+      # Stamps all logs at ingress as unrouted. Matched logs get overwritten downstream.
+      transform/mark_unrouted:
+        log_statements:
+          - context: resource
+            statements:
+              - set(attributes["gateway.routed"], "false")
+
+      # Applied in each MATCHED team egress pipeline to mark the log as intentionally routed
+      transform/mark_routed:
+        log_statements:
+          - context: resource
+            statements:
+              - set(attributes["gateway.routed"], "true")
+
+      # Drop logs that were never claimed by any routing rule.
+      # Uncomment this processor in logs/platform pipeline to activate drop mode.
+      filter/drop_unmatched:
+        logs:
+          log_record:
+            - 'resource.attributes["gateway.routed"] == "false"'
+
+      # Clean up the routing marker before sending to NR (no need to store it)
+      transform/remove_routing_marker:
+        log_statements:
+          - context: resource
+            statements:
+              - delete_key(attributes, "gateway.routed")
+
+      # Batch per egress pipeline so each NR account gets its own batched stream
+      batch/platform:
+        send_batch_max_size: 1000
+        timeout: 30s
+        send_batch_size: 800
+
+      batch/team_a:
+        send_batch_max_size: 1000
+        timeout: 30s
+        send_batch_size: 800
+
+      batch/team_b:
+        send_batch_max_size: 1000
+        timeout: 30s
+        send_batch_size: 800
+
+      # Add batch/team_c etc. as you onboard new teams
+
+    # ---------------------------------------------------------------------------
+    # EXPORTERS
+    # One otlphttp exporter per New Relic account, differentiated by api-key.
+    # All point to the same NR OTLP endpoint - the license key determines
+    # which account the data lands in.
+    # ---------------------------------------------------------------------------
+    exporters:
+
+      # Platform team - receives all metrics + unmatched/default logs
+      otlphttp/platform:
+        endpoint: "https://otlp.nr-data.net"
+        headers:
+          api-key: ${env:NR_LICENSE_KEY_PLATFORM}
+        sending_queue:
+          enabled: true
+          num_consumers: 4
+          queue_size: 1000
+        retry_on_failure:
+          enabled: true
+          initial_interval: 5s
+          max_interval: 30s
+          max_elapsed_time: 300s
+
+      otlphttp/team_a:
+        endpoint: "https://otlp.nr-data.net"
+        headers:
+          api-key: ${env:NR_LICENSE_KEY_TEAM_A}
+        sending_queue:
+          enabled: true
+          num_consumers: 4
+          queue_size: 1000
+        retry_on_failure:
+          enabled: true
+          initial_interval: 5s
+          max_interval: 30s
+          max_elapsed_time: 300s
+
+      otlphttp/team_b:
+        endpoint: "https://otlp.nr-data.net"
+        headers:
+          api-key: ${env:NR_LICENSE_KEY_TEAM_B}
+        sending_queue:
+          enabled: true
+          num_consumers: 4
+          queue_size: 1000
+        retry_on_failure:
+          enabled: true
+          initial_interval: 5s
+          max_interval: 30s
+          max_elapsed_time: 300s
+
+    # ---------------------------------------------------------------------------
+    # CONNECTORS
+    # ---------------------------------------------------------------------------
+    connectors:
+
+      # -----------------------------------------------------------------------
+      # METRICS ROUTING
+      # All metrics go to the platform account regardless of source.
+      # The routing connector is used here for consistency and future-proofing
+      # (easy to add a condition later to split metrics by cluster, source, etc.)
+      # Default pipeline catches everything - no conditions needed today.
+      # -----------------------------------------------------------------------
+      routing/metrics:
+        default_pipelines: [metrics/platform]
+        error_mode: propagate
+        table: []
+        # Future example - split infra vs app metrics to different accounts:
+        # table:
+        #   - context: resource
+        #     condition: resource.attributes["k8s.namespace.name"] == "monitoring"
+        #     pipelines: [metrics/platform]
+
+      # -----------------------------------------------------------------------
+      # LOGS ROUTING
+      # Routes logs to different NR accounts based on k8s.namespace.name.
+      # Matching is done on the resource context (resource attributes).
+      # Rules are evaluated top-to-bottom, first match wins.
+      # Logs from namespaces not matching any rule fall through to default_pipelines
+      # which sends them to the platform account.
+      #
+      # TO ADD A NEW TEAM:
+      #   1. Add namespace names to the condition below
+      #   2. Add a new logs/team_X egress pipeline
+      #   3. Add a new otlphttp/team_X exporter
+      #   4. Add NR_LICENSE_KEY_TEAM_X env var + secret
+      # -----------------------------------------------------------------------
+      routing/logs:
+        default_pipelines: [logs/platform]
+        error_mode: propagate
+        table:
+          # --- Team A namespaces ---
+          # Add all namespaces that belong to team A here
+          - context: resource
+            condition: >
+              resource.attributes["k8s.namespace.name"] == "team-a-prod"
+              or resource.attributes["k8s.namespace.name"] == "team-a-staging"
+              or resource.attributes["k8s.namespace.name"] == "team-a-dev"
+            pipelines: [logs/team_a]
+
+          # --- Team B namespaces ---
+          - context: resource
+            condition: >
+              resource.attributes["k8s.namespace.name"] == "team-b-prod"
+              or resource.attributes["k8s.namespace.name"] == "team-b-staging"
+            pipelines: [logs/team_b]
+
+          # --- Example: regex pattern if you prefer prefix-based matching ---
+          # - context: resource
+          #   condition: IsMatch(resource.attributes["k8s.namespace.name"], "^team-c-.*")
+          #   pipelines: [logs/team_c]
+
+          # Unmatched namespaces fall through to default_pipelines -> logs/platform
+
+    # ---------------------------------------------------------------------------
+    # PIPELINES
+    # ---------------------------------------------------------------------------
+    # Structure:
+    #   ingress pipelines  - receive from upstream collectors, fan into routing connectors
+    #   egress pipelines   - receive from routing connectors, batch and export to NR
+    #
+    # Keeping ingress and egress separate means:
+    #   - memory_limiter runs once at ingress, before any routing decision
+    #   - each egress pipeline gets its own batch processor (own NR account stream)
+    #   - easy to add per-account processors in egress if needed later
+    # ---------------------------------------------------------------------------
+    service:
+      pipelines:
+
+        # ----------------------------------------------------------------------
+        # METRICS INGRESS
+        # Receives from both daemonset and cluster collector.
+        # Fans into routing/metrics connector.
+        # ----------------------------------------------------------------------
+        metrics/ingress:
+          receivers: [otlp]
+          processors:
+            - memory_limiter
+          exporters:
+            - routing/metrics
+
+        # ----------------------------------------------------------------------
+        # METRICS EGRESS - Platform account
+        # Currently the only metrics destination. All metrics land here.
+        # ----------------------------------------------------------------------
+        metrics/platform:
+          receivers: [routing/metrics]
+          processors:
+            - batch/platform
+          exporters:
+            - otlphttp/platform
+
+        # ----------------------------------------------------------------------
+        # LOGS INGRESS
+        # Stamps all logs as unrouted, then fans into routing/logs connector.
+        # ----------------------------------------------------------------------
+        logs/ingress:
+          receivers: [otlp]
+          processors:
+            - memory_limiter
+            - transform/mark_unrouted
+          exporters:
+            - routing/logs
+
+        # ----------------------------------------------------------------------
+        # LOGS EGRESS - Platform account (default / unmatched namespaces)
+        #
+        # CURRENT MODE: pass-through (unmatched logs sent to platform)
+        # DROP MODE:    uncomment filter/drop_unmatched to silently drop them
+        # Either way, the routing marker is cleaned up before sending to NR.
+        # ----------------------------------------------------------------------
+        logs/platform:
+          receivers: [routing/logs]
+          processors:
+            # - filter/drop_unmatched   # uncomment to switch to drop mode
+            - transform/remove_routing_marker
+            - batch/platform
+          exporters:
+            - otlphttp/platform
+
+        # ----------------------------------------------------------------------
+        # LOGS EGRESS - Team A account
+        # ----------------------------------------------------------------------
+        logs/team_a:
+          receivers: [routing/logs]
+          processors:
+            - transform/mark_routed
+            - transform/remove_routing_marker
+            - batch/team_a
+          exporters:
+            - otlphttp/team_a
+
+        # ----------------------------------------------------------------------
+        # LOGS EGRESS - Team B account
+        # ----------------------------------------------------------------------
+        logs/team_b:
+          receivers: [routing/logs]
+          processors:
+            - transform/mark_routed
+            - transform/remove_routing_marker
+            - batch/team_b
+          exporters:
+            - otlphttp/team_b
+
+        # ----------------------------------------------------------------------
+        # TEMPLATE: Add new team by copying this block
+        # ----------------------------------------------------------------------
+        # logs/team_c:
+        #   receivers: [routing/logs]
+        #   processors:
+        #     - transform/mark_routed
+        #     - transform/remove_routing_marker
+        #     - batch/team_c
+        #   exporters:
+        #     - otlphttp/team_c
