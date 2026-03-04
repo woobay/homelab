@@ -88,14 +88,6 @@ spec:
         globalMounts:
           - path: /config
             readOnly: false
-      incomplete:
-        enabled: true
-        type: nfs
-        server: "192.168.20.5"
-        path: "/mnt/main/downloads/incomplete"
-        globalMounts:
-          - path: /incomplete
-            readOnly: false
       media:
         enabled: true
         type: nfs
