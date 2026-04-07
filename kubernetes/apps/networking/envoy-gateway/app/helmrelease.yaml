@@ -24,11 +24,6 @@ spec:
   values:
     config:
       envoyGateway:
-        logging:
-          level:
-            default: info
-            xds-translator: debug
-            xds-server: debug
         provider:
           type: Kubernetes
           kubernetes:
