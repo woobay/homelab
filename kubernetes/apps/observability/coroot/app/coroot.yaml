@@ -3,5 +3,7 @@ kind: Coroot
 metadata:
   name: coroot
   namespace: coroot
-spec: {}
-
+spec:
+  clickhouse:
+    shards: 2
+    replicas: 2
