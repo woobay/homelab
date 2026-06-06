@@ -5,6 +5,9 @@ metadata:
   namespace: coroot
 spec:
   clickhouse:
+    storage:
+      className: nfs-client
+      size: 20Gi
     shards: 2
     replicas: 2
   storage:
@@ -14,9 +17,5 @@ spec:
     storage:
       className: nfs-client
       size: 10Gi
-  clickhouse:
-    storage:
-      className: nfs-client
-      size: 20Gi
  
 
