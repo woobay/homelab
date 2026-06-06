@@ -1,4 +1,4 @@
-apiVersion: coroot.com/v1alpha1
+apiVersion: coroot.com/v1
 kind: Coroot
 metadata:
   name: coroot
