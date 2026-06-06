@@ -2,7 +2,6 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: coroot
-  namespace: flux-system
 spec:
   interval: 1h
   url: https://coroot.github.io/helm-charts
@@ -20,7 +19,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: coroot
-        namespace: flux-system
+        namespace: observability
       interval: 1h
   install:
     createNamespace: true
