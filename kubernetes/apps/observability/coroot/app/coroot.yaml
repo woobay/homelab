@@ -1,0 +1,7 @@
+apiVersion: coroot.com/v1alpha1
+kind: Coroot
+metadata:
+  name: coroot
+  namespace: coroot
+spec: {}
+
