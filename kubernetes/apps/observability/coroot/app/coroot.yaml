@@ -4,14 +4,19 @@ metadata:
   name: coroot
   namespace: coroot
 spec:
-  coroot:
-    persistentVolume:
-      emptyDir: true
   clickhouse:
-    persistentVolume:
-      emptyDir: true
     shards: 2
     replicas: 2
+  storage:
+    className: nfs-client
+    size: 10Gi
   prometheus:
-    persistentVolume:
-      emptyDir: true
+    storage:
+      className: nfs-client
+      size: 10Gi
+  clickhouse:
+    storage:
+      className: nfs-client
+      size: 20Gi
+ 
+
