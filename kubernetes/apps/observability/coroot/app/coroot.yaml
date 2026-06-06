@@ -4,6 +4,14 @@ metadata:
   name: coroot
   namespace: coroot
 spec:
+  coroot:
+    persistentVolume:
+      emptyDir: true
   clickhouse:
+    persistentVolume:
+      emptyDir: true
     shards: 2
     replicas: 2
+  prometheus:
+    persistentVolume:
+      emptyDir: true
