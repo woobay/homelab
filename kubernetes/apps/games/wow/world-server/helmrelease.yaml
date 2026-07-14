@@ -42,6 +42,11 @@ spec:
                 spec:
                   initialDelaySeconds: 45
                   periodSeconds: 10
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 3001
+            fsGroup: 3001
     service:
       main:
         enabled: true
