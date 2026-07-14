@@ -24,6 +24,7 @@ spec:
               pullPolicy: IfNotPresent
             env:
               AC_LOGIN_DATABASE_INFO: "ac-database;3306;root;changeme-strong-password;acore_auth"
+              AC_UPDATES_ENABLE_DATABASES: "1"
             probes:
               liveness:
                 enabled: true
