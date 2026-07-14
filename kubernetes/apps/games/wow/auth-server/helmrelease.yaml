@@ -20,7 +20,7 @@ spec:
           main:
             image:
               repository: acore/ac-wotlk-authserver
-              tag: "14.0.0-dev"
+              tag: "16.0.0-dev"
               pullPolicy: IfNotPresent
             env:
               AC_LOGIN_DATABASE_INFO: "ac-database;3306;root;changeme-strong-password;acore_auth"
