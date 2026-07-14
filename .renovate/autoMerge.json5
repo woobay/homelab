@@ -52,6 +52,10 @@
       matchUpdateTypes: ["major"],
       minimumReleaseAge: "7 days",
       ignoreTests: true,
-   }
+   },
+  {
+    matchFileNames: ["**/games/**"],
+    enabled: false,
+  },
   ],
 }
