@@ -1,0 +1,29 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ac-db-import-1
+  namespace: games
+spec:
+  interval: 30m
+  dependsOn:
+    - name: ac-database
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      main:
+        enabled: true
+        type: job
+        containers:
+          main:
+            image:
+              repository: acore/ac-wotlk-db-import
+              tag: "14.0.0-dev"
+              pullPolicy: IfNotPresent
+            env:
+              AC_LOGIN_DATABASE_INFO: "ac-database;3306;root;changeme-strong-password;acore_auth"
+              AC_WORLD_DATABASE_INFO: "ac-database;3306;root;changeme-strong-password;acore_world"
+              AC_CHARACTER_DATABASE_INFO: "ac-database;3306;root;changeme-strong-password;acore_characters"
+              AC_UPDATES_ENABLE_DATABASES: "7"
