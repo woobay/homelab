@@ -57,5 +57,9 @@
     matchFileNames: ["**/games/**"],
     enabled: false,
   },
+  {
+      "matchPackageNames": ["ghcr.io/qdm12/gluetun"],
+      "enabled": false
+    },
   ],
 }
