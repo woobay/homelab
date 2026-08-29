@@ -8,7 +8,7 @@ commonLabels:
   pod-security.kubernetes.io/warn: privileged
 resources:
   - ./gatus/ks.yaml
-  - ./otel/ks.yaml
+  # - ./otel/ks.yaml
 components:
   - ../../components/namespace
   - ../../components/sops
