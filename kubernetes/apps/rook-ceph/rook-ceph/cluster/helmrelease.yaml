@@ -58,7 +58,7 @@ spec:
         useAllDevices: false
         useAllNodes: true
     monitoring:
-      enabled: true
+      enabled: false
       createPrometheusRules: true
     toolbox:
       enabled: true
