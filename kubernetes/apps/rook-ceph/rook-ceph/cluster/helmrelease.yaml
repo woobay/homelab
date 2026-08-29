@@ -36,9 +36,10 @@ spec:
           AUTH_INSECURE_KEYS_CREATABLE:
             policy: mute
       mgr:
+        count: 1
         modules:
           - name: pg_autoscaler
-            enabled: true
+            enabled: false
       network:
         connections:
           requireMsgr2: true
@@ -76,7 +77,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 3
+            size: 2
         storageClass:
           enabled: true
           name: ceph-block
