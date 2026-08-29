@@ -7,7 +7,6 @@ commonLabels:
   pod-security.kubernetes.io/audit: privileged
   pod-security.kubernetes.io/warn: privileged
 resources:
-  - ./coroot/ks.yaml
   - ./gatus/ks.yaml
   - ./otel/ks.yaml
 components:
