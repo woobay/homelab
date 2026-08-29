@@ -1,0 +1,106 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rook-ceph-cluster
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: rook-ceph-cluster
+  interval: 1h
+  timeout: 10m
+  values:
+    cephClusterSpec:
+      cleanupPolicy:
+        wipeDevicesFromOtherClusters: true
+      crashCollector:
+        disable: false
+      csi:
+        readAffinity:
+          enabled: true
+          crushLocationLabels:
+            - kubernetes.io/hostname
+      dashboard:
+        enabled: false
+        # urlPrefix: /
+        # ssl: false
+        # prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
+      healthCheck:
+        muteHealthWarning:
+          AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
+      mgr:
+        modules:
+          - name: pg_autoscaler
+            enabled: true
+      network:
+        connections:
+          requireMsgr2: true
+      resources:
+        osd:
+          limits:
+            memory: 8Gi
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+          csi:
+            keyType: aes
+      storage:
+        devicePathFilter: /dev/disk/by-id/nvme-.*(Patriot_M\.2_P320_512GB|SAMSUNG_MZVLW512HMJP).*
+        useAllDevices: false
+        useAllNodes: true
+    monitoring:
+      enabled: true
+      createPrometheusRules: true
+    toolbox:
+      enabled: true
+    route:
+      dashboard:
+        host:
+          name: rook.woo-ops.dev
+          path: /
+          pathType: PathPrefix
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+    cephBlockPools:
+      - name: ceph-blockpool
+        spec:
+          failureDomain: host
+          replicated:
+            size: 3
+        storageClass:
+          enabled: true
+          name: ceph-block
+          allowVolumeExpansion: true
+          isDefault: true
+          mountOptions:
+            - discard
+          parameters:
+            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/controller-publish-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/controller-publish-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
+            imageFeatures: deep-flatten,exclusive-lock,fast-diff,layering,object-map
+            imageFormat: "2"
+          reclaimPolicy: Delete
+          volumeBindingMode: Immediate
+    cephBlockPoolsVolumeSnapshotClass:
+      enabled: true
+      name: csi-ceph-block
+      isDefault: true
+      deletionPolicy: Delete
+    cephFileSystems: []
+    cephObjectStores: []
