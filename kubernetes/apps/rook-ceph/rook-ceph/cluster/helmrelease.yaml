@@ -21,7 +21,7 @@ spec:
           crushLocationLabels:
             - kubernetes.io/hostname
       dashboard:
-        enabled: false
+        enabled: true
         # urlPrefix: /
         # ssl: false
         # prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
@@ -50,64 +50,54 @@ spec:
         memory: 256Mi
       limits:
         memory: 1Gi
-
     mgr:
       requests:
         cpu: 100m
         memory: 256Mi
       limits:
         memory: 512Mi
-
     osd:
       requests:
         cpu: 100m
         memory: 1Gi
       limits:
         memory: 4Gi
-
-    # These are the important ones for the Job you're currently stuck on.
     cmd-reporter:
       requests:
         cpu: 50m
         memory: 50Mi
       limits:
         memory: 256Mi
-
     cleanup:
       requests:
         cpu: 50m
         memory: 50Mi
       limits:
         memory: 256Mi
-
     crashcollector:
       requests:
         cpu: 25m
         memory: 32Mi
       limits:
         memory: 64Mi
-
     exporter:
       requests:
         cpu: 25m
         memory: 32Mi
       limits:
         memory: 128Mi
-
     logcollector:
       requests:
         cpu: 25m
         memory: 50Mi
       limits:
         memory: 256Mi
-
     mgr-sidecar:
       requests:
         cpu: 25m
         memory: 32Mi
       limits:
         memory: 100Mi
-
     prepareosd:
       requests:
         cpu: 100m
