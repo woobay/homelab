@@ -20,6 +20,13 @@ spec:
           restartPolicy: Always
         containers:
           app:
+            pod:
+              securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+                fsGroup: 1000
+                fsGroupchangePolicy: "OnRootMismatch"
+
             image:
               repository: ghcr.io/home-operations/nzbget
               tag: 25.4.0@sha256:cec63a94495ed4354597fe30ae82fcb202a19f9a3a7bd989d397e95ee50038da
