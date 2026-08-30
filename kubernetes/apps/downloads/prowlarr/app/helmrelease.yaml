@@ -15,7 +15,7 @@ spec:
           reloader.stakater.com/auto: "true"
         enabled: true
         type: deployment
-        replicas: 1
+        replicas: 0
         containers:
           app:
             image:
@@ -69,10 +69,9 @@ spec:
         enabled: false
     persistence:
       config:
-        enabled: true
-        type: nfs
-        server: "192.168.20.5"
-        path: "/mnt/storage/config/prowlarr"
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 5Gi
         globalMounts:
           - path: /config
-            readOnly: false
