@@ -15,7 +15,7 @@ spec:
           reloader.stakater.com/auto: "true"
         enabled: true
         type: deployment
-        replicas: 1
+        replicas: 0
         pod:
           restartPolicy: Always
         containers:
