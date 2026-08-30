@@ -24,7 +24,7 @@ spec:
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 {{ .Release.Name }}.woo-ops.dev,
                 sab.woo-ops.dev
-              TZ: America/Toronto
+              TZ: America/Chicago
             # envFrom:
             #   - secretRef:
             #       name: "{{ .Release.Name }}-secret"
