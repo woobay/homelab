@@ -102,13 +102,7 @@ spec:
         enabled: false
     persistence:
       config:
-        enabled: true
-        type: nfs
-        server: "192.168.20.5"
-        path: "/mnt/storage/config/jellyfin"
-        globalMounts:
-          - path: /config
-            readOnly: false
+        existingClaim: "{{ .Release.Name }}"
       media:
         enabled: true
         type: nfs
