@@ -21,6 +21,7 @@ spec:
       app:
         annotations:
           reloader.stakater.com/auto: "true"
+        replicas: 0
         containers:
           app:
             image:
@@ -85,10 +86,9 @@ spec:
             sectionName: https
     persistence:
       config:
-        enabled: true
-        type: nfs
-        server: "192.168.20.5"
-        path: "/mnt/storage/config/cleanuparr"
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 5Gi
         globalMounts:
           - path: /config
-            readOnly: false
