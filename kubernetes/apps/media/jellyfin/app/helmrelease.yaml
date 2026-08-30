@@ -13,7 +13,7 @@ spec:
       main:
         enabled: true
         type: statefulset
-        replicas: 0
+        replicas: 1
         containers:
           main:
             image:
@@ -117,10 +117,6 @@ spec:
           - path: /media
             readOnly: true
       cache:
-        enabled: true
-        type: nfs
-        server: "192.168.20.5"
-        path: "/mnt/storage/cache/jellyfin"
+        type: emptyDir
         globalMounts:
           - path: /cache
-            readOnly: false
