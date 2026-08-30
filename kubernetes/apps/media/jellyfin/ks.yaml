@@ -5,7 +5,7 @@ metadata:
   namespace: &namespace media
 spec:
   components:
-    - ../../../components/pre-kopium
+    - ../../../../components/pre-kopium
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
