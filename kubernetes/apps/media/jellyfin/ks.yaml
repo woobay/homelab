@@ -4,6 +4,8 @@ metadata:
   name: &appname jellyfin
   namespace: &namespace media
 spec:
+  components:
+    - ../../../components/pre-kopium
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
