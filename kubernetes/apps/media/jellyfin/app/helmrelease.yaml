@@ -105,7 +105,7 @@ spec:
         type: persistentVolumeClaim
         storageClass: ceph-block
         accessMode: ReadWriteOnce
-        size: 20Gi
+        size: 25Gi
         globalMounts:
           - path: /config/source
       media:
