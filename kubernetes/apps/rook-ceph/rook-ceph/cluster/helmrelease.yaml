@@ -36,7 +36,7 @@ spec:
           AUTH_INSECURE_KEYS_CREATABLE:
             policy: mute
       mgr:
-        count: 1
+        count: 2
         modules:
           - name: pg_autoscaler
             enabled: false
@@ -44,9 +44,26 @@ spec:
         connections:
           requireMsgr2: true
       resources:
-        osd:
+        mon:
+          requests:
+            cpu: 100m
+            memory: 256Mi
           limits:
-            memory: 8Gi
+            memory: 1Gi
+
+        mgr:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 512Mi
+
+        osd:
+          requests:
+            cpu: 100m
+            memory: 1Gi
+          limits:
+            memory: 4Gi
       security:
         cephx:
           daemon:
@@ -77,7 +94,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 2
+            size: 3
         storageClass:
           enabled: true
           name: ceph-block
