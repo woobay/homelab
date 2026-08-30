@@ -17,6 +17,7 @@ spec:
             runAsGroup: 1000
             fsGroup: 1000
             fsGroupChangePolicy: "OnRootMismatch"
+        replicas: 0
         containers:
           app:
             image:
@@ -133,17 +134,15 @@ spec:
         enabled: false
     persistence:
       config:
-        enabled: true
-        type: nfs
-        server: "192.168.20.5"
-        path: "/mnt/storage/config/qbittorrent"
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 5Gi
         advancedMounts:
           app:
             app:
               - path: /config
-                readOnly: false
       downloads:
-        enabled: true
         type: nfs
         server: "192.168.20.5"
         path: "/mnt/main/downloads"
@@ -153,7 +152,6 @@ spec:
               - path: /downloads
                 readOnly: false
       tmpfs:
-        enabled: true
         type: emptyDir
         advancedMounts:
           app:
