@@ -15,7 +15,7 @@ spec:
           reloader.stakater.com/auto: "true"
         enabled: true
         type: deployment
-        replicas: 0
+        replicas: 1
         pod:
           restartPolicy: Always
         containers:
@@ -80,13 +80,6 @@ spec:
       app:
         enabled: false
     persistence:
-      config:
-        type: persistentVolumeClaim
-        storageClass: ceph-block
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        globalMounts:
-          - path: /config
       media:
         enabled: true
         type: nfs
