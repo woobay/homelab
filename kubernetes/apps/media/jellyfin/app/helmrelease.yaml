@@ -102,13 +102,12 @@ spec:
         enabled: false
     persistence:
       config:
-        config:
-          type: persistentVolumeClaim
-          storageClass: ceph-block
-          accessMode: ReadWriteOnce
-          size: 5Gi
-          globalMounts:
-            - path: /config
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /config
       media:
         enabled: true
         type: nfs
