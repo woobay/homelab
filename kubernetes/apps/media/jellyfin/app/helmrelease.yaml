@@ -13,7 +13,7 @@ spec:
       main:
         enabled: true
         type: statefulset
-        replicas: 1
+        replicas: 0
         containers:
           main:
             image:
@@ -105,9 +105,9 @@ spec:
         type: persistentVolumeClaim
         storageClass: ceph-block
         accessMode: ReadWriteOnce
-        size: 25Gi
+        size: 15Gi
         globalMounts:
-          - path: /config/source
+          - path: /config
       media:
         enabled: true
         type: nfs
