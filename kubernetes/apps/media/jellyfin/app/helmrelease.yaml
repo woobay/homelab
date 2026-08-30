@@ -13,7 +13,7 @@ spec:
       main:
         enabled: true
         type: statefulset
-        replicas: 1
+        replicas: 0
         containers:
           main:
             image:
@@ -102,7 +102,11 @@ spec:
         enabled: false
     persistence:
       config:
-        existingClaim: "{{ .Release.Name }}"
+        config:
+          type: persustenVolumeClaim
+          storageClass: ceph-block
+          accessMode: ReadWriteOnce
+          size: 10Gi
       media:
         enabled: true
         type: nfs
