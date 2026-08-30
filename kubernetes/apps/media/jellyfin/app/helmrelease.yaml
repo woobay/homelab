@@ -107,7 +107,7 @@ spec:
         accessMode: ReadWriteOnce
         size: 15Gi
         globalMounts:
-          - path: /config
+          - path: /config/source
       media:
         enabled: true
         type: nfs
