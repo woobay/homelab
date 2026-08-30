@@ -74,6 +74,10 @@ spec:
         type: nfs
         server: nas.internal
         path: /mnt/main/media
+      download:
+        type: nfs
+        server: nas.internal
+        path: /mnt/main/download
       tmpfs:
         type: emptyDir
         advancedMounts:
