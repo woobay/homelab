@@ -39,7 +39,7 @@ spec:
         count: 2
         modules:
           - name: pg_autoscaler
-            enabled: false
+            enabled: true
       network:
         connections:
           requireMsgr2: true
@@ -124,7 +124,7 @@ spec:
         useAllDevices: false
         useAllNodes: true
     monitoring:
-      enabled: false
+      enabled: true
       createPrometheusRules: true
     toolbox:
       enabled: true
