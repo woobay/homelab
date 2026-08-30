@@ -94,6 +94,7 @@ spec:
         size: 5Gi
         globalMounts:
           - path: /config
+            readOnly: false
       media:
         enabled: true
         type: nfs
