@@ -15,7 +15,7 @@ spec:
           reloader.stakater.com/auto: "true"
         enabled: true
         type: deployment
-        replicas: 0
+        replicas: 1
         containers:
           app:
             image:
@@ -67,7 +67,7 @@ spec:
         type: persistentVolumeClaim
         storageClass: ceph-block
         accessMode: ReadWriteOnce
-        size: 15Gi
+        size: 5Gi
         globalMounts:
           - path: app/config
       media:
