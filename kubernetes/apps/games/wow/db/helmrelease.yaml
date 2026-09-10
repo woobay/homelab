@@ -29,7 +29,7 @@ spec:
             probes:
               liveness:
                 enabled: true
-                type: Exec
+                custom: true
                 spec:
                   initialDelaySeconds: 30
                   periodSeconds: 10
@@ -44,7 +44,7 @@ spec:
                     - -p$(MYSQL_ROOT_PASSWORD)
               readiness:
                 enabled: true
-                type: Exec
+                custom: true
                 spec:
                   initialDelaySeconds: 15
                   periodSeconds: 5
