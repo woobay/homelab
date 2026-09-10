@@ -34,14 +34,14 @@ spec:
                   initialDelaySeconds: 30
                   periodSeconds: 10
                   failureThreshold: 12
-                exec:
-                  command:
-                    - mysqladmin
-                    - ping
-                    - -h
-                    - localhost
-                    - -uroot
-                    - -p$(MYSQL_ROOT_PASSWORD)
+                  exec:
+                    command:
+                      - mysqladmin
+                      - ping
+                      - -h
+                      - localhost
+                      - -uroot
+                      - -p$(MYSQL_ROOT_PASSWORD)
               readiness:
                 enabled: true
                 custom: true
@@ -49,14 +49,14 @@ spec:
                   initialDelaySeconds: 15
                   periodSeconds: 5
                   failureThreshold: 12
-                exec:
-                  command:
-                    - mysqladmin
-                    - ping
-                    - -h
-                    - localhost
-                    - -uroot
-                    - -p$(MYSQL_ROOT_PASSWORD)
+                  exec:
+                    command:
+                      - mysqladmin
+                      - ping
+                      - -h
+                      - localhost
+                      - -uroot
+                      - -p$(MYSQL_ROOT_PASSWORD)
     service:
       main:
         enabled: true
