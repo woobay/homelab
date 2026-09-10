@@ -23,6 +23,7 @@ spec:
               pullPolicy: IfNotPresent
             env:
               MYSQL_ROOT_PASSWORD: "changeme-strong-password"
+              MYSQL_ROOT_HOST: "%"
             resources:
               requests: {cpu: 250m, memory: 512Mi}
               limits: {cpu: 2000m, memory: 2Gi}
