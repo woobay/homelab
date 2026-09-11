@@ -15,6 +15,15 @@ spec:
         enabled: true
         type: statefulset
         replicas: 1
+        initContainers:
+          init-clean-lostfound:
+            image:
+              repository: busybox
+              tag: "1.36"
+            command: ["sh", "-c", "rm -rf /var/lib/mysql/lost+found"]
+            volumeMounts:
+              - name: data
+                mountPath: /var/lib/mysql
         containers:
           main:
             image:
