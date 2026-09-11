@@ -24,55 +24,21 @@ spec:
             env:
               MYSQL_ROOT_PASSWORD: "changeme-strong-password"
             resources:
-              requests: {cpu: 250m, memory: 1Gi}
-              limits: {cpu: 2000m, memory: 3Gi}
+              requests: {cpu: 250m, memory: 512Mi}
+              limits: {cpu: 2000m, memory: 2Gi}
             probes:
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - mysqladmin
-                      - ping
-                      - -h
-                      - localhost
-                      - -uroot
-                      - -p$(MYSQL_ROOT_PASSWORD)
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  failureThreshold: 60
-                  timeoutSeconds: 5
               liveness:
                 enabled: true
-                custom: true
+                type: TCP
                 spec:
-                  initialDelaySeconds: 30
+                  initialDelaySeconds: 20
                   periodSeconds: 10
-                  failureThreshold: 6
-                  exec:
-                    command:
-                      - mysqladmin
-                      - ping
-                      - -h
-                      - localhost
-                      - -uroot
-                      - -p$(MYSQL_ROOT_PASSWORD)
               readiness:
                 enabled: true
-                custom: true
+                type: TCP
                 spec:
-                  initialDelaySeconds: 15
+                  initialDelaySeconds: 10
                   periodSeconds: 5
-                  failureThreshold: 6
-                  exec:
-                    command:
-                      - mysqladmin
-                      - ping
-                      - -h
-                      - localhost
-                      - -uroot
-                      - -p$(MYSQL_ROOT_PASSWORD)
     service:
       main:
         enabled: true
@@ -87,7 +53,7 @@ spec:
       data:
         type: persistentVolumeClaim
         storageClass: ceph-block
-        accessMode: ReadWriteOnce
+        accessMode: ReadWriteMany
         size: 20Gi
         globalMounts:
           - path: /var/lib/mysql
