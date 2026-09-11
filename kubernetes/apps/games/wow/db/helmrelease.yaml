@@ -21,9 +21,6 @@ spec:
               repository: busybox
               tag: "1.36"
             command: ["sh", "-c", "rm -rf /var/lib/mysql/lost+found"]
-            volumeMounts:
-              - name: data
-                mountPath: /var/lib/mysql
         containers:
           main:
             image:
