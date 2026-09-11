@@ -13,7 +13,7 @@ spec:
       main:
         enabled: true
         type: statefulset
-        replicas: 1
+        replicas: 0
         containers:
           main:
             image:

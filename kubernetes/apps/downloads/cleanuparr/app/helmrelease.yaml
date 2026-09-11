@@ -21,7 +21,7 @@ spec:
       app:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 1
+        replicas: 0
         containers:
           app:
             image:
