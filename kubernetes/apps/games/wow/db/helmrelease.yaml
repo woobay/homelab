@@ -37,14 +37,16 @@ spec:
                 enabled: true
                 type: TCP
                 spec:
-                  initialDelaySeconds: 20
-                  periodSeconds: 10
+                  initialDelaySeconds: 120
+                  periodSeconds: 15
+                  failureThreshold: 6
               readiness:
                 enabled: true
                 type: TCP
                 spec:
-                  initialDelaySeconds: 10
-                  periodSeconds: 5
+                  initialDelaySeconds: 90
+                  periodSeconds: 10
+                  failureThreshold: 6
     service:
       main:
         enabled: true
