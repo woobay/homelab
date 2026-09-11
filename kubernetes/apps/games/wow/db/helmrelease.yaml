@@ -53,7 +53,7 @@ spec:
       data:
         type: persistentVolumeClaim
         storageClass: ceph-block
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
         size: 20Gi
         globalMounts:
           - path: /var/lib/mysql
