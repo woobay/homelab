@@ -33,6 +33,13 @@ spec:
               requests: {cpu: 250m, memory: 512Mi}
               limits: {cpu: 2000m, memory: 2Gi}
             probes:
+              startup:
+                enabled: true
+                type: TCP
+                spec:
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  failureThreshold: 120
               liveness:
                 enabled: true
                 type: TCP
