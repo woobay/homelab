@@ -13,7 +13,7 @@ spec:
       main:
         enabled: true
         type: statefulset
-        replicas: 0
+        replicas: 1
         containers:
           main:
             image:
@@ -103,7 +103,7 @@ spec:
     persistence:
       config:
         type: persistentVolumeClaim
-        storageClass: ceph-block
+        storageClass: longhorn
         accessMode: ReadWriteOnce
         size: 15Gi
         globalMounts:
