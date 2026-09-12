@@ -18,7 +18,7 @@ nodes:
     controlPlane: true
     ipAddress: 192.168.20.20
     installDisk: /dev/sda
-    installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
+    installImage: "factory.talos.dev/metal-installer/0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5:v1.11.5"
     nameservers:
       - 192.168.20.1
     networkInterfaces:
@@ -34,7 +34,7 @@ nodes:
     controlPlane: true
     ipAddress: 192.168.20.21
     installDisk: /dev/sda
-    installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
+    installImage: "factory.talos.dev/metal-installer/0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5:v1.11.5"
     nameservers:
       - 192.168.20.1
     networkInterfaces:
@@ -50,7 +50,7 @@ nodes:
     controlPlane: true
     ipAddress: 192.168.20.22
     installDisk: /dev/sdb
-    installImage: "factory.talos.dev/metal-installer/dc8730aa8cc7bfa5ef7e2b3284248f2631135b2faf4ae11aa997a0c1987b0eee:v1.11.5"
+    installImage: "factory.talos.dev/metal-installer/0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5:v1.11.5"
     nameservers:
       - 192.168.20.1
     networkInterfaces:
@@ -126,6 +126,27 @@ patches:
               discard_unpacked_layers = false
             [plugins."io.containerd.cri.v1.runtime"]
               device_ownership_from_security_context = true
+  - |-
+    apiVersion: v1alpha1
+    kind: UserVolumeConfig
+    name: longhorn
+    provisioning:
+      diskSelector:
+        match: disk.transport == "nvme"
+      grow: false
+      maxSize: 480GB
+
+  - |-
+    machine:
+      kubelet:
+        extraMounts:
+          - destination: /var/mnt/longhorn
+            type: bind
+            source: /var/mnt/longhorn
+            options:
+              - bind
+              - rshared
+              - rw
 
 # Control plane specific patches
 controlPlane:
