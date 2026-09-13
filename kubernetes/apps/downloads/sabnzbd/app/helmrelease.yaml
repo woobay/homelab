@@ -12,11 +12,11 @@ spec:
   values:
     controllers:
       sabnzbd:
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            replica: 0
             image:
               repository: ghcr.io/home-operations/sabnzbd
               tag: 5.1.3@sha256:b1795982db498ed5691a7b1231f0fac7eed2a1d53e9c81b8e834d02695e76104
