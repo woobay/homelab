@@ -75,38 +75,38 @@ spec:
               limits:
                 cpu: 500m
                 memory: 256Mi
-          qbrr:
-            dependsOn: app
-            image:
-              repository: ghcr.io/buroa/qbrr
-              tag: 0.1.6
-              pullPolicy: IfNotPresent
-            args:
-              - --log-level
-              - debug
-            env:
-              TZ: "America/New_York"
-              QBITTORRENT_HOST: "http://localhost:8080"
-              QBITTORRENT_USERNAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: qbit-credentials
-                    key: username
-              QBITTORRENT_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: qbit-credentials
-                    key: password
-            resources:
-              requests:
-                cpu: 10m
-                memory: 32Mi
-              limits:
-                cpu: 100m
-                memory: 256Mi
-            securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
+          # qbrr:
+          #   dependsOn: app
+          #   image:
+          #     repository: ghcr.io/buroa/qbrr
+          #     tag: 0.1.6
+          #     pullPolicy: IfNotPresent
+          #   args:
+          #     - --log-level
+          #     - debug
+          #   env:
+          #     TZ: "America/New_York"
+          #     QBITTORRENT_HOST: "http://localhost:8080"
+          #     QBITTORRENT_USERNAME:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: qbit-credentials
+          #           key: username
+          #     QBITTORRENT_PASSWORD:
+          #       valueFrom:
+          #         secretKeyRef:
+          #           name: qbit-credentials
+          #           key: password
+          #   resources:
+          #     requests:
+          #       cpu: 10m
+          #       memory: 32Mi
+          #     limits:
+          #       cpu: 100m
+          #       memory: 256Mi
+          #   securityContext:
+          #     runAsUser: 1000
+          #     runAsGroup: 1000
     service:
       app:
         enabled: true
