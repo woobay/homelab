@@ -4,9 +4,6 @@ kind: Kustomization
 metadata:
   name: sabnzbd
 spec:
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/downloads/sabnzbd/app
   postBuild:
