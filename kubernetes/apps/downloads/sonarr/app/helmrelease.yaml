@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2
+piVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: sonarr
@@ -15,7 +15,7 @@ spec:
           reloader.stakater.com/auto: "true"
         enabled: true
         type: deployment
-        replicas: 0
+        replicas: 1
         containers:
           app:
             image:

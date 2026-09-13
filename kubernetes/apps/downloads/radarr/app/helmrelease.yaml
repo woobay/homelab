@@ -15,7 +15,7 @@ spec:
           reloader.stakater.com/auto: "true"
         enabled: true
         type: deployment
-        replicas: 0
+        replicas: 1
         containers:
           app:
             image:
