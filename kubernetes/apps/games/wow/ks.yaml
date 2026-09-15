@@ -26,7 +26,7 @@ metadata:
   name: ac-authserver
 spec:
   interval: 1h
-  path: ./kubernetes/apps/games/wow/auth-server
+  path: ./kubernetes/apps/games/wow/authserver
   postBuild:
     substitute:
       APP: ac-authserver
@@ -45,7 +45,7 @@ metadata:
   name: ac-worldserver
 spec:
   interval: 1h
-  path: ./kubernetes/apps/games/wow/world-server
+  path: ./kubernetes/apps/games/wow/worldserver
   postBuild:
     substitute:
       APP: ac-database
