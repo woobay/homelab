@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: ac-database-secret
+    namespace: games
+type: Opaque
+stringData:
+    MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:cWRaamX7m6bWDjAu1ONqOEqAr9Ad,iv:QU9DZp7nianZPNGh1Lm0oa2VIxwQTslNQn5+vlf53XI=,tag:sA7Qqa3JB3O5WqmVz+d4uQ==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2ZVQvQVpHYUtZSXRBZU9J
+            OHRDeWtGZ0FQcndOb3UzZExxcS9CeFVZMnl3Cng2clQzdjdsS2lsSWtBOEhLZjd6
+            ZWFPNVNPNjdIKzdJU3dQNDBnUEFHNzQKLS0tIHFINUlaOVRlNHlVTXVaY2hESldm
+            VXloR1JrekEvQUFrWXY4eWhOVjNnQWMKK+GVavtyTmwdUGSapL6qg7JadfuN4gvk
+            KzH2vZwUYcdhSGDH0f8pzcfjZQ2VJVmm2kgv8FQ7vDXkp5AA/fTFmA==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age13x2kx6gsqu5zwk9ryqfess4k9ytl7c06wktnulalnq76kgpem4pqqhkj4y
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-09-15T21:48:20Z"
+    mac: ENC[AES256_GCM,data:dPK/PrOuKCqtFh+iRG/+FxGkeSHBXqUgGG5flbFmgQQjMYmTQiV37kV57T79FBbV14/R88eAvUKxlCfJNorzyKd4+E9VmPV5vg/1d8VzXN2/ErjdSINFXFwDpbn91c0V5RS5cJhHPLBQGlipo5BgphuxEAoRT9XUymktEtOqtg4=,iv:55NQ9StTTnmLR40snXbZVBgHO1uoc4yIvC8Ja5neUA8=,tag:AU2phr8MsTHOwtMpAwN65A==,type:str]
+    version: 3.13.3

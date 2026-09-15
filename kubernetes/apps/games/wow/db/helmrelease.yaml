@@ -22,7 +22,11 @@ spec:
               tag: "8.4"
               pullPolicy: IfNotPresent
             env:
-              MYSQL_ROOT_PASSWORD: "changeme-strong-password"
+              MYSQL_ROOT_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: ac-database-secret
+                    key: MYSQL_ROOT_PASSWORD
             resources:
               requests: {cpu: 250m, memory: 512Mi}
               limits: {cpu: 2000m, memory: 2Gi}
