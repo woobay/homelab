@@ -4,3 +4,4 @@ namespace: games
 resources:
   - ./helmrelease.yaml
   - ./db.sops.yaml
+  - ./importJob.yaml

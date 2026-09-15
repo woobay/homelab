@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ac-db-import
+  namespace: games
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: main
+          image: acore/ac-wotlk-db-import:master
+          env:
+            - name: AC_LOGIN_DATABASE_INFO
+              valueFrom:
+                secretKeyRef:
+                  name: ac-database-secret
+                  key: AC_LOGIN_DATABASE_INFO
+            - name: AC_WORLD_DATABASE_INFO
+              valueFrom:
+                secretKeyRef:
+                  name: ac-database-secret
+                  key: AC_WORLD_DATABASE_INFO
+            - name: AC_CHARACTER_DATABASE_INFO
+              valueFrom:
+                secretKeyRef:
+                  name: ac-database-secret
+                  key: AC_CHARACTER_DATABASE_INFO
+            - name: AC_UPDATES_ENABLE_DATABASES
+              value: "7"
