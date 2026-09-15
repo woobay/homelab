@@ -16,16 +16,16 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: ac-database-secret
-                  key: MYSQL_ROOT_PASSWORD
+                  key: AC_LOGIN_DATABASE_INFO
             - name: AC_WORLD_DATABASE_INFO
               valueFrom:
                 secretKeyRef:
                   name: ac-database-secret
-                  key: MYSQL_ROOT_PASSWORD
+                  key: AC_WORLD_DATABASE_INFO
             - name: AC_CHARACTER_DATABASE_INFO
               valueFrom:
                 secretKeyRef:
                   name: ac-database-secret
-                  key: MYSQL_ROOT_PASSWORD
+                  key: AC_CHARACTER_DATABASE_INFO
             - name: AC_UPDATES_ENABLE_DATABASES
               value: "7"

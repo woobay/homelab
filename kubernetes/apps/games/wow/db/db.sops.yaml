@@ -5,19 +5,22 @@ metadata:
     namespace: games
 type: Opaque
 stringData:
-    MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:cWRaamX7m6bWDjAu1ONqOEqAr9Ad,iv:QU9DZp7nianZPNGh1Lm0oa2VIxwQTslNQn5+vlf53XI=,tag:sA7Qqa3JB3O5WqmVz+d4uQ==,type:str]
+    MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:1Cy2+EYEcKhwnooFRRaGLp+ge+Rn,iv:TMdQHr4Y6JrWntISjY2htoO4O28aHOBWqCpxqB/CfgA=,tag:iBJGHqv5JjtLk07CxzAWRQ==,type:str]
+    AC_LOGIN_DATABASE_INFO: ENC[AES256_GCM,data:/eNLaZiP9tnUmtD/twsChiYxFYufMOFOCJFPfuxTI0/T8svcYzJx8OO3K1RP8MfKJ/c+nJSX,iv:j2Q1NUzSrFvYYPj1nwKJ2k1SzAIwJERyLDvw0bkR6V0=,tag:0sNI9BP/M9+GRb35enGZHQ==,type:str]
+    AC_WORLD_DATABASE_INFO: ENC[AES256_GCM,data:18VV3MkpsTx/NZPCbpWToW20IrEMpoMafSdtweALuN8FyoOvfJbN7bnzNIpfDUkYowlwBJjHKA==,iv:emkp4FD9v8pT/iUUWMMyXJfRQhXwGGaO4FGUB8u6NE8=,tag:C+8+pmPPzX2k5kPIfPnMkA==,type:str]
+    AC_CHARACTER_DATABASE_INFO: ENC[AES256_GCM,data:KNtr1P1QvJVwYX7wv4B8zDKIwQS7MGPFKv8ccswai+/cHnWp9vHUE7S2ngkp/f3DAXEyNU+qJit16i5G,iv:3Fp/ldIHJOi98vFIbUEfNORWTqrh9a91+gxzTap0/JA=,tag:GpPnAYclqdDhXH94xB4PiQ==,type:str]
 sops:
     age:
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2ZVQvQVpHYUtZSXRBZU9J
-            OHRDeWtGZ0FQcndOb3UzZExxcS9CeFVZMnl3Cng2clQzdjdsS2lsSWtBOEhLZjd6
-            ZWFPNVNPNjdIKzdJU3dQNDBnUEFHNzQKLS0tIHFINUlaOVRlNHlVTXVaY2hESldm
-            VXloR1JrekEvQUFrWXY4eWhOVjNnQWMKK+GVavtyTmwdUGSapL6qg7JadfuN4gvk
-            KzH2vZwUYcdhSGDH0f8pzcfjZQ2VJVmm2kgv8FQ7vDXkp5AA/fTFmA==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB3VVhSc0FmRG0xMVR0UUdW
+            R1hMdmFnOVE2NEhDQlFuTE5rNWJDb2p2L2pNCm9vOUpuK0gyWGMvSVp4bVdtOHNq
+            Z0VWeENvSTNvZ0wyYTJ6SkdvaHUrbkEKLS0tIDR3ZjU4T2RPTVF5TVY1bDRZYmha
+            RWQrS2k0TFpJRFRsT2x5bjFkTEplVVUKi/HxWmmaVHlVyFQPpwtSpxESJzZzw6LO
+            9nE6lAUIMJgx5ETnXNwi150HZfCmGVtIVliIGegHGm0/5jOh1+D0CA==
             -----END AGE ENCRYPTED FILE-----
           recipient: age13x2kx6gsqu5zwk9ryqfess4k9ytl7c06wktnulalnq76kgpem4pqqhkj4y
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-09-15T21:48:20Z"
-    mac: ENC[AES256_GCM,data:dPK/PrOuKCqtFh+iRG/+FxGkeSHBXqUgGG5flbFmgQQjMYmTQiV37kV57T79FBbV14/R88eAvUKxlCfJNorzyKd4+E9VmPV5vg/1d8VzXN2/ErjdSINFXFwDpbn91c0V5RS5cJhHPLBQGlipo5BgphuxEAoRT9XUymktEtOqtg4=,iv:55NQ9StTTnmLR40snXbZVBgHO1uoc4yIvC8Ja5neUA8=,tag:AU2phr8MsTHOwtMpAwN65A==,type:str]
+    lastmodified: "2026-09-15T22:10:34Z"
+    mac: ENC[AES256_GCM,data:nIEoB2OtizIEOLWZQM5DeHQUaNExdqmiXm4It3aVSSfaoQZYv+rDa/m/N/oUzBftDLTUj8bCB9Hq0m/q0NqBovyTqgZ7116qS2YhFfItmY59bkCM1CPJ0oRZV3F15nfN4N0qK/Ei3ruUtQciPxLLoYXPjCsyQNTHmgg3oRPldQw=,iv:2XYTQzWp2U47cEB6Zm3KmJ68F/wZHYfM0Qx5CXELcBU=,tag:XkgD5pS78xKO6zKfSuP6yA==,type:str]
     version: 3.13.3
