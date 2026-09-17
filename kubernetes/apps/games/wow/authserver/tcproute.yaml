@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: TCPRoute
+metadata:
+  name: wow-auth-route
+  namespace: games
+spec:
+  parentRefs:
+    - name: envoy-internal
+      namespace: networking
+      sectionName: wow-auth
+  rules:
+    - backendRefs:
+        - name: ac-authserver
+          port: 3724

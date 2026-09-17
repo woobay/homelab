@@ -34,3 +34,11 @@ spec:
         certificateRefs:
           - kind: Secret
             name: woo-ops-dev-tls
+    - name: wow-auth
+      protocol: TCP
+      port: 3724
+      allowedRoutes: {kinds: [{kind: TCPRoute}]}
+    - name: wow-world
+      protocol: TCP
+      port: 8085
+      allowedRoutes: {kinds: [{kind: TCPRoute}]}
