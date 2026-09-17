@@ -7,7 +7,7 @@ metadata:
 spec:
   hostnamePrefix: "wow-connector"
   tags:
-    - "tag:homelab"
+    - "tag:k8s-operator"
   appConnector:
     routes:
       - 192.168.20.0/24
