@@ -1,0 +1,29 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: tailscale-operator
+  namespace: kube-system
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.102.3
+  url: oci://ghcr.io/home-operations/charts-mirror/tailscale-operator
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tailscale-operator
+  namespace: kube-system
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: tailscale-operator
+  interval: 1h
+  values:
+    operatorConfig:
+      hostname: "tailscale-operator"
+      oauthSecretName: operator-oauth

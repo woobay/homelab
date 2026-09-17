@@ -7,6 +7,7 @@ resources:
   - ./echo-server/ks.yaml
   - ./cloudflared/ks.yaml
   - ./external-dns/ks.yaml
+  - ./tailscale/ks.yaml
 components:
   - ../../components/namespace
   - ../../components/sops
