@@ -37,8 +37,16 @@ spec:
     - name: wow-auth
       protocol: TCP
       port: 3724
-      allowedRoutes: {kinds: [{kind: TCPRoute}]}
+      allowedRoutes:
+        kinds:
+          - kind: TCPRoute
+        namespaces:
+          from: All
     - name: wow-world
       protocol: TCP
       port: 8085
-      allowedRoutes: {kinds: [{kind: TCPRoute}]}
+      allowedRoutes:
+        kinds:
+          - kind: TCPRoute
+        namespaces:
+          from: All
