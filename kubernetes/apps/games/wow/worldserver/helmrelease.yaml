@@ -50,10 +50,11 @@ spec:
               AC_DATA_DIR: "/azerothcore/env/dist/data"
             resources:
               # Playerbots simulates many bot players in addition to
-              # normal worldserver load, so this needs significantly more
-              # headroom than a vanilla worldserver. Tune MinRandomBots /
-              # MaxRandomBots in playerbots.conf together with these limits.
-              requests: {cpu: 2000m, memory: 6Gi}
+              # normal worldserver load. Requests are kept modest so the
+              # pod can actually be scheduled; limits are generous to allow
+              # bursting as bot count/activity ramps up. Tune MinRandomBots
+              # / MaxRandomBots in playerbots.conf together with these.
+              requests: {cpu: 500m, memory: 2Gi}
               limits: {cpu: 8000m, memory: 16Gi}
             probes:
               liveness:
