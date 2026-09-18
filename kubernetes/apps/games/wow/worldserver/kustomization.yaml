@@ -4,9 +4,3 @@ namespace: games
 resources:
   - ./helmrelease.yaml
   - ./tcproute.yaml
-configMapGenerator:
-  - name: ac-worldserver-playerbots-conf
-    files:
-      - playerbots.conf=./resources/playerbots.conf
-generatorOptions:
-  disableNameSuffixHash: true
