@@ -8,7 +8,7 @@ spec:
   hostnamePrefix: "wow-connector"
   tags:
     - "tag:k8s-operator"
-  appConnector:
-    routes:
+  subnetRouter:
+    advertiseRoutes:
       - 192.168.20.0/24
   replicas: 1
