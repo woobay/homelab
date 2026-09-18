@@ -88,6 +88,18 @@ spec:
               # leaves the other 2 cores free for the OS/kubelet/other
               # pods sharing that node.
               AC_MAP_UPDATE_THREADS: "2"
+              # Small 2-player server - bump rates so less time is spent
+              # solo-grinding trash levels/gold and more time is spent
+              # actually playing together. 3x is a moderate bump; easy to
+              # tune up/down later.
+              AC_RATE_XP_KILL: "3"
+              AC_RATE_XP_QUEST: "3"
+              AC_RATE_XP_EXPLORE: "3"
+              AC_RATE_DROP_MONEY: "3"
+              AC_RATE_DROP_ITEM_NORMAL: "2"
+              AC_RATE_DROP_ITEM_RARE: "2"
+              AC_RATE_DROP_ITEM_EPIC: "1.5"
+              AC_RATE_REPUTATION_GAIN: "2"
               # Silences "missing property" log noise; these are non-fatal
               # and default to 1 either way, but explicit is nicer to read.
               AC_PLAYERBOTS_DATABASE_WORKER_THREADS: "1"
