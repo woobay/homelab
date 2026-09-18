@@ -10,5 +10,13 @@ spec:
     - "tag:k8s-operator"
   subnetRouter:
     advertiseRoutes:
-      - 192.168.20.0/24
+      # Narrowed from the full 192.168.20.0/24 LAN subnet to just the
+      # envoy-internal Gateway's single IP. The wider /24 route let any
+      # tailnet member with the route approved reach every other device
+      # on the home LAN (NAS, other homelab boxes, etc.), not just the
+      # gateway - confirmed via `ping 192.168.20.225` working over the
+      # tailnet with the old broad route. If LAN-wide access is needed
+      # again later, consider a second, separately-tagged/ACL'd connector
+      # instead of widening this one back out.
+      - 192.168.20.225/32
   replicas: 1
