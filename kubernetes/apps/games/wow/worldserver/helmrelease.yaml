@@ -19,8 +19,11 @@ spec:
         containers:
           main:
             image:
-              repository: acore/ac-wotlk-worldserver
-              tag: "master"
+              # Built from mod-playerbots/azerothcore-wotlk (Playerbot branch)
+              # with the mod-playerbots module compiled in.
+              # See: https://github.com/woobay/azerothcore-playerbots-docker
+              repository: ghcr.io/woobay/ac-wotlk-playerbots-worldserver
+              tag: "latest"
               pullPolicy: IfNotPresent
             env:
               AC_LOGIN_DATABASE_INFO:
@@ -38,11 +41,20 @@ spec:
                   secretKeyRef:
                     name: ac-database-secret
                     key: AC_CHARACTER_DATABASE_INFO
+              AC_PLAYERBOTS_DATABASE_INFO:
+                valueFrom:
+                  secretKeyRef:
+                    name: ac-database-secret
+                    key: AC_PLAYERBOTS_DATABASE_INFO
               AC_UPDATES_ENABLE_DATABASES: "7"
               AC_DATA_DIR: "/azerothcore/env/dist/data"
             resources:
-              requests: {cpu: 500m, memory: 2Gi}
-              limits: {cpu: 4000m, memory: 6Gi}
+              # Playerbots simulates many bot players in addition to
+              # normal worldserver load, so this needs significantly more
+              # headroom than a vanilla worldserver. Tune MinRandomBots /
+              # MaxRandomBots in playerbots.conf together with these limits.
+              requests: {cpu: 2000m, memory: 6Gi}
+              limits: {cpu: 8000m, memory: 16Gi}
             probes:
               liveness:
                 enabled: true
@@ -82,4 +94,11 @@ spec:
         path: "/mnt/storage/config/wow-client-data"
         globalMounts:
           - path: /azerothcore/env/dist/data
+            readOnly: true
+      playerbots-config:
+        type: configMap
+        name: ac-worldserver-playerbots-conf
+        globalMounts:
+          - path: /azerothcore/env/dist/etc/modules/playerbots.conf
+            subPath: playerbots.conf
             readOnly: true

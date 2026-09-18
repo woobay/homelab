@@ -20,8 +20,11 @@ spec:
         containers:
           main:
             image:
-              repository: acore/ac-wotlk-authserver
-              tag: "master"
+              # Built from mod-playerbots/azerothcore-wotlk (Playerbot branch),
+              # since mod-playerbots requires this custom core fork.
+              # See: https://github.com/woobay/azerothcore-playerbots-docker
+              repository: ghcr.io/woobay/ac-wotlk-playerbots-authserver
+              tag: "latest"
               pullPolicy: IfNotPresent
             env:
               AC_LOGIN_DATABASE_INFO:

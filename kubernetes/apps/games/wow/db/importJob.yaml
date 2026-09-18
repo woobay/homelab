@@ -10,7 +10,11 @@ spec:
       restartPolicy: Never
       containers:
         - name: main
-          image: acore/ac-wotlk-db-import:master
+          # Built from mod-playerbots/azerothcore-wotlk (Playerbot branch)
+          # with the mod-playerbots module, so it includes the playerbots
+          # SQL migrations for acore_playerbots.
+          # See: https://github.com/woobay/azerothcore-playerbots-docker
+          image: ghcr.io/woobay/ac-wotlk-playerbots-dbimport:latest
           env:
             - name: AC_LOGIN_DATABASE_INFO
               valueFrom:
@@ -27,5 +31,14 @@ spec:
                 secretKeyRef:
                   name: ac-database-secret
                   key: AC_CHARACTER_DATABASE_INFO
+            - name: AC_PLAYERBOTS_DATABASE_INFO
+              valueFrom:
+                secretKeyRef:
+                  name: ac-database-secret
+                  key: AC_PLAYERBOTS_DATABASE_INFO
+            # Bitmask: LOGIN(1) + CHARACTER(2) + WORLD(4) + PLAYERBOTS(8) = 15
+            # NOTE: verify the playerbots bit value against the fork's
+            # DBUpdater flags before relying on this in production; adjust
+            # if the module uses a different bit or a separate mechanism.
             - name: AC_UPDATES_ENABLE_DATABASES
-              value: "7"
+              value: "15"
