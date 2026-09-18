@@ -110,6 +110,27 @@ spec:
               AC_AI_PLAYERBOT_MIN_RANDOM_BOTS: "5"
               AC_AI_PLAYERBOT_MAX_RANDOM_BOTS: "20"
               AC_AI_PLAYERBOT_RANDOM_BOT_ACCOUNT_PREFIX: "rndbot"
+              # Automatically concentrate bots near real players' level and
+              # location, instead of relying on GM commands (.character
+              # level, .levelup) to manually fix up bot levels - keeps
+              # things feeling like a real RPG rather than admin-cheated.
+              # Caps the random bot population's level ceiling to track
+              # online players, so the pool doesn't drift toward max level
+              # over time.
+              AC_AI_PLAYERBOT_SYNC_LEVEL_WITH_PLAYERS: "1"
+              # Bots teleport into zones containing real players, so
+              # level-appropriate bots are also physically nearby/findable.
+              AC_AI_PLAYERBOT_RANDOM_BOT_CONCENTRATE_IN_PLAYER_ZONE: "1"
+              # Periodically rebalances the random bot population across
+              # level brackets, weighted toward brackets containing real
+              # players - actively pulls existing bots toward your level
+              # over time, not just newly (re)randomized ones.
+              AC_AI_PLAYERBOT_LEVEL_BRACKETS_ENABLED: "1"
+              AC_AI_PLAYERBOT_LEVEL_BRACKETS_DYNAMIC_USE_DYNAMIC_DISTRIBUTION: "1"
+              # 3.0 = noticeably stronger concentration than default (1.0)
+              # without being extreme. See upstream docs for the exact
+              # weighting formula/examples.
+              AC_AI_PLAYERBOT_LEVEL_BRACKETS_DYNAMIC_REAL_PLAYER_WEIGHT: "3.0"
             resources:
               # Homelab nodes are 4 CPU / 16Gi each, shared with everything
               # else in the cluster - a limit anywhere near a full node's
