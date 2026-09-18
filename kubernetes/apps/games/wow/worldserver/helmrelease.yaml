@@ -39,6 +39,13 @@ spec:
               - "cp -r /azerothcore/modules/. /playerbots-modules-seed/"
         containers:
           main:
+            # Matches upstream docker-compose's stdin_open/tty settings.
+            # Without these, `kubectl attach` connects and shows output but
+            # has no interactive stdin channel - keystrokes never reach the
+            # process, which looks like the console is "stuck" repeating
+            # itself with no way to type.
+            stdin: true
+            tty: true
             image:
               # Built from mod-playerbots/azerothcore-wotlk (Playerbot branch)
               # with the mod-playerbots module compiled in.
