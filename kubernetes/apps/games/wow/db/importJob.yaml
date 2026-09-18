@@ -51,3 +51,7 @@ spec:
             # them if this is left on there).
             - name: AC_PLAYERBOTS_UPDATES_ENABLE_DATABASES
               value: "1"
+            - name: AC_PLAYERBOTS_DATABASE_WORKER_THREADS
+              value: "1"
+            - name: AC_PLAYERBOTS_DATABASE_SYNCH_THREADS
+              value: "1"

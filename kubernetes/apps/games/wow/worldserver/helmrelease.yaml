@@ -54,6 +54,10 @@ spec:
               # update directory.
               AC_PLAYERBOTS_UPDATES_ENABLE_DATABASES: "0"
               AC_DATA_DIR: "/azerothcore/env/dist/data"
+              # Silences "missing property" log noise; these are non-fatal
+              # and default to 1 either way, but explicit is nicer to read.
+              AC_PLAYERBOTS_DATABASE_WORKER_THREADS: "1"
+              AC_PLAYERBOTS_DATABASE_SYNCH_THREADS: "1"
               # Playerbots config overrides via env vars instead of a
               # mounted playerbots.conf: AC's entrypoint needs write access
               # to /azerothcore/env/dist/etc (and its modules/ subdir) to
