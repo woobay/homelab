@@ -49,13 +49,12 @@ spec:
               AC_UPDATES_ENABLE_DATABASES: "7"
               AC_DATA_DIR: "/azerothcore/env/dist/data"
             resources:
-              # Playerbots simulates many bot players in addition to
-              # normal worldserver load. Requests are kept modest so the
-              # pod can actually be scheduled; limits are generous to allow
-              # bursting as bot count/activity ramps up. Tune MinRandomBots
-              # / MaxRandomBots in playerbots.conf together with these.
-              requests: {cpu: 500m, memory: 2Gi}
-              limits: {cpu: 8000m, memory: 16Gi}
+              # Homelab nodes are 4 CPU / 16Gi each, shared with everything
+              # else in the cluster - a limit anywhere near a full node's
+              # capacity risks starving the OS/kubelet and every other pod
+              # co-scheduled on that node. Keep well under one node's worth.
+              requests: {cpu: 250m, memory: 1Gi}
+              limits: {cpu: 3000m, memory: 8Gi}
             probes:
               liveness:
                 enabled: true
