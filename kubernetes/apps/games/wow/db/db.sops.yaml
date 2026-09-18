@@ -5,22 +5,23 @@ metadata:
     namespace: games
 type: Opaque
 stringData:
-    MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:qMq6/gQpfq/UpsCWIzWLHj/1FT37,iv:ahorHxcVE0giZb1EGD7w4K8F3ABaijts5xqq8XjPtao=,tag:ZRvuC07dli94NAFC6mJtAA==,type:str]
-    AC_LOGIN_DATABASE_INFO: ENC[AES256_GCM,data:62BKnaZ/DtVsbvlPudztx+a0BSJ+7HCzK7kBH3GK1/V8MHSfFSe2ajARKeihvRuNkDhy12X+,iv:KaLfaqiSTfwUx4OcmqIzIG5+6bI8q9S0yBw8yBPWmKc=,tag:GzQIZhW1C3nm3VasF+cZRQ==,type:str]
-    AC_WORLD_DATABASE_INFO: ENC[AES256_GCM,data:aZpP+NtPmZe2DJDR6LiNBoun3JPdlfc8o7ElGXgajLrq8r8ebNmG2N9WZ3IRhtETno2vjLbDcQ==,iv:xsob2pCiIQfnINJ2s3ELy2JrsFIaeIQIG5XusBOV4tE=,tag:2UtrT7XHRCHKBI9GHfEIlA==,type:str]
-    AC_CHARACTER_DATABASE_INFO: ENC[AES256_GCM,data:YOC8oKt+qXrXpHqkAQFMZG7uPDetbKTngQ+JTebZhQXHdKli3rp4nByLDTVc5AzGNhuSY7r59NZ60YBh,iv:mIq/zQdC5+QrWSCHcW4dowlasKnxfeWhPYgtIwtP5fw=,tag:mvMnITxGtfHtpyJF2leoqA==,type:str]
+    MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:T5Aq5NVnUbQjYPicsIwLTysRDFht,iv:G9GgyCvwqisK4BYWvKbYmzXGymN6dHPpFk3ivipApaI=,tag:OvgbSGhx2tpjpxJfTn/e4Q==,type:str]
+    AC_LOGIN_DATABASE_INFO: ENC[AES256_GCM,data:gBTJXfE4jjaILOoxO7ZYmi83gTxL5A3CJsIedEzuHdLaIEiI/ITZZOAhm9HiF17ioACQNomI,iv:FFawTql/81QkFJW8G2FgUhJyMakb80fJRlJHRHvh10w=,tag:EXKHAqqEYX9e6d0MKQ4kpQ==,type:str]
+    AC_WORLD_DATABASE_INFO: ENC[AES256_GCM,data:CpZ1menFZLJQu8uHkYp15V6rgBGz7uxP4KWcCNAtwkE2sNd/VkbixgDVl0z+MThqTKi4UV8G6g==,iv:yjOs1F6rSuNA0lzI79RtPIFrM+pttXkYwBmNQkT6mww=,tag:V2setLVdWXYcZY+C0PzFAg==,type:str]
+    AC_CHARACTER_DATABASE_INFO: ENC[AES256_GCM,data:iAnMcAAhA8hxZcI4KcMdh3jIXRrrxvuznm/miOMUJG0LGclOPY4yjkAnx7XB9Q3LuoKuGaLBs+4Cuf5L,iv:4QOsKafgZh7VO8hijsSOu1p03BZWXbXj6MMsYuswqeI=,tag:j4e9sfeNo1U7qnlb3kyMBw==,type:str]
+    AC_PLAYERBOTS_DATABASE_INFO: ENC[AES256_GCM,data:rmxUU1vZWvblu4NsdaoSChpIREXz2/dxcDBCHhCX4udF4iLI5DMgRkCL8kiu9+Z1STCMo0jUTIyWdSRi,iv:nJWU6RZZwNS1nZPTpgLZjBCmJY4QkYiosUy6KxqII+U=,tag:59xC7rT2I6MCtc5MoDc/qQ==,type:str]
 sops:
     age:
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB4dDVlOVd6OUlpZGFGSWkr
-            cGZ3RlpGajRJM0dZQWl2WWZxRjYzU1RFZ0RNCkQyM0FhMDhYVlBQR3B1RldkWnZV
-            L3B2VmFiMHhWNTM3MlZYM1R2cXVQWjAKLS0tIGJLRmZnQTFRRjVhV1RSZ0dMYVlW
-            d2tSVjAwRnFHbmJxNVBEeXFyTWVTOWMKm6oQk93gV65IKQu00n0o/iBUsTeR+l15
-            qWXQR0u5cU4iXFrevcfAb6bqMVE3++LwH4gUxUaLUMGVcqOiib3A1w==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBXZzQ1aUFjZWN6cWJDU0ov
+            OU1YRnJCekY3dlpQcmR6bFBNSnFxV3hPbmlZCjk1RXlrTnppNEVJUVFCcmFHUHkw
+            NEF2VG1BL2xxOXlZVDBaWTB3QzdtWTQKLS0tIDUyN2ZrRC9QSEp4TGZ1Z24zOGlQ
+            NjVWckowMXZSQlBqOHlwWU44d1dUVXMKsqRwaqlTkgP0Xm9prSg7Mtzc5It5wbq9
+            mF87XZoiZ43QctGzlN2WF0HAHJgrgdfpbOkTIdP9SaXn24Fsoh3Zsg==
             -----END AGE ENCRYPTED FILE-----
           recipient: age13x2kx6gsqu5zwk9ryqfess4k9ytl7c06wktnulalnq76kgpem4pqqhkj4y
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-09-17T21:50:16Z"
-    mac: ENC[AES256_GCM,data:4EchnbfxXkyWT13welh5sgCCWTufOaSwAp99eKL2WfvUx5u8/88HY1JKnyKqz4nSqCl5ijjipl6TODt3Ug2pJ9oCkkeOknl3dcF2PoP4UcOa1Q9GZmRtbHe/Pmv2KjY6GsEmDozRT5IhPjomWnUGI64FHxlGdLGxaTz4BRyzi58=,iv:aYTTZYXVAPmQUsQtrIKpl8jTi90mSIztfCfnxkqx27k=,tag:oiJME7J9rdoLA6gwk8IOsA==,type:str]
+    lastmodified: "2026-09-18T16:58:47Z"
+    mac: ENC[AES256_GCM,data:PWhWwj41kY1ChOn5H0FfXz2+PsTfCTqrVaJhlxdjD5z21eoB8yHW28kZ/Z06Dx+gpTTMVe6fsaCEU+t4/FsL/EBsWcS0z4WM/VnDup09FB6VQxzFlT+EEi5+Kzp6EUmReBVvyjjgF897AzvQKrFXBtnr6lXAVMtweX+ySlWXaAI=,iv:LNXRH+vauOsicUrA5ie5x2Qn9m+MDgCEpK3+p/FfD1c=,tag:zjXnAHDEygWoibSpT4m+nA==,type:str]
     version: 3.13.3
