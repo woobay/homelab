@@ -103,6 +103,14 @@ spec:
               # uppercased, AC_ prefixed).
               AC_AI_PLAYERBOT_ENABLED: "1"
               AC_AI_PLAYERBOT_RANDOM_BOT_AUTOLOGIN: "1"
+              # Only run bots while a real player is actually online -
+              # otherwise they'd grind CPU 24/7 on shared homelab hardware
+              # even when nobody's playing. Bots log in ~30s after the
+              # first real player logs in, and log out ~300s after the
+              # last real player logs out.
+              AC_AI_PLAYERBOT_DISABLED_WITHOUT_REAL_PLAYER: "1"
+              AC_AI_PLAYERBOT_DISABLED_WITHOUT_REAL_PLAYER_LOGIN_DELAY: "30"
+              AC_AI_PLAYERBOT_DISABLED_WITHOUT_REAL_PLAYER_LOGOUT_DELAY: "300"
               # Start very conservative for a 3-node homelab cluster (4 CPU
               # / 16Gi per node, shared with everything else). Raise
               # gradually once resource usage at this count is confirmed
