@@ -36,9 +36,18 @@ spec:
                 secretKeyRef:
                   name: ac-database-secret
                   key: AC_PLAYERBOTS_DATABASE_INFO
-            # Bitmask: LOGIN(1) + CHARACTER(2) + WORLD(4) + PLAYERBOTS(8) = 15
-            # NOTE: verify the playerbots bit value against the fork's
-            # DBUpdater flags before relying on this in production; adjust
-            # if the module uses a different bit or a separate mechanism.
+            # Core database updates. Bitmask: LOGIN(1) + CHARACTER(2) +
+            # WORLD(4) = 7. There is no "playerbots" bit here - HOTFIX(8)
+            # is unrelated to playerbots. Playerbots has its own separate
+            # toggle below.
             - name: AC_UPDATES_ENABLE_DATABASES
-              value: "15"
+              value: "7"
+            # Playerbots database updates are controlled by their own
+            # independent boolean flag (Playerbots.Updates.EnableDatabases),
+            # not part of the core bitmask above. Only db-import has the
+            # module's data/sql/playerbots/* files copied in, so this must
+            # stay enabled here (and disabled on worldserver/authserver,
+            # which don't have those files and will crash trying to read
+            # them if this is left on there).
+            - name: AC_PLAYERBOTS_UPDATES_ENABLE_DATABASES
+              value: "1"
