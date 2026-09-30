@@ -91,6 +91,9 @@ spec:
               AC_AI_PLAYERBOT_LEVEL_BRACKETS_ENABLED: "1"
               AC_AI_PLAYERBOT_LEVEL_BRACKETS_DYNAMIC_USE_DYNAMIC_DISTRIBUTION: "1"
               AC_AI_PLAYERBOT_LEVEL_BRACKETS_DYNAMIC_REAL_PLAYER_WEIGHT: "3.0"
+              AC_AUCTION_HOUSE_BOT_GUIDS: "710"
+              AC_AUCTION_HOUSE_BOT_ENABLE_SELLER: "1"
+              AC_AUCTION_HOUSE_BOT_BUYER_ENABLED: "1"
             resources:
               requests: {cpu: 250m, memory: 1Gi}
               limits: {cpu: 3000m, memory: 8Gi}
