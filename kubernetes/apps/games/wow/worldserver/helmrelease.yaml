@@ -107,6 +107,25 @@ spec:
               AC_RATE_DROP_ITEM_RARE: "2"
               AC_RATE_DROP_ITEM_EPIC: "1.5"
               AC_RATE_REPUTATION_GAIN: "2"
+              # Profession skill-up chance: mod-playerbots' own bot AI has
+              # no reliable gathering/crafting behavior (open upstream
+              # issues, no fix available), so this mainly benefits the real
+              # player - doubles the chance to gain a skill point per
+              # successful gather/craft action. Combine with mod-ah-bot-plus
+              # (buy mats/finished goods from the bot-populated AH) rather
+              # than relying on bots to gather for you.
+              AC_SKILL_GAIN_CRAFTING: "2"
+              AC_SKILL_GAIN_GATHERING: "2"
+              # mod-individual-xp: per-character XP multiplier on top of the
+              # AC_RATE_XP_* rates above, self-service via .xp set <rate> in
+              # game (capped at MaxXPRate). DefaultXPRate=1 means nobody's
+              # rate changes until they opt in - preserves current 3x
+              # behavior by default.
+              AC_INDIVIDUAL_XP_ENABLED: "1"
+              AC_INDIVIDUAL_XP_ANNOUNCE: "1"
+              AC_INDIVIDUAL_XP_ANNOUNCE_RATES_ON_LOGIN: "1"
+              AC_INDIVIDUAL_XP_MAX_XP_RATE: "3"
+              AC_INDIVIDUAL_XP_DEFAULT_XP_RATE: "1"
               # Silences "missing property" log noise; these are non-fatal
               # and default to 1 either way, but explicit is nicer to read.
               AC_PLAYERBOTS_DATABASE_WORKER_THREADS: "1"
@@ -130,13 +149,26 @@ spec:
               AC_AI_PLAYERBOT_DISABLED_WITHOUT_REAL_PLAYER: "1"
               AC_AI_PLAYERBOT_DISABLED_WITHOUT_REAL_PLAYER_LOGIN_DELAY: "30"
               AC_AI_PLAYERBOT_DISABLED_WITHOUT_REAL_PLAYER_LOGOUT_DELAY: "300"
-              # Start very conservative for a 3-node homelab cluster (4 CPU
-              # / 16Gi per node, shared with everything else). Raise
-              # gradually once resource usage at this count is confirmed
-              # stable, watching worldserver CPU and MySQL load closely.
-              AC_AI_PLAYERBOT_MIN_RANDOM_BOTS: "5"
-              AC_AI_PLAYERBOT_MAX_RANDOM_BOTS: "20"
+              # Bumped from 5/20 to 20/100. NOTE: RandomBotConcentrateInPlayerZone
+              # + SyncLevelWithPlayers below mean a meaningful chunk of these
+              # 100 bots get actively pulled near the real player rather than
+              # spread across the world - this is heavier on CPU than the raw
+              # count suggests. Resource limits intentionally left untouched
+              # for now; watch `kubectl top pod` and in-game `.server info`
+              # latency after rollout and dial MaxRandomBots back down (or
+              # bump limits) if things look strained.
+              AC_AI_PLAYERBOT_MIN_RANDOM_BOTS: "20"
+              AC_AI_PLAYERBOT_MAX_RANDOM_BOTS: "100"
               AC_AI_PLAYERBOT_RANDOM_BOT_ACCOUNT_PREFIX: "rndbot"
+              # Throttles how many idle/non-concentrated bots run full AI
+              # simultaneously - required once bot count is above ~20-30 per
+              # upstream guidance, otherwise un-tuned activity can cause
+              # runaway memory/CPU growth. Smart-scale weights activity by
+              # level proximity instead of a flat percentage.
+              AC_AI_PLAYERBOT_BOT_ACTIVE_ALONE: "10"
+              AC_AI_PLAYERBOT_BOT_ACTIVE_ALONE_SMART_SCALE: "1"
+              AC_AI_PLAYERBOT_BOT_ACTIVE_ALONE_SMART_SCALE_WHEN_MIN_LEVEL: "1"
+              AC_AI_PLAYERBOT_BOT_ACTIVE_ALONE_SMART_SCALE_WHEN_MAX_LEVEL: "80"
               # Automatically concentrate bots near real players' level and
               # location, instead of relying on GM commands (.character
               # level, .levelup) to manually fix up bot levels - keeps
