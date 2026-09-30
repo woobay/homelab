@@ -52,7 +52,13 @@ spec:
               # See: https://github.com/woobay/azerothcore-playerbots-docker
               repository: ghcr.io/woobay/ac-wotlk-playerbots-worldserver
               tag: "latest"
-              pullPolicy: IfNotPresent
+              # Always (not IfNotPresent): the tag is a floating "latest",
+              # not a pinned digest, and there's no Flux image-automation
+              # wired up to detect new pushes. IfNotPresent would silently
+              # keep running whatever was cached on the node even after a
+              # new image lands in GHCR - Always makes every pod
+              # (re)start actually check for a newer digest.
+              pullPolicy: Always
             env:
               AC_LOGIN_DATABASE_INFO:
                 valueFrom:

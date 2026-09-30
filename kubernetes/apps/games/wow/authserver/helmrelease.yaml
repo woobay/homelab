@@ -25,7 +25,10 @@ spec:
               # See: https://github.com/woobay/azerothcore-playerbots-docker
               repository: ghcr.io/woobay/ac-wotlk-playerbots-authserver
               tag: "latest"
-              pullPolicy: IfNotPresent
+              # Always (not IfNotPresent): see worldserver/helmrelease.yaml
+              # for rationale - floating latest tag + no image automation
+              # means IfNotPresent can silently run a stale image forever.
+              pullPolicy: Always
             env:
               AC_LOGIN_DATABASE_INFO:
                 valueFrom:
