@@ -94,6 +94,12 @@ spec:
               AC_AUCTION_HOUSE_BOT_GUIDS: "710"
               AC_AUCTION_HOUSE_BOT_ENABLE_SELLER: "1"
               AC_AUCTION_HOUSE_BOT_BUYER_ENABLED: "1"
+              AC_AUCTION_HOUSE_BOT_ALLIANCE_MIN_ITEMS: "1000"
+              AC_AUCTION_HOUSE_BOT_ALLIANCE_MAX_ITEMS: "1000"
+              AC_AUCTION_HOUSE_BOT_HORDE_MIN_ITEMS: "1000"
+              AC_AUCTION_HOUSE_BOT_HORDE_MAX_ITEMS: "1000"
+              AC_AUCTION_HOUSE_BOT_NEUTRAL_MIN_ITEMS: "1000"
+              AC_AUCTION_HOUSE_BOT_NEUTRAL_MAX_ITEMS: "1000"
             resources:
               requests: {cpu: 250m, memory: 1Gi}
               limits: {cpu: 3000m, memory: 8Gi}
