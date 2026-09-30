@@ -27,7 +27,7 @@ spec:
             # shared emptyDir before the main container starts.
             image:
               repository: ghcr.io/woobay/ac-wotlk-playerbots-dbimport
-              tag: "latest"
+              tag: "core-3adbe20_module-64f14c3_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c"
             command: ["sh", "-c"]
             args:
               # cp -r (not -a): -a tries to preserve the mount-root's own
@@ -51,14 +51,8 @@ spec:
               # with the mod-playerbots module compiled in.
               # See: https://github.com/woobay/azerothcore-playerbots-docker
               repository: ghcr.io/woobay/ac-wotlk-playerbots-worldserver
-              tag: "latest"
-              # Always (not IfNotPresent): the tag is a floating "latest",
-              # not a pinned digest, and there's no Flux image-automation
-              # wired up to detect new pushes. IfNotPresent would silently
-              # keep running whatever was cached on the node even after a
-              # new image lands in GHCR - Always makes every pod
-              # (re)start actually check for a newer digest.
-              pullPolicy: Always
+              tag: "core-3adbe20_module-64f14c3_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c"
+              pullPolicy: IfNotPresent
             env:
               AC_LOGIN_DATABASE_INFO:
                 valueFrom:

@@ -24,11 +24,8 @@ spec:
               # since mod-playerbots requires this custom core fork.
               # See: https://github.com/woobay/azerothcore-playerbots-docker
               repository: ghcr.io/woobay/ac-wotlk-playerbots-authserver
-              tag: "latest"
-              # Always (not IfNotPresent): see worldserver/helmrelease.yaml
-              # for rationale - floating latest tag + no image automation
-              # means IfNotPresent can silently run a stale image forever.
               pullPolicy: Always
+              tag: "core-3adbe20_module-64f14c3_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c"
             env:
               AC_LOGIN_DATABASE_INFO:
                 valueFrom:
