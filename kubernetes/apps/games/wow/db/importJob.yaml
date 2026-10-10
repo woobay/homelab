@@ -3,6 +3,10 @@ kind: Job
 metadata:
   name: ac-db-import
   namespace: games
+  annotations:
+    # Job pod templates are immutable; let Flux delete/recreate the Job
+    # when the pinned image tag changes instead of failing the apply.
+    kustomize.toolkit.fluxcd.io/force: enabled
 spec:
   backoffLimit: 2
   template:
@@ -14,7 +18,7 @@ spec:
           # with the mod-playerbots module, so it includes the playerbots
           # SQL migrations for acore_playerbots.
           # See: https://github.com/woobay/azerothcore-playerbots-docker
-          image: ghcr.io/woobay/ac-wotlk-playerbots-dbimport:latest
+          image: ghcr.io/woobay/ac-wotlk-playerbots-dbimport:core-ff8d117_module-b0cd0ea_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c_dclear-3970a30
           env:
             - name: AC_LOGIN_DATABASE_INFO
               valueFrom:

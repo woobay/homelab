@@ -20,7 +20,7 @@ spec:
           init-playerbots-modules:
             image:
               repository: ghcr.io/woobay/ac-wotlk-playerbots-dbimport
-              tag: "core-3adbe20_module-64f14c3_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c"
+              tag: "core-ff8d117_module-b0cd0ea_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c_dclear-3970a30"
             command: ["sh", "-c"]
             args:
               - "cp -r /azerothcore/modules/. /playerbots-modules-seed/"
@@ -30,7 +30,7 @@ spec:
             tty: true
             image:
               repository: ghcr.io/woobay/ac-wotlk-playerbots-worldserver
-              tag: "core-3adbe20_module-64f14c3_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c"
+              tag: "core-ff8d117_module-b0cd0ea_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c_dclear-3970a30"
               pullPolicy: IfNotPresent
             env:
               AC_LOGIN_DATABASE_INFO:
@@ -94,20 +94,24 @@ spec:
               AC_AUCTION_HOUSE_BOT_GUIDS: "710"
               AC_AUCTION_HOUSE_BOT_ENABLE_SELLER: "1"
               AC_AUCTION_HOUSE_BOT_BUYER_ENABLED: "1"
-              AC_AUCTION_HOUSE_BOT_ALLIANCE_MIN_ITEMS: "1000"
-              AC_AUCTION_HOUSE_BOT_ALLIANCE_MAX_ITEMS: "1000"
-              AC_AUCTION_HOUSE_BOT_HORDE_MIN_ITEMS: "1000"
-              AC_AUCTION_HOUSE_BOT_HORDE_MAX_ITEMS: "1000"
-              AC_AUCTION_HOUSE_BOT_NEUTRAL_MIN_ITEMS: "1000"
-              AC_AUCTION_HOUSE_BOT_NEUTRAL_MAX_ITEMS: "1000"
-              AC_AUCTION_HOUSE_BOT_LIST_PROPORTION_CATEGORY_CONSUMABLE_QUALITY_NORMAL: "50"
-              AC_AUCTION_HOUSE_BOT_LIST_PROPORTION_CATEGORY_TRADE_GOOD_QUALITY_NORMAL: "80"
-              AC_AUCTION_HOUSE_BOT_LIST_PROPORTION_CATEGORY_WEAPON_QUALITY_UNCOMMON: "40"
-              AC_AUCTION_HOUSE_BOT_LIST_PROPORTION_CATEGORY_ARMOR_QUALITY_UNCOMMON: "50"
-              AC_AUCTION_HOUSE_BOT_LIST_PROPORTION_CATEGORY_CONTAINER_QUALITY_NORMAL: "20"
-              AC_AUCTION_HOUSE_BOT_LIST_PROPORTION_CATEGORY_GEM_QUALITY_UNCOMMON: "20"
-              AC_AUCTION_HOUSE_BOT_LIST_PROPORTION_CATEGORY_RECIPE_QUALITY_UNCOMMON: "40"
-              AC_AUCTION_HOUSE_BOT_LIST_PROPORTION_CATEGORY_REAGENT_QUALITY_NORMAL: "10"
+              # Alliance-only play: all stock goes in the Alliance AH. Horde and
+              # Neutral are zeroed (seller skips houses with MaxItems=0). This relies
+              # on AllowTwoSide.Interaction.Auction staying 0 (core default); if it
+              # were 1 the module would only use the Neutral numbers.
+              AC_AUCTION_HOUSE_BOT_ALLIANCE_MIN_ITEMS: "30000"
+              AC_AUCTION_HOUSE_BOT_ALLIANCE_MAX_ITEMS: "30000"
+              AC_AUCTION_HOUSE_BOT_HORDE_MIN_ITEMS: "0"
+              AC_AUCTION_HOUSE_BOT_HORDE_MAX_ITEMS: "0"
+              AC_AUCTION_HOUSE_BOT_NEUTRAL_MIN_ITEMS: "0"
+              AC_AUCTION_HOUSE_BOT_NEUTRAL_MAX_ITEMS: "0"
+              # Fill quickly after a restart; consider lowering to ~300 once full.
+              AC_AUCTION_HOUSE_BOT_ITEMS_PER_CYCLE: "1000"
+              # Longer minimum listing time (2h) so the AH stays stocked.
+              AC_AUCTION_HOUSE_BOT_LISTING_EXPIRE_TIME_IN_SECONDS_MIN: "7200"
+              # Rare/epic items listed in proportion to their real drop rates, so
+              # commons are plentiful and rares scarce (live-server feel).
+              AC_AUCTION_HOUSE_BOT_ADVANCED_LISTING_RULES_USE_DROP_RATES_ENABLED: "1"
+              AC_AUCTION_HOUSE_BOT_BUYER_BUY_CANDIDATES_PER_BUY_CYCLE: "3"
             resources:
               requests: {cpu: 250m, memory: 1Gi}
               limits: {cpu: 3000m, memory: 8Gi}

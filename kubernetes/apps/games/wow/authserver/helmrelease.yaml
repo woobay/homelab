@@ -25,7 +25,7 @@ spec:
               # See: https://github.com/woobay/azerothcore-playerbots-docker
               repository: ghcr.io/woobay/ac-wotlk-playerbots-authserver
               pullPolicy: Always
-              tag: "core-3adbe20_module-64f14c3_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c"
+              tag: "core-ff8d117_module-b0cd0ea_mbbridge-759c100_ahbot-9fbcbe6_ixp-0de806c_dclear-3970a30"
             env:
               AC_LOGIN_DATABASE_INFO:
                 valueFrom:
