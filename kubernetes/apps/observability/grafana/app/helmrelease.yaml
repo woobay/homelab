@@ -184,7 +184,7 @@ spec:
             namespace: networking
     persistence:
       enabled: true
-      storageClassName: longhorn-observability
+      storageClassName: longhorn-retain
       size: 5Gi
     testFramework:
       enabled: false

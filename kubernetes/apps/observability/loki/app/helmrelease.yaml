@@ -2,10 +2,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: grafana-charts
+  name: grafana-community
 spec:
   interval: 2h
-  url: https://grafana.github.io/helm-charts
+  url: https://grafana-community.github.io/helm-charts
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -17,10 +17,10 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 6.46.0
+      version: 21.6.2
       sourceRef:
         kind: HelmRepository
-        name: grafana-charts
+        name: grafana-community
   install:
     remediation:
       retries: -1
@@ -28,7 +28,7 @@ spec:
     remediation:
       retries: 3
   values:
-    deploymentMode: SingleBinary
+    deploymentMode: Monolithic
     loki:
       auth_enabled: false
       commonConfig:
@@ -60,22 +60,11 @@ spec:
         limits: { memory: 2Gi }
       persistence:
         enabled: true
-        storageClass: longhorn-observability
+        storageClass: longhorn-retain
         size: 30Gi
-    # single binary only
     backend: { replicas: 0 }
     read: { replicas: 0 }
     write: { replicas: 0 }
-    ingester: { replicas: 0 }
-    querier: { replicas: 0 }
-    queryFrontend: { replicas: 0 }
-    queryScheduler: { replicas: 0 }
-    distributor: { replicas: 0 }
-    compactor: { replicas: 0 }
-    indexGateway: { replicas: 0 }
-    bloomCompactor: { replicas: 0 }
-    bloomGateway: { replicas: 0 }
-    bloomPlanner: { replicas: 0 }
     chunksCache: { enabled: false }
     resultsCache: { enabled: false }
     gateway: { enabled: false }

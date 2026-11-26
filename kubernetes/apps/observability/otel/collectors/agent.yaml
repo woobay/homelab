@@ -5,7 +5,7 @@ metadata:
   name: otel-agent
 spec:
   mode: daemonset
-  image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.141.0
+  image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.166.0
   hostNetwork: false
   resources:
     requests: { cpu: 50m, memory: 128Mi }
@@ -15,6 +15,10 @@ spec:
       valueFrom:
         fieldRef:
           fieldPath: spec.nodeName
+    - name: KUBE_NODE_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
   ports:
     - { name: otlp-grpc, port: 4317, hostPort: 4317 }
     - { name: otlp-http, port: 4318, hostPort: 4318 }
@@ -46,7 +50,7 @@ spec:
       kubeletstats:
         collection_interval: 30s
         auth_type: serviceAccount
-        endpoint: https://${env:KUBE_NODE_NAME}:10250
+        endpoint: https://${env:KUBE_NODE_IP}:10250
         insecure_skip_verify: true
         metric_groups: [node, pod]
     processors:
