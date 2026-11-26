@@ -9,8 +9,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: storage
-      namespace: observability
     - name: kube-prometheus-stack
       namespace: observability
     - name: loki

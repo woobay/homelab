@@ -9,8 +9,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: storage
-      namespace: observability
+    - name: longhorn-config
+      namespace: longhorn-system
   interval: 1h
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   prune: true
