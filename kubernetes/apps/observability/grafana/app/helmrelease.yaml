@@ -36,8 +36,11 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
+      auth:
+        disable_login_form: true
       auth.anonymous:
         enabled: true
+        org_role: Admin
       news:
         news_feed_enabled: false
     datasources:
@@ -46,6 +49,8 @@ spec:
         deleteDatasources:
           - { name: Alertmanager, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
+          - { name: Loki, orgId: 1 }
+          - { name: Tempo, orgId: 1 }
         datasources:
           - name: Alertmanager
             type: alertmanager
@@ -60,6 +65,34 @@ spec:
             access: proxy
             url: http://prometheus-operated.observability.svc.cluster.local:9090
             isDefault: true
+            jsonData:
+              exemplarTraceIdDestinations:
+                - { name: trace_id, datasourceUid: tempo }
+          - name: Loki
+            type: loki
+            uid: loki
+            access: proxy
+            url: http://loki.observability.svc.cluster.local:3100
+            jsonData:
+              derivedFields:
+                - name: trace_id
+                  matcherType: label
+                  matcherRegex: trace_id
+                  url: "$${__value.raw}"
+                  datasourceUid: tempo
+          - name: Tempo
+            type: tempo
+            uid: tempo
+            access: proxy
+            url: http://tempo.observability.svc.cluster.local:3200
+            jsonData:
+              tracesToLogsV2:
+                datasourceUid: loki
+                filterByTraceID: true
+              serviceMap:
+                datasourceUid: prometheus
+              nodeGraph:
+                enabled: true
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -150,6 +183,8 @@ spec:
           - name: envoy-internal
             namespace: networking
     persistence:
-      enabled: false
+      enabled: true
+      storageClassName: longhorn-retain
+      size: 5Gi
     testFramework:
       enabled: false

@@ -1,0 +1,61 @@
+---
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-gateway
+spec:
+  mode: deployment
+  replicas: 2
+  image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.166.0
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { memory: 768Mi }
+  podDisruptionBudget:
+    maxUnavailable: 1
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    processors:
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      resource/cluster:
+        attributes:
+          - { key: k8s.cluster.name, value: home-cluster, action: upsert }
+      batch:
+        send_batch_size: 8192
+        timeout: 5s
+    exporters:
+      prometheusremotewrite:
+        endpoint: http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write
+        resource_to_telemetry_conversion:
+          enabled: true
+      otlphttp/loki:
+        endpoint: http://loki.observability.svc.cluster.local:3100/otlp
+      otlp/tempo:
+        endpoint: tempo.observability.svc.cluster.local:4317
+        tls:
+          insecure: true
+    service:
+      telemetry:
+        metrics:
+          level: normal
+      pipelines:
+        metrics:
+          receivers: [otlp]
+          processors: [memory_limiter, resource/cluster, batch]
+          exporters: [prometheusremotewrite]
+        logs:
+          receivers: [otlp]
+          processors: [memory_limiter, resource/cluster, batch]
+          exporters: [otlphttp/loki]
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, resource/cluster, batch]
+          exporters: [otlp/tempo]
