@@ -11,6 +11,10 @@ spec:
   dependsOn:
     - name: longhorn-config
       namespace: longhorn-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   interval: 1h
   path: ./kubernetes/apps/home/homarr/app
   prune: true

@@ -6,3 +6,4 @@ resources:
   - ./homarr/ks.yaml
 components:
   - ../../components/namespace
+  - ../../components/namespace
