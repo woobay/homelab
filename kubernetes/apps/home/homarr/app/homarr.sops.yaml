@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: qbit-credentials
+    name: homarr-secret
 type: Opaque
 stringData:
     SECRET_ENCRYPTION_KEY: ENC[AES256_GCM,data:JDlqS9V07XZ2NuIbD2agXWOf44xLGGda1nwTRHtrtvu02W2Y7c3kzHHK2hujhL3tTrl3vPcqBJIpcKkPauCB6g==,iv:O1vo4ovK1RGtiMQU0EWwLi/xpr3O0FPflWWFGtcovKk=,tag:CURPc27ubIvzf8YBXslNMA==,type:str]
