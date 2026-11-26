@@ -1,0 +1,32 @@
+---
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-cluster
+spec:
+  mode: deployment
+  replicas: 1
+  image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.141.0
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { memory: 384Mi }
+  config:
+    receivers:
+      k8s_events: {}
+    processors:
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      batch: {}
+    exporters:
+      otlp/gateway:
+        endpoint: otel-gateway-collector.observability.svc.cluster.local:4317
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        logs:
+          receivers: [k8s_events]
+          processors: [memory_limiter, batch]
+          exporters: [otlp/gateway]
